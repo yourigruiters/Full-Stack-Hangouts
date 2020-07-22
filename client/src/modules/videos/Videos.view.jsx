@@ -34,7 +34,11 @@ const Videos = ({ socket }) => {
 					<p>
 						Room {index} {room.title.replace("-", " ")}
 					</p>
-					<Link to={`/dashboard/video/${room.id}`}>
+					<Link
+						to={`/dashboard/videos/${room.title
+							.replace(" ", "-")
+							.toLowerCase()}`}
+					>
 						<button>Go to Room</button>
 					</Link>
 				</div>

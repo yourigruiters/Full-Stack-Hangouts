@@ -34,7 +34,11 @@ const Chats = ({ socket }) => {
 					<p>
 						Room {index} {room.title.replace("-", " ")}
 					</p>
-					<Link to={`/dashboard/chat/${room.id}`}>
+					<Link
+						to={`/dashboard/chats/${room.title
+							.replace(" ", "-")
+							.toLowerCase()}`}
+					>
 						<button>Go to Room</button>
 					</Link>
 				</div>

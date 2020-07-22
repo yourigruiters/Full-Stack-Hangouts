@@ -13,6 +13,8 @@ import Layout from "./components/layout/Layout";
 import Sidebar from "./components/sidebar/Sidebar";
 import Videos from "./modules/videos/Videos.view";
 import Chats from "./modules/chats/Chats.view";
+import VideoSingle from "./modules/videosingle/VideoSingle.view";
+import ChatSingle from "./modules/chatsingle/ChatSingle.view";
 
 const generateNameConfig = {
 	dictionaries: [adjectives, animals],
@@ -34,12 +36,10 @@ const App = ({ history }) => {
 	const showSidebarArray = ["/"];
 	const currentPage = history.location.pathname;
 	const showSidebar = !showSidebarArray.includes(currentPage);
-	console.log(showSidebar, "showsbra");
 
 	React.useEffect(() => {
 		let visitor = {};
 		const sessionVisitorData = JSON.parse(localStorage.getItem("userData"));
-		console.log(sessionVisitorData);
 		// IF PAGE IS NOT / (ROOT) - SEND TO ROOT
 		if (!sessionVisitorData) {
 			history.push("/");
@@ -66,8 +66,8 @@ const App = ({ history }) => {
 				country: sessionVisitorData.country,
 			};
 			socket.emit("connect_visitor", visitor);
-			// SHOULD PUSH TO WHERE THEY CAME FROM
-			history.push("/dashboard/videos");
+
+			history.push(currentPage);
 		}
 
 		setIsLoading(false);
@@ -105,9 +105,11 @@ const App = ({ history }) => {
 										render={(props) => <Videos {...props} socket={socket} />}
 									/>
 									<Route
-										path="/dashboard/videos/:roomId"
+										path="/dashboard/videos/:roomName"
 										exact
-										render={(props) => <Dashboard {...props} socket={socket} />}
+										render={(props) => (
+											<VideoSingle {...props} socket={socket} />
+										)}
 									/>
 									<Route
 										path="/dashboard/chats/"
@@ -115,9 +117,11 @@ const App = ({ history }) => {
 										render={(props) => <Chats {...props} socket={socket} />}
 									/>
 									<Route
-										path="/dashboard/chats/:roomId"
+										path="/dashboard/chats/:roomName"
 										exact
-										render={(props) => <Dashboard {...props} socket={socket} />}
+										render={(props) => (
+											<ChatSingle {...props} socket={socket} />
+										)}
 									/>
 								</Layout>
 							</>
