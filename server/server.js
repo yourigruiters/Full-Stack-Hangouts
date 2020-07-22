@@ -7,7 +7,7 @@ const port = 5000;
 let rooms = [
 	{
 		id: 0,
-		title: "Public-Lounge",
+		title: "Public Lounge",
 		type: "chat",
 		host: "",
 		private: false,
@@ -20,8 +20,21 @@ let rooms = [
 	},
 	{
 		id: 1,
-		title: "Public-Cinema",
+		title: "Public Cinema",
 		type: "video",
+		host: "",
+		private: false,
+		password: "",
+		category: "Chill",
+		maxUsers: 20,
+		default: true,
+		users: [],
+		queue: [],
+	},
+	{
+		id: 2,
+		title: "Public Lounge 2",
+		type: "chat",
 		host: "",
 		private: false,
 		password: "",

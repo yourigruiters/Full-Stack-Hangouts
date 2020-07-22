@@ -8,7 +8,6 @@ import {
 import { Switch, Route, withRouter } from "react-router-dom";
 import openSocket from "socket.io-client";
 import Homepage from "./modules/homepage/Homepage.view";
-import Dashboard from "./modules/dashboard/Dashboard.view";
 import Layout from "./components/layout/Layout";
 import Sidebar from "./components/sidebar/Sidebar";
 import Videos from "./modules/videos/Videos.view";
