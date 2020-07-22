@@ -12,17 +12,14 @@ app.get('/', (req, res) => {
 
 io.on('connection', (socket) => {
     socket.on('connect_visitor', (visitorData) => {
+        console.log(visitorData, "second")
         socket.user = visitorData;
-        // console.log("Connect_visitor - new details: ", socket.user);
-        console.log(socket.id);
 
-        socket.emit('connect_visitor', 'Visitor data updated - Sending to new location');
+        socket.emit('connect_visitor');
     })
 
     socket.on('get_visitor', () => {
-        // console.log("Trying to provide client with", socket);
-        console.log(socket.id);
-
+        console.log(socket.user, "HIHII");
         socket.emit('get_visitor', socket.user);
     })
 

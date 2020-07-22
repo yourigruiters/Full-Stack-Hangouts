@@ -17,14 +17,17 @@ const socket = openSocket("localhost:5000");
 
 const App = ({ history }) => {
   
-  const [ visitorData, setVisitorData ] = React.useState({name: "123", country: "", countryCode: ""});
+  const [ isLoading, setIsLoading ] = React.useState(true);
+  const [ visitorData, setVisitorData ] = React.useState({name: "", country: "", countryCode: ""});
 
   React.useEffect(() => {
 
       let visitor = {};
-      const tempNotFakeStorage = true;
-      // CHECK IF ANYTHING IS COMING FROM SESSIONSTORAGE
-      if(tempNotFakeStorage) {
+      const sessionVisitorData = JSON.parse(localStorage.getItem('userData'));
+      console.log(sessionVisitorData);
+      // IF PAGE IS NOT / (ROOT) - SEND TO ROOT
+      if(!sessionVisitorData) {
+        history.push("/");
         axios.get("http://geoplugin.net/json.gp")
         .then(res => {
             const {
@@ -44,13 +47,17 @@ const App = ({ history }) => {
           })
           .catch(err => console.error(err.message));
       } else {
-        // visitor = {
-        //   name: SESSIONSTORAGEEEE.NAME,
-        //   countryCode: SESSIONSTORAGEEEE.NAME,
-        //   country: SESSIONSTORAGEEEE.NAME,
-      // }; 
-      socket.emit("connect_visitor", visitor);
+        visitor = {
+          name: sessionVisitorData.name,
+          countryCode: sessionVisitorData.countryCode,
+          country: sessionVisitorData.country,
+        }; 
+        socket.emit("connect_visitor", visitor);
+        // SHOULD PUSH TO WHERE THEY CAME FROM
+        history.push("/dashboard")
       }    
+
+      setIsLoading(false);
   
     
 
@@ -59,8 +66,19 @@ const App = ({ history }) => {
   return (
     <>
       <Switch>
-        <Route path="/" exact render={(props) => <Homepage {...props} socket={socket} visitorData={visitorData} setVisitorData={setVisitorData} />} />
-        <Route path="/dashboard" exact render={(props) => <Dashboard {...props} socket={socket} />} />
+        { isLoading ? 
+        (
+          <><h1>Loading...</h1></>
+        ): (
+          <>
+            <Route path="/" exact render={(props) => <Homepage {...props} socket={socket} visitorData={visitorData} setVisitorData={setVisitorData} />} />
+            <Route path="/dashboard/videos/" exact render={(props) => <Dashboard {...props} socket={socket} />} />
+            <Route path="/dashboard/videos/:roomId?" exact render={(props) => <Dashboard {...props} socket={socket} />} />
+            <Route path="/dashboard/chats/" exact render={(props) => <Dashboard {...props} socket={socket} />} />
+            <Route path="/dashboard/chats/:roomId?" exact render={(props) => <Dashboard {...props} socket={socket} />} />
+          </>
+        )}
+
       </Switch>
     </>
   );
