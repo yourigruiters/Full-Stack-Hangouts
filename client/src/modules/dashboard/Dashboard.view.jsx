@@ -14,12 +14,12 @@ const Dashboard = ({ socket }) => {
         })  
     }, [])
     
-    // const name = _.get(visitor, "name", "Youri");
+    const name = _.get(visitor, "name", "");
 
     return (
         <div className="dashboard">
             <h1>Dashboard</h1>
-            <p>{_.get(visitor, "name", "Youri")}</p>
+            <p>{name}</p>
         </div>
     )
 }

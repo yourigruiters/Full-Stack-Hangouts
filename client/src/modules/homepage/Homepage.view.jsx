@@ -15,7 +15,7 @@ const Homepage = ({ socket, history, visitorData, setVisitorData }) => {
         socket.on("connect_visitor", () => {
             localStorage.setItem('userData', JSON.stringify(visitorData));
             // SET 1st PARAM of Function to REdux
-            history.push("/dashboard")
+            history.push("/dashboard/videos")
         })  
     }
 
