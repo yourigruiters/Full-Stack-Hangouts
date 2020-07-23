@@ -95,13 +95,11 @@ const emitTypingChange = (roomName, type, socket) => {
 		);
 
 		if (foundUser !== -1) {
-			// REMOVE THE USER
 			rooms[roomIndex].isTyping.splice(foundUser, 1);
 		}
 	}
 
 	const isTypingPeople = rooms[roomIndex].isTyping;
-	console.log("isTypingPeople #####", isTypingPeople);
 
 	io.to(roomName).emit("changed_typing", isTypingPeople);
 };
@@ -131,6 +129,8 @@ io.on("connection", (socket) => {
 			(room) => room.title.replace(" ", "-").toLowerCase() === roomName
 		);
 
+		console.log("#### ROOM", room);
+
 		if (room === undefined) {
 			rooms.push({
 				id: rooms.length,
@@ -156,7 +156,11 @@ io.on("connection", (socket) => {
 			countryCode: socket.user.countryCode,
 		};
 
+		console.log("#### ROOM STILL UNDEFINED", room, rooms, rooms.length);
+
 		room.users.push(user);
+
+		console.log("#### ROOM AFTER PUSHING", room);
 
 		const message = {
 			user: socket.user.name,
@@ -187,15 +191,21 @@ io.on("connection", (socket) => {
 	});
 
 	socket.on("disconnect", () => {
-		// console.log("---OLD-DC---OLD-DC---OLD-DC---OLD-DC---OLD-DC---");
-		// console.log('A user disconnected!');
-		rooms = rooms.filter((room) => {
-			room.users = room.users.filter((user) => {
-				// console.log(room.users, "ROOM USERS");
-				// console.log(user.id, " AND ", socket.id);
-				if (user.id !== socket.id) {
-					return user;
-				}
+		rooms = rooms.map((room) => {
+			// FIX: Fake Socket.user - If not exist we use the fake socket.user
+			emitTypingChange(
+				room.title.replace(" ", "-").toLowerCase(),
+				"stopped_typing",
+				socket
+			);
+
+			// FIX kick user out, were only checking to write a message
+			const foundUser = room.users.findIndex(
+				(user) => user.name === socket.user.name
+			);
+
+			if (foundUser !== -1) {
+				room.users.splice(foundUser, 1);
 
 				const message = {
 					user: socket.user.name,
@@ -206,13 +216,10 @@ io.on("connection", (socket) => {
 					"message",
 					message
 				);
-				return;
-			});
-			// console.log(room.users, "ROOM USERS");
+			}
+
 			return room;
 		});
-
-		// console.log("---DISCO---DISCO---DISCO---DISCO---DISCO---");
 	});
 });
 
