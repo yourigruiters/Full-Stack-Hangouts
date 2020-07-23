@@ -10,43 +10,12 @@ const ChatSingle = ({ socket, match }) => {
 	const [chatInput, setChatInput] = React.useState("");
 
 	const roomName = match.params.roomName;
-	React.useEffect(() => {
-		// console.log(isTyping, "TESTE");
-	}, [chatInput]);
 
 	React.useEffect(() => {
 		socket.emit("joining_room", roomName);
 
-		socket.on("started_typing", (user) => {
-			setSendIsTyping(true);
-
-			if (!isTyping.includes(user)) {
-				setIsTyping((prevState) => {
-					const newIsTyping = [...prevState, user];
-					return newIsTyping;
-				});
-			}
-		});
-
-		socket.on("stopped_typing", (user) => {
-			setSendIsTyping(false);
-			console.log("stoppedtyping", user, isTyping.includes(user), isTyping);
-			if (isTyping.includes(user)) {
-				console.log(
-					"#####################################################################",
-					user
-				);
-				setIsTyping((prevState) => {
-					const newIsTyping = [...prevState].filter((isTypingUser) => {
-						console.log(isTypingUser, user, "Newistyping");
-						if (isTypingUser !== user) {
-							return isTypingUser;
-						}
-						return false;
-					});
-					return newIsTyping;
-				});
-			}
+		socket.on("changed_typing", (user) => {
+			setIsTyping(user);
 		});
 
 		socket.on("message", (messageObject) => {
@@ -55,13 +24,12 @@ const ChatSingle = ({ socket, match }) => {
 				const newMessage = {
 					name: user,
 					timestamp: new Date().toISOString(),
+					type: type,
 				};
 				if (type === "joined" || type === "left") {
 					newMessage.message = `has ${type} the chatroom`;
-					newMessage.type = type;
 				} else if (type === "message") {
 					newMessage.message = message;
-					newMessage.type = type;
 				}
 
 				return [...prevState, newMessage];
@@ -84,11 +52,11 @@ const ChatSingle = ({ socket, match }) => {
 
 	const handleChange = (value) => {
 		if (value.length === 1 && !sendIsTyping) {
+			setSendIsTyping(true);
 			socket.emit("started_typing", roomName);
-			console.log("started typing");
-		} else if (value.length === 0) {
+		} else if (value.length === 0 && sendIsTyping) {
+			setSendIsTyping(false);
 			socket.emit("stopped_typing", roomName);
-			console.log("stopped typing");
 		}
 
 		setChatInput(value);
@@ -126,7 +94,7 @@ const ChatSingle = ({ socket, match }) => {
 				) : (
 					isTyping.map((user, index) => {
 						console.log("Istyping map function in HTML", isTyping);
-						return user;
+						return user.name;
 					})
 				)}
 			</div>

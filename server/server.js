@@ -1,14 +1,17 @@
 const app = require("express")();
 const http = require("http").createServer(app);
-const io = require("socket.io")(http);
+const io = require("socket.io")(http, {
+	pingInterval: 30000,
+	pingTimeout: 15000,
+});
 
 const port = 5000;
 
 let rooms = [
 	{
 		id: 0,
-    title: "Public Lounge",
-    slug: "public-lounge",
+		title: "Public Lounge",
+		slug: "public-lounge",
 		type: "chat",
 		host: "",
 		private: false,
@@ -17,12 +20,13 @@ let rooms = [
 		maxUsers: 20,
 		default: true,
 		users: [],
-    queue: [],
+		queue: [],
+		isTyping: [],
 	},
 	{
 		id: 1,
-    title: "Public Cinema",
-    slug: "public-cinema",
+		title: "Public Cinema",
+		slug: "public-cinema",
 		type: "video",
 		host: "",
 		private: false,
@@ -32,11 +36,12 @@ let rooms = [
 		default: true,
 		users: [],
 		queue: [],
+		isTyping: [],
 	},
 	{
 		id: 2,
-    title: "Another chatroom 2",
-    slug: "another-chatroom-2",
+		title: "Another chatroom 2",
+		slug: "another-chatroom-2",
 		type: "chat",
 		host: "",
 		private: false,
@@ -46,6 +51,7 @@ let rooms = [
 		default: true,
 		users: [],
 		queue: [],
+		isTyping: [],
 	},
 ];
 
@@ -55,12 +61,51 @@ app.get("/", (req, res) => {
 
 // CREATE GENERAL FORM CHECKING FUNCTION
 const emitMessage = (roomName, message) => {
-  if(roomName && message) {
-    io.to(roomName).emit("message", message);
-  } else {
-    console.log('ROOMNAME OR MESSAGE MISSING');
-  }
-}
+	if (roomName && message) {
+		io.to(roomName).emit("message", message);
+	} else {
+		console.log("ROOMNAME OR MESSAGE MISSING");
+	}
+};
+
+// CREATE GENERAL CHANGE IN TYPING FUNCTION
+const emitTypingChange = (roomName, type, socket) => {
+	const roomIndex = rooms.findIndex(
+		(room) => room.title.replace(" ", "-").toLowerCase() === roomName
+	);
+
+	const user = {
+		id: socket.id,
+		name: socket.user.name,
+		country: socket.user.country,
+		countryCode: socket.user.countryCode,
+	};
+
+	if (type === "started_typing") {
+		const foundUser = rooms[roomIndex].isTyping.findIndex(
+			(isTypingUser) => isTypingUser.name === user.name
+		);
+
+		if (foundUser === -1) {
+			rooms[roomIndex].isTyping.push(user);
+		}
+	} else if (type === "stopped_typing") {
+		const foundUser = rooms[roomIndex].isTyping.findIndex(
+			(isTypingUser) => isTypingUser.name === user.name
+		);
+
+		if (foundUser !== -1) {
+			// REMOVE THE USER
+			rooms[roomIndex].isTyping.splice(foundUser, 1);
+		}
+	}
+
+	const isTypingPeople = rooms[roomIndex].isTyping;
+	console.log("isTypingPeople #####", isTypingPeople);
+
+	io.to(roomName).emit("changed_typing", isTypingPeople);
+};
+
 io.on("connection", (socket) => {
 	socket.on("connect_visitor", (visitorData) => {
 		console.log(visitorData, "connected visitor");
@@ -118,38 +163,36 @@ io.on("connection", (socket) => {
 			type: "joined",
 		};
 
-    //FUNCTION TO SEND MSG
-    emitMessage(roomName, message);
-    // io.to(roomName).emit("message", message);
+		//FUNCTION TO SEND MSG
+		emitMessage(roomName, message);
+		// io.to(roomName).emit("message", message);
 	});
 
-  socket.on('sending_message', (messageObject) => {
-    console.log(messageObject, 'RECEIVED CHAT MESSAGE');
+	socket.on("sending_message", (messageObject) => {
+		console.log(messageObject, "RECEIVED CHAT MESSAGE");
 
-    messageObject.user = socket.user.name;
-    messageObject.type = 'message';
-    console.log(messageObject, 'NEW MESSAGE OBJECT');
+		messageObject.user = socket.user.name;
+		messageObject.type = "message";
+		console.log(messageObject, "NEW MESSAGE OBJECT");
 
-    emitMessage(messageObject.room, messageObject); 
-  })
+		emitMessage(messageObject.room, messageObject);
+	});
 
-  socket.on('started_typing', (roomName) => {
-    io.to(roomName).emit("started_typing", socket.user.name);
-    console.log('started_typing')
-  })
-  socket.on('stopped_typing', (roomName) => {
-    io.to(roomName).emit("stopped_typing", socket.user.name);
-    console.log('stopped_typing')
+	socket.on("started_typing", (roomName) => {
+		emitTypingChange(roomName, "started_typing", socket);
+	});
 
-  })
+	socket.on("stopped_typing", (roomName) => {
+		emitTypingChange(roomName, "stopped_typing", socket);
+	});
 
 	socket.on("disconnect", () => {
-		console.log("---OLD-DC---OLD-DC---OLD-DC---OLD-DC---OLD-DC---");
+		// console.log("---OLD-DC---OLD-DC---OLD-DC---OLD-DC---OLD-DC---");
 		// console.log('A user disconnected!');
 		rooms = rooms.filter((room) => {
 			room.users = room.users.filter((user) => {
-				console.log(room.users, "ROOM USERS");
-				console.log(user.id, " AND ", socket.id);
+				// console.log(room.users, "ROOM USERS");
+				// console.log(user.id, " AND ", socket.id);
 				if (user.id !== socket.id) {
 					return user;
 				}
@@ -165,11 +208,11 @@ io.on("connection", (socket) => {
 				);
 				return;
 			});
-			console.log(room.users, "ROOM USERS");
+			// console.log(room.users, "ROOM USERS");
 			return room;
 		});
 
-		console.log("---DISCO---DISCO---DISCO---DISCO---DISCO---");
+		// console.log("---DISCO---DISCO---DISCO---DISCO---DISCO---");
 	});
 });
 
