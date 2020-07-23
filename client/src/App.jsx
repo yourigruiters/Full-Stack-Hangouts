@@ -1,19 +1,21 @@
 import React from "react";
+import { Switch, Route, withRouter } from "react-router-dom";
 import axios from "axios";
 import {
 	uniqueNamesGenerator,
 	adjectives,
 	animals,
 } from "unique-names-generator";
-import { Switch, Route, withRouter } from "react-router-dom";
 import openSocket from "socket.io-client";
+
 import Homepage from "./modules/homepage/Homepage.view";
-import Layout from "./components/layout/Layout";
-import Sidebar from "./components/sidebar/Sidebar";
 import Videos from "./modules/videos/Videos.view";
 import Chats from "./modules/chats/Chats.view";
 import VideoSingle from "./modules/videosingle/VideoSingle.view";
 import ChatSingle from "./modules/chatsingle/ChatSingle.view";
+
+import Layout from "./components/layout/Layout";
+import Sidebar from "./components/sidebar/Sidebar";
 
 const generateNameConfig = {
 	dictionaries: [adjectives, animals],
@@ -32,15 +34,19 @@ const App = ({ history }) => {
 		countryCode: "",
 	});
 
+	// Whether to display sidebar or not
 	const showSidebarArray = ["/"];
 	const currentPage = history.location.pathname;
 	const showSidebar = !showSidebarArray.includes(currentPage);
 
+	// Setting up connection to application
+	// Could be a new visitor or an sessionVisitor
 	React.useEffect(() => {
 		let visitor = {};
 		const sessionVisitorData = JSON.parse(localStorage.getItem("userData"));
-		// IF PAGE IS NOT / (ROOT) - SEND TO ROOT
+		// FIX - IF PAGE IS NOT / (ROOT) - SEND TO ROOT
 		if (!sessionVisitorData) {
+			// FIX - TAKE URL AND SEND USER BACK TO THAT URL IN THE END
 			history.push("/");
 			axios
 				.get("http://geoplugin.net/json.gp")
@@ -55,10 +61,11 @@ const App = ({ history }) => {
 
 					console.log("setting visitor", visitor);
 					setVisitorData(visitor);
-					// SEND TO SESSIONSTORAGE
 				})
 				.catch((err) => console.error(err.message));
 		} else {
+			// FIX - [Take from fix above] - IF USER WANTS TO ACTUALLY GO TO HOMEPAGE
+			// WE DO SEND THEM TO OUR MAIN PAGE (VIDEOS)
 			visitor = {
 				name: sessionVisitorData.name,
 				countryCode: sessionVisitorData.countryCode,

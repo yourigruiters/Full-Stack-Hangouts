@@ -33,7 +33,7 @@ let rooms = [
 	},
 	{
 		id: 2,
-		title: "Public Lounge 2",
+		title: "Another chatroom 2",
 		type: "chat",
 		host: "",
 		private: false,
@@ -56,7 +56,7 @@ io.on("connection", (socket) => {
 	socket.on("connect_visitor", (visitorData) => {
 		console.log(visitorData, "connected visitor");
 		socket.user = visitorData;
-
+		// FIX: Check visitorData to ensure everything is correct
 		socket.emit("connect_visitor");
 	});
 
@@ -101,13 +101,14 @@ io.on("connection", (socket) => {
 			country: socket.user.country,
 			countryCode: socket.user.countryCode,
 		};
+
 		room.users.push(user);
-		console.log("ROOM AFTER USER JOINING", room);
 
 		const message = {
 			user: socket.user.name,
 			type: "joined",
 		};
+
 		io.to(roomName).emit("message", message);
 	});
 

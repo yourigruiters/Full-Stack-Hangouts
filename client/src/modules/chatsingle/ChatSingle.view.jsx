@@ -8,7 +8,6 @@ const ChatSingle = ({ socket, match }) => {
 
 	React.useEffect(() => {
 		const roomName = match.params.roomName;
-		console.log(roomName, "IS CHANGING AT RANDOM TIMES");
 
 		socket.emit("joining_room", roomName);
 

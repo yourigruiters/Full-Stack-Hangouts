@@ -1,35 +1,35 @@
-import React from 'react'
-import * as _ from 'lodash';
-import "./Homepage.view.scss"
+import React from "react";
+import * as _ from "lodash";
+import "./Homepage.view.scss";
 
 const Homepage = ({ socket, history, visitorData, setVisitorData }) => {
-    const handleFormData = (event) => {
-        setVisitorData({...visitorData, name: event.target.value})
-    }
- 
-    const loginNewVisitor = (event) => {
-        event.preventDefault();
+	const handleFormData = (event) => {
+		setVisitorData({ ...visitorData, name: event.target.value });
+	};
 
-        socket.emit('connect_visitor', visitorData);
-    
-        socket.on("connect_visitor", () => {
-            localStorage.setItem('userData', JSON.stringify(visitorData));
-            // SET 1st PARAM of Function to REdux
-            history.push("/dashboard/videos")
-        })  
-    }
+	const loginNewVisitor = (event) => {
+		event.preventDefault();
 
+		socket.emit("connect_visitor", visitorData);
 
+		socket.on("connect_visitor", () => {
+			localStorage.setItem("userData", JSON.stringify(visitorData));
+			// SET 1st PARAM of Function to REdux
+			history.push("/dashboard/videos");
+		});
+	};
 
+	return (
+		<div className="homepage">
+			<form onSubmit={(e) => loginNewVisitor(e)}>
+				<input
+					type="text"
+					value={_.get(visitorData, "name", "")}
+					onChange={(e) => handleFormData(e)}
+				/>
+			</form>
+		</div>
+	);
+};
 
-    return (
-        <div className="homepage">
-            <form onSubmit={(e) => loginNewVisitor(e)}>
-            <input type="text" value={_.get(visitorData, "name", "")} onChange={(e) => handleFormData(e)} />
-
-            </form>
-        </div>
-    )
-}
-
-export default Homepage
+export default Homepage;
