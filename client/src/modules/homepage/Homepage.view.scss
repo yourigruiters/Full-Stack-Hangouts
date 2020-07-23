@@ -1,3 +1,94 @@
+@import "../../styles/variables.scss";
+
 .homepage {
-    background-color: red;
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	min-height: 100vh;
+
+	@media screen and (min-width: $breakpoint-sm) {
+		flex-direction: row;
+	}
+
+	&__spacer {
+		order: 2;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		width: 100%;
+		height: auto;
+		padding: 20px;
+
+		@media screen and (min-width: $breakpoint-sm) {
+			order: 1;
+			width: 70%;
+			padding: 50px;
+		}
+
+		@media screen and (min-width: $breakpoint-lg) {
+			justify-content: flex-start;
+			width: 50%;
+			padding: 100px;
+		}
+
+		&--background {
+			order: 1;
+			padding: 50px;
+			background-color: $blue-dark;
+
+			@media screen and (min-width: $breakpoint-sm) {
+				width: 30%;
+			}
+
+			@media screen and (min-width: $breakpoint-lg) {
+				width: 50%;
+			}
+		}
+
+		&__content {
+			max-width: 330px;
+
+			h1 {
+				margin-bottom: 10px;
+				font-family: $font-default;
+				font-size: 36px;
+			}
+
+			p {
+				font-family: $font-default;
+				font-size: 16px;
+				font-weight: lighter;
+			}
+
+			&__form {
+				form {
+					display: flex;
+					flex-direction: column;
+					margin-top: 25px;
+
+					label {
+						margin-left: 5px;
+						margin-bottom: 2px;
+						color: $gray-light;
+						font-family: $font-default;
+						font-size: 16px;
+						font-weight: lighter;
+					}
+
+					input[type="text"] {
+						margin-bottom: 10px;
+						padding: 6px;
+						border: 1px solid #ced4da;
+						background-color: $white;
+						border-radius: 6px;
+
+						&:focus {
+							border-color: $orange-dark;
+							outline: none;
+						}
+					}
+				}
+			}
+		}
+	}
 }
