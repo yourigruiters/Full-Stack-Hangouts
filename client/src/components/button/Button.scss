@@ -1,0 +1,23 @@
+@import "../../styles/variables.scss";
+
+.button {
+	width: auto;
+	height: auto;
+	margin-right: auto;
+	padding: 7px 25px;
+	border: none;
+	border-radius: 6px;
+	outline: none;
+	background-color: yellow;
+	transition: background-color 0.5s;
+	cursor: pointer;
+
+	&--primary {
+		color: $white;
+		background-color: $orange-dark;
+
+		&:hover {
+			background-color: $orange-light;
+		}
+	}
+}
