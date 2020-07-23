@@ -51,7 +51,13 @@ app.get("/", (req, res) => {
 });
 
 // CREATE GENERAL FORM CHECKING FUNCTION
-
+const emitMessage = (roomName, message) => {
+  if(roomName && message) {
+    io.to(roomName).emit("message", message);
+  } else {
+    console.log('ROOMNAME OR MESSAGE MISSING');
+  }
+}
 io.on("connection", (socket) => {
 	socket.on("connect_visitor", (visitorData) => {
 		console.log(visitorData, "connected visitor");
@@ -109,9 +115,19 @@ io.on("connection", (socket) => {
 			type: "joined",
 		};
 
-		io.to(roomName).emit("message", message);
+    //FUNCTION TO SEND MSG
+    emitMessage(roomName, message);
+    // io.to(roomName).emit("message", message);
 	});
 
+  socket.on('sending_message', (messageObject) => {
+    console.log(messageObject, 'RECEIVED CHAT MESSAGE');
+    messageObject.user = socket.user.name;
+    messageObject.type = 'message';
+    console.log(messageObject, 'NEW MESSAGE OBJECT');
+
+    emitMessage(messageObject.room, messageObject); 
+  })
 	socket.on("disconnect", () => {
 		console.log("---OLD-DC---OLD-DC---OLD-DC---OLD-DC---OLD-DC---");
 		// console.log('A user disconnected!');
