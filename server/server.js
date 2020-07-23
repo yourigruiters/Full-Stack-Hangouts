@@ -7,7 +7,8 @@ const port = 5000;
 let rooms = [
 	{
 		id: 0,
-		title: "Public Lounge",
+    title: "Public Lounge",
+    slug: "public-lounge",
 		type: "chat",
 		host: "",
 		private: false,
@@ -16,11 +17,12 @@ let rooms = [
 		maxUsers: 20,
 		default: true,
 		users: [],
-		queue: [],
+    queue: [],
 	},
 	{
 		id: 1,
-		title: "Public Cinema",
+    title: "Public Cinema",
+    slug: "public-cinema",
 		type: "video",
 		host: "",
 		private: false,
@@ -33,7 +35,8 @@ let rooms = [
 	},
 	{
 		id: 2,
-		title: "Another chatroom 2",
+    title: "Another chatroom 2",
+    slug: "another-chatroom-2",
 		type: "chat",
 		host: "",
 		private: false,
@@ -122,12 +125,24 @@ io.on("connection", (socket) => {
 
   socket.on('sending_message', (messageObject) => {
     console.log(messageObject, 'RECEIVED CHAT MESSAGE');
+
     messageObject.user = socket.user.name;
     messageObject.type = 'message';
     console.log(messageObject, 'NEW MESSAGE OBJECT');
 
     emitMessage(messageObject.room, messageObject); 
   })
+
+  socket.on('started_typing', (roomName) => {
+    io.to(roomName).emit("started_typing", socket.user.name);
+    console.log('started_typing')
+  })
+  socket.on('stopped_typing', (roomName) => {
+    io.to(roomName).emit("stopped_typing", socket.user.name);
+    console.log('stopped_typing')
+
+  })
+
 	socket.on("disconnect", () => {
 		console.log("---OLD-DC---OLD-DC---OLD-DC---OLD-DC---OLD-DC---");
 		// console.log('A user disconnected!');
