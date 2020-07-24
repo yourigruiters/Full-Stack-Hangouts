@@ -17,6 +17,8 @@ import ChatSingle from "./modules/chatsingle/ChatSingle.view";
 import Layout from "./components/layout/Layout";
 import Sidebar from "./components/sidebar/Sidebar";
 
+import "./App.scss";
+
 const generateNameConfig = {
 	dictionaries: [adjectives, animals],
 	style: "capital",
@@ -72,8 +74,13 @@ const App = ({ history }) => {
 				country: sessionVisitorData.country,
 			};
 			socket.emit("connect_visitor", visitor);
-
-			history.push(currentPage);
+			console.log(currentPage, "currentpage");
+			if (currentPage === "/") {
+				console.log("Sending to videos");
+				history.push("/dashboard/videos");
+			} else {
+				history.push(currentPage);
+			}
 		}
 
 		setIsLoading(false);
@@ -102,7 +109,7 @@ const App = ({ history }) => {
 								)}
 							/>
 						) : (
-							<>
+							<main>
 								<Sidebar />
 								<Layout>
 									<Route
@@ -130,7 +137,7 @@ const App = ({ history }) => {
 										)}
 									/>
 								</Layout>
-							</>
+							</main>
 						)}
 					</>
 				)}

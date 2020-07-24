@@ -1,0 +1,24 @@
+@import "../../styles/variables.scss";
+
+.sidebar {
+	display: flex;
+	max-width: 200px;
+	min-width: 200px;
+	min-height: 100vh;
+	background-color: $blue-dark;
+
+	&__nav {
+		display: flex;
+		flex-direction: column;
+		padding: 20px;
+
+		a {
+			color: $white;
+			margin-bottom: 15px;
+
+			&:hover {
+				color: $orange-light;
+			}
+		}
+	}
+}

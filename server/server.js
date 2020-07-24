@@ -146,6 +146,8 @@ io.on("connection", (socket) => {
 				queue: [],
 			});
 
+			// FIND INDEX OF CREATED ROOM ABOVE - USING ALREADY EXISTING CODE FINDINDEX
+			// USE HERE INSTEAD of Rooms.Length
 			room = rooms[rooms.length];
 		}
 
@@ -158,6 +160,7 @@ io.on("connection", (socket) => {
 
 		console.log("#### ROOM STILL UNDEFINED", room, rooms, rooms.length);
 
+		// This mgiht be wrong with the new approach from above
 		room.users.push(user);
 
 		console.log("#### ROOM AFTER PUSHING", room);
