@@ -7,10 +7,10 @@ const Sidebar = () => {
 		<section className="sidebar">
 			<nav className="sidebar__nav">
 				<NavLink to="/dashboard/videos" exact>
-					Go to Videos
+					Browse Video Rooms
 				</NavLink>
 				<NavLink to="/dashboard/chats" exact>
-					Go to Chats
+					Browse Chat Rooms
 				</NavLink>
 			</nav>
 		</section>
