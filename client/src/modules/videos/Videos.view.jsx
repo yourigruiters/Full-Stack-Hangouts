@@ -1,7 +1,8 @@
 import React from "react";
 import * as _ from "lodash";
-import "./Videos.view.scss";
 import { Link } from "react-router-dom";
+import Button from "../../components/button/Button";
+import "./Videos.view.scss";
 
 const Videos = ({ socket }) => {
 	// const [ visitor, setVisitor ] = React.useState({});
@@ -39,7 +40,7 @@ const Videos = ({ socket }) => {
 							.replace(" ", "-")
 							.toLowerCase()}`}
 					>
-						<button>Go to Room</button>
+						<Button type="primary">Go to Room</Button>
 					</Link>
 				</div>
 			))}

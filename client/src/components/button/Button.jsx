@@ -2,7 +2,7 @@ import React from "react";
 import "./Button.scss";
 
 const Button = ({ type, children }) => {
-	return <section className={`button button--${type}`}>{children}</section>;
+	return <button className={`button button--${type}`}>{children}</button>;
 };
 
 export default Button;
