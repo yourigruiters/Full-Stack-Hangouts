@@ -192,12 +192,13 @@ io.on("connection", (socket) => {
 
 	socket.on("disconnect", () => {
 		rooms = rooms.map((room) => {
-			// FIX: Fake Socket.user - If not exist we use the fake socket.user
-			emitTypingChange(
-				room.title.replace(" ", "-").toLowerCase(),
-				"stopped_typing",
-				socket
-			);
+			if (socket.user) {
+				emitTypingChange(
+					room.title.replace(" ", "-").toLowerCase(),
+					"stopped_typing",
+					socket
+				);
+			}
 
 			// FIX kick user out, were only checking to write a message
 			const foundUser = room.users.findIndex(
