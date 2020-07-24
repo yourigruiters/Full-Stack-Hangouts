@@ -1,7 +1,8 @@
 import React from "react";
 import * as _ from "lodash";
-import "./Chats.view.scss";
 import { Link } from "react-router-dom";
+import Button from "../../components/button/Button";
+import "./Chats.view.scss";
 
 const Chats = ({ socket }) => {
 	const [roomsData, setRoomsData] = React.useState([]);
@@ -28,7 +29,7 @@ const Chats = ({ socket }) => {
 							.replace(" ", "-")
 							.toLowerCase()}`}
 					>
-						<button>Go to Room</button>
+						<Button type="primary">Go to Room</Button>
 					</Link>
 				</div>
 			))}

@@ -92,10 +92,7 @@ const ChatSingle = ({ socket, match }) => {
 				{isTyping.length > 0 && isTyping.length > 2 ? (
 					<p>Multiple people are typing...</p>
 				) : (
-					isTyping.map((user, index) => {
-						console.log("Istyping map function in HTML", isTyping);
-						return user.name;
-					})
+					isTyping.map((user, index) => <p key={index}>{user.name}</p>)
 				)}
 			</div>
 		</div>
