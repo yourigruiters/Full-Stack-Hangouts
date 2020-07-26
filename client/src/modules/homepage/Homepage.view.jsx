@@ -22,11 +22,15 @@ const Homepage = ({ socket, history, visitorData, setVisitorData }) => {
     });
   };
 
+  const name = _.get(visitorData, "name", "");
+
   return (
     <section className="homepage">
       <section className="homepage__spacer">
         <section className="homepage__spacer__content">
-          <h1>Hangouts</h1>
+          <h1>
+            Welcome, <span>{name}</span>.
+          </h1>
           <Paragraph>
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Delectus
             debitis ratione suscipit maiores necessitatibus sapiente labore fuga
@@ -37,7 +41,7 @@ const Homepage = ({ socket, history, visitorData, setVisitorData }) => {
               <label>Username</label>
               <input
                 type="text"
-                value={_.get(visitorData, "name", "")}
+                value={name}
                 onChange={(e) => handleFormData(e)}
               />
               <Button type="primary">Enter hangouts</Button>
