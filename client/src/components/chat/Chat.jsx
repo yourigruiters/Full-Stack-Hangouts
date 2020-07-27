@@ -3,6 +3,13 @@ import "./Chat.scss";
 import Button from '../button/Button'
 
 const Chat = ({ messages, sendChatMessage, chatInput, handleChange, isTyping }) => {
+  
+  const shiftSubmit = (e) => {
+    if (e.key === 'Enter' && e.shiftKey) {         
+      sendChatMessage(e)
+    }
+  }
+
   return <section className="chat">
   <section className="chatsection__body">
     <article className="chat__area">
@@ -24,6 +31,7 @@ const Chat = ({ messages, sendChatMessage, chatInput, handleChange, isTyping }) 
         value={chatInput}
         placeholder="Type something..."
         onChange={(e) => handleChange(e.target.value)}
+        onKeyDown={(e) => shiftSubmit(e)}
         className="chat__input--text"
       />
       <Button type="primary">Send Message</Button>

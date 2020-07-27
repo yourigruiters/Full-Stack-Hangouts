@@ -4,14 +4,12 @@
 	&:hover {
 		color: $orange-dark;
 	}
-}
-
-.toggle--hide {
-	display: none;
-}
-
-.toggle--show {
-	display: block;
+		&--hide {
+			display: none;
+		}
+		&--show {
+			display: block;
+		}
 }
 
 .chatsingle {
