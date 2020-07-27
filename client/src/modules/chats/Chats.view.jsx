@@ -22,13 +22,9 @@ const Chats = ({ socket }) => {
 			{roomsData.map((room, index) => (
 				<div key={index}>
 					<p>
-						Room {index} {room.title.replace("-", " ")}
+						Room {index} {room.title}
 					</p>
-					<Link
-						to={`/dashboard/chats/${room.title
-							.replace(" ", "-")
-							.toLowerCase()}`}
-					>
+					<Link to={`/dashboard/chats/${room.slug}`}>
 						<Button type="primary">Go to Room</Button>
 					</Link>
 				</div>
