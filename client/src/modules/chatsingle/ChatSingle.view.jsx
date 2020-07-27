@@ -1,7 +1,7 @@
 import React from "react";
 import * as _ from "lodash";
 import "./ChatSingle.view.scss";
-import { Link } from "react-router-dom";
+import Chat from '../../components/chat/Chat';
 
 const ChatSingle = ({ socket, match }) => {
 	const [messages, setMessages] = React.useState([]);
@@ -63,54 +63,21 @@ const ChatSingle = ({ socket, match }) => {
 	};
 
 	return (
-		<div className="chatsingle">
-			<h1>ChatSingle</h1>
-
-			<div className="chat">
-				<p>MESSAGES</p>
-				{messages.map((message, index) => (
-					<div key={index}>
-						<p>
-							<span>
-								{/* {message.timestamp} -  */}
-								<b>{message.name}:</b>{" "}
-							</span>
-							{message.message}
-						</p>
-					</div>
-				))}
-			</div>
-			<form onSubmit={(e) => sendChatMessage(e)}>
-				<input
-					type="text"
-					value={chatInput}
-					placeholder="Type something..."
-					onChange={(e) => handleChange(e.target.value)}
-				/>
-				<input type="button" value="Send Message" />
-			</form>
-			<div className="isTypingSpacer">
-				{isTyping.length > 0 && isTyping.length > 2 ? (
-					<p>Multiple people are typing...</p>
-				) : (
-					<p>
-						{isTyping.map((user, index) => {
-							let string = "";
-							string += user.name;
-							if (index === 0 && isTyping.length === 1) {
-								string += " is typing...";
-							} else if (index === 0) {
-								string += " and ";
-							}
-							if (index === 1) {
-								string += " are typing...";
-							}
-							return string;
-						})}
-					</p>
-				)}
-			</div>
-		</div>
+		<section className="chatsingle">
+			<section className="chatsection">
+				<section className="chatsection__header">
+					<h1 className="chatsection__header--title">Title</h1>
+					<article className="chatsection__header--buttons"> X X</article>
+				</section>
+					<Chat sendChatMessage={sendChatMessage} handleChange={handleChange} chatInput={chatInput} isTyping={isTyping} messages={messages}/>
+			</section>
+			<section className="usersection">
+				<section className="usersection__header">
+					<h2 className="usersection__header--title">People</h2>
+				</section>
+				<article className="usersection__content">Placeholder content</article>
+			</section>
+		</section>
 	);
 };
 

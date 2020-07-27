@@ -1,0 +1,51 @@
+@import "../../styles/variables.scss";
+
+.chat {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  margin-right: 20px;
+}
+
+.chat__area {
+  display: table-cell;
+  vertical-align: bottom;
+  max-height: 500px;
+  height: 500px;
+  overflow: scroll;
+}
+
+.chatsection__body {
+  max-height: 500px;
+  height: 500px;
+  overflow-y: scroll;
+  overflow: scroll;
+}
+
+.chat__message {
+  margin: 5px 0;
+}
+
+.chat__input {
+  display: flex;
+  flex-direction: row;
+  margin: 10px 0;
+}
+
+.chat__input--text {
+  width: 100%;
+  margin-right: 10px;
+  padding: 5px;
+  background-color: $input-background;
+  color: $white;
+  border-radius: 6px;
+  border: none;
+
+  &:focus {
+    background-color: $background-dark;
+  }
+}
+
+.isTypingSpacer {
+  height: 35px;
+}
