@@ -2,10 +2,14 @@
 
 .sidebar {
 	display: flex;
-	max-width: 200px;
-	min-width: 200px;
+	flex-direction: column;
+	justify-content: space-between;
+	align-items: center;
+	max-width: 100px;
+	min-width: 100px;
 	min-height: 100vh;
-	background-color: $blue-dark;
+	padding-top: 20px;
+	background-color: $background-dark;
 
 	&__nav {
 		display: flex;
@@ -13,12 +17,48 @@
 		padding: 20px;
 
 		a {
+			text-align: center;
 			color: $white;
-			margin-bottom: 15px;
+		}
 
-			&:hover {
+		.active &__combo path,
+		.active &__combo p {
+			color: $orange-dark;
+			fill: $orange-dark;
+		}
+
+		&__combo {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			flex-direction: column;
+			margin-bottom: 25px;
+			cursor: pointer;
+
+			svg {
+				width: 30px;
+				height: 30px;
+				margin-bottom: 5px;
+			}
+
+			&:hover path,
+			&:hover p {
+				fill: $orange-light;
 				color: $orange-light;
 			}
+
+			&--logout {
+				&:hover path,
+				&:hover p {
+					fill: $red-light;
+					color: $red-light;
+				}
+			}
 		}
+	}
+
+	&__logout {
+		display: flex;
+		padding: 20px;
 	}
 }

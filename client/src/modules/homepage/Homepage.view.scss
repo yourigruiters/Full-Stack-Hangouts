@@ -18,6 +18,7 @@
 		width: 100%;
 		height: auto;
 		padding: 20px;
+		background-color: $background-dark;
 
 		@media screen and (min-width: $breakpoint-sm) {
 			order: 1;
@@ -34,10 +35,11 @@
 		&--background {
 			order: 1;
 			padding: 50px;
-			background-color: $blue-dark;
+			background: url("../../images/homepage.jpg");
 
 			@media screen and (min-width: $breakpoint-sm) {
 				width: 30%;
+				padding: 0px;
 			}
 
 			@media screen and (min-width: $breakpoint-lg) {
@@ -48,16 +50,24 @@
 		&__content {
 			max-width: 330px;
 
+			@media screen and (min-width: $breakpoint-lg) {
+				max-width: 100%;
+			}
+
 			h1 {
 				margin-bottom: 10px;
 				font-family: $font-default;
-				font-size: 36px;
+				font-size: 24px;
+
+				span {
+					color: $orange-dark;
+				}
 			}
 
-			p {
-				font-family: $font-default;
-				font-size: 16px;
-				font-weight: lighter;
+			@media screen and (min-width: $breakpoint-lg) {
+				h1 {
+					font-size: 2vw;
+				}
 			}
 
 			&__form {
@@ -68,19 +78,26 @@
 
 					label {
 						margin-left: 5px;
-						margin-bottom: 2px;
+						margin-bottom: 5px;
 						color: $gray-light;
 						font-family: $font-default;
 						font-size: 16px;
 						font-weight: lighter;
 					}
 
+					@media screen and (min-width: $breakpoint-lg) {
+						label {
+							font-size: 1.4vw;
+						}
+					}
+
 					input[type="text"] {
-						margin-bottom: 10px;
+						margin-bottom: 15px;
 						padding: 6px;
 						border: 1px solid #ced4da;
 						background-color: $white;
 						border-radius: 6px;
+						max-width: 330px;
 
 						&:focus {
 							border-color: $orange-dark;
