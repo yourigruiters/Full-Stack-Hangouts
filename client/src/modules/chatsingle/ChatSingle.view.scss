@@ -1,5 +1,19 @@
 @import "../../styles/variables.scss";
 
+.toggle {
+	&:hover {
+		color: $orange-dark;
+	}
+}
+
+.toggle--hide {
+	display: none;
+}
+
+.toggle--show {
+	display: block;
+}
+
 .chatsingle {
   width: 100%;
   display: flex;
@@ -31,20 +45,28 @@
 .usersection {
   display: none;
 	width: 100%;
-	background-color: $background-dark;
+	// background-color: $background-dark;
 
 	&__header {
+		display: flex;
+		flex-direction: row;
 		height: 40px; 
 		padding: 10px;
-		background-color: #0f0f12;
+		background-color: $background-dark;
 
 		&--title {
-
+			color: $white;
+			&:hover {
+				color: $orange-dark;
+			}
 		}
 	}
 
 	&__content {
+		min-height: 600px;
 		padding: 10px;
+		background-color: $background-dark;
+		transition: transform 0.3s 0s;
 	}
 
   @media screen and (min-width: $breakpoint-lg) {

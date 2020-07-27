@@ -8,6 +8,8 @@ const ChatSingle = ({ socket, match }) => {
 	const [isTyping, setIsTyping] = React.useState([]);
 	const [sendIsTyping, setSendIsTyping] = React.useState(false);
 	const [chatInput, setChatInput] = React.useState("");
+	
+	const [toggle, setToggle] = React.useState(false);
 
 	const roomName = match.params.roomName;
 
@@ -69,13 +71,17 @@ const ChatSingle = ({ socket, match }) => {
 					<h1 className="chatsection__header--title">Title</h1>
 					<article className="chatsection__header--buttons"> X X</article>
 				</section>
-					<Chat sendChatMessage={sendChatMessage} handleChange={handleChange} chatInput={chatInput} isTyping={isTyping} messages={messages}/>
+				<Chat sendChatMessage={sendChatMessage} handleChange={handleChange} chatInput={chatInput} isTyping={isTyping} messages={messages}/>
 			</section>
 			<section className="usersection">
 				<section className="usersection__header">
-					<h2 className="usersection__header--title">People</h2>
+					<span><a className="toggle" onClick={() => {
+						!toggle ? setToggle(true) : setToggle(false)
+					}}><h2 className="usersection__header--title">{toggle ? 'X' : '<' } People</h2></a>
+					</span>
 				</section>
-				<article className="usersection__content">Placeholder content</article>
+				<article className={toggle ? 'usersection__content toggle--show' : 'usersection__content toggle--hide'}>Placeholder content
+				</article> 
 			</section>
 		</section>
 	);
