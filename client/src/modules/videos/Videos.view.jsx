@@ -24,7 +24,7 @@ const Videos = ({ socket }) => {
 					<p>
 						Room {index} {room.title}
 					</p>
-					<Link to={`/dashboard/chats/${room.slug}`}>
+					<Link to={`/dashboard/videos/${room.slug}`}>
 						<Button type="primary">Go to Room</Button>
 					</Link>
 				</div>
