@@ -1,7 +1,6 @@
 import React from "react";
 import * as _ from "lodash";
-import { Link } from "react-router-dom";
-import Button from "../../components/button/Button";
+import MainLayout from "../../components/main-layout/Main-layout";
 import "./Chats.view.scss";
 
 const Chats = ({ socket }) => {
@@ -16,20 +15,20 @@ const Chats = ({ socket }) => {
 		});
 	}, []);
 
+	const mainLayoutData = {
+    title: "Chats",
+    type: "chats",
+		paragraph:
+			"Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugit quae quisquam, soluta, sapiente necessitatibus error doloribus perspiciatis accusantium aut accusamus officia blanditiis. Delectus nesciunt quas expedita.",
+	};
+
 	return (
-		<div className="chats">
-			<h1>Chats</h1>
-			{roomsData.map((room, index) => (
-				<div key={index}>
-					<p>
-						Room {index} {room.title}
-					</p>
-					<Link to={`/dashboard/chats/${room.slug}`}>
-						<Button type="primary">Go to Room</Button>
-					</Link>
-				</div>
-			))}
-		</div>
+		<MainLayout
+      title={mainLayoutData.title}
+      type={mainLayoutData.type}
+			paragraph={mainLayoutData.paragraph}
+			roomsData={roomsData}
+		/>
 	);
 };
 

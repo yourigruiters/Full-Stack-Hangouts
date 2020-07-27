@@ -1,0 +1,12 @@
+@import "../../styles/variables.scss";
+
+.room {
+	width: 100%;
+	max-width: 300px;
+	margin-right: 50px;
+	margin-bottom: 50px;
+	height: auto;
+	padding: 20px;
+	border-radius: 6px;
+	border: 1px solid $orange-light;
+}

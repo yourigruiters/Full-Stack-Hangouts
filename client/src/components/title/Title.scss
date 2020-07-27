@@ -1,0 +1,11 @@
+@import "../../styles/variables.scss";
+
+.title {
+	font-family: $font-default;
+	font-size: 24px;
+	font-weight: lighter;
+
+	@media screen and (min-width: $breakpoint-lg) {
+		font-size: 3vw;
+	}
+}

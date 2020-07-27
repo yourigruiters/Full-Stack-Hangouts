@@ -1,0 +1,27 @@
+@import "../../styles/variables.scss";
+
+.input {
+	width: 100%;
+	height: auto;
+	padding: 7px 15px;
+	font-size: 16px;
+	border: none;
+	border-radius: 6px;
+	outline: none;
+	transition: background-color 0.5s;
+	cursor: pointer;
+
+	@media screen and (min-width: $breakpoint-lg) {
+		font-size: 1.2vw;
+	}
+
+	&--text {
+		color: $white;
+		background-color: $input-background;
+		border: 1px solid $input-background;
+
+		&:hover {
+			border: 1px solid $orange-light;
+		}
+	}
+}
