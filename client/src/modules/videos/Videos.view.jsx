@@ -1,21 +1,12 @@
 import React from "react";
 import * as _ from "lodash";
-import { Link } from "react-router-dom";
-import Button from "../../components/button/Button";
+import MainLayout from "../../components/main-layout/Main-layout";
 import "./Videos.view.scss";
 
 const Videos = ({ socket }) => {
-	// const [ visitor, setVisitor ] = React.useState({});
 	const [roomsData, setRoomsData] = React.useState([]);
 
 	React.useEffect(() => {
-		// socket.emit('get_visitor');
-
-		// socket.on("get_visitor", (visitorData) => {
-		//     console.log(visitorData, "Fetching from Videos")
-		//     setVisitor(visitorData);
-		// })
-
 		socket.emit("get_rooms", "video");
 
 		socket.on("get_rooms", (roomsData) => {
@@ -24,27 +15,20 @@ const Videos = ({ socket }) => {
 		});
 	}, []);
 
-	// const name = _.get(visitor, "name", "");
+	const mainLayoutData = {
+    title: "Videos",
+    type: "videos",
+		paragraph:
+			"Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugit quae quisquam, soluta, sapiente necessitatibus error doloribus perspiciatis accusantium aut accusamus officia blanditiis. Delectus nesciunt quas expedita.",
+	};
 
 	return (
-		<div className="videos">
-			<h1>Videos</h1>
-			{/* <p>{name}</p> */}
-			{roomsData.map((room, index) => (
-				<div key={index}>
-					<p>
-						Room {index} {room.title.replace("-", " ")}
-					</p>
-					<Link
-						to={`/dashboard/videos/${room.title
-							.replace(" ", "-")
-							.toLowerCase()}`}
-					>
-						<Button type="primary">Go to Room</Button>
-					</Link>
-				</div>
-			))}
-		</div>
+		<MainLayout
+      title={mainLayoutData.title}
+      type={mainLayoutData.type}
+			paragraph={mainLayoutData.paragraph}
+			roomsData={roomsData}
+		/>
 	);
 };
 

@@ -70,9 +70,7 @@ const emitMessage = (roomName, message) => {
 
 // CREATE GENERAL CHANGE IN TYPING FUNCTION
 const emitTypingChange = (roomName, type, socket) => {
-	const roomIndex = rooms.findIndex(
-		(room) => room.title.replace(" ", "-").toLowerCase() === roomName
-	);
+	const roomIndex = rooms.findIndex((room) => room.slug === roomName);
 
 	const user = {
 		id: socket.id,
@@ -121,13 +119,15 @@ io.on("connection", (socket) => {
 		socket.emit("get_rooms", filteredRooms);
 	});
 
+	// check_room - Check if room exist - if not send back error message
+
+	// create_room - creating a new room - send user there directly
+
 	socket.on("joining_room", (roomName) => {
 		console.log(roomName, "HAS A NEW USER JOINING");
 		socket.join(roomName);
 
-		let room = rooms.find(
-			(room) => room.title.replace(" ", "-").toLowerCase() === roomName
-		);
+		let room = rooms.find((room) => room.slug === roomName);
 
 		console.log("#### ROOM", room);
 
@@ -135,6 +135,7 @@ io.on("connection", (socket) => {
 			rooms.push({
 				id: rooms.length,
 				title: roomName,
+				slug: roomName.replace("-", " ").toLowerCase(),
 				type: "chat",
 				host: "",
 				private: false,
@@ -196,30 +197,23 @@ io.on("connection", (socket) => {
 	socket.on("disconnect", () => {
 		rooms = rooms.map((room) => {
 			if (socket.user) {
-				emitTypingChange(
-					room.title.replace(" ", "-").toLowerCase(),
-					"stopped_typing",
-					socket
+				emitTypingChange(room.slug, "stopped_typing", socket);
+
+				// FIX kick user out, were only checking to write a message
+				const foundUser = room.users.findIndex(
+					(user) => user.name === socket.user.name
 				);
-			}
 
-			// FIX kick user out, were only checking to write a message
-			const foundUser = room.users.findIndex(
-				(user) => user.name === socket.user.name
-			);
+				if (foundUser !== -1) {
+					room.users.splice(foundUser, 1);
 
-			if (foundUser !== -1) {
-				room.users.splice(foundUser, 1);
+					const message = {
+						user: socket.user.name,
+						type: "left",
+					};
 
-				const message = {
-					user: socket.user.name,
-					type: "left",
-				};
-
-				io.to(room.title.replace(" ", "-").toLowerCase()).emit(
-					"message",
-					message
-				);
+					io.to(room.slug).emit("message", message);
+				}
 			}
 
 			return room;

@@ -1,8 +1,9 @@
 // Fonts
-$font-default: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans",
-	"Droid Sans", "Helvetica Neue", sans-serif;
+$font-default: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+	"Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
 
 // Breakpoints
+$breakpoint-xs: "460px";
 $breakpoint-sm: "600px";
 $breakpoint-md: "768px";
 $breakpoint-lg: "992px";

@@ -1,7 +1,6 @@
 import React from "react";
 import * as _ from "lodash";
 import "./ChatSingle.view.scss";
-import { Link } from "react-router-dom";
 import Chat from '../../components/chat/Chat';
 
 const ChatSingle = ({ socket, match }) => {
