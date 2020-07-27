@@ -72,7 +72,8 @@ const ChatSingle = ({ socket, match }) => {
 					<div key={index}>
 						<p>
 							<span>
-								{message.timestamp} - <b>{message.name}:</b>{" "}
+								{/* {message.timestamp} -  */}
+                <b>{message.name}:</b>{" "}
 							</span>
 							{message.message}
 						</p>
@@ -92,7 +93,23 @@ const ChatSingle = ({ socket, match }) => {
 				{isTyping.length > 0 && isTyping.length > 2 ? (
 					<p>Multiple people are typing...</p>
 				) : (
-					isTyping.map((user, index) => <p key={index}>{user.name}</p>)
+          <p>
+            {
+					  isTyping.map((user, index) => {
+              let string = '';
+              string += user.name;
+              if(index === 0 && isTyping.length === 1) {
+                string += ' is typing...';
+              } else if (index === 0) {
+                string += ' and '
+              }
+              if (index === 1) {
+                string += ' are typing...'
+              }
+              return string;
+            })
+            } 
+          </p>
 				)}
 			</div>
 		</div>
