@@ -66,15 +66,16 @@ const ChatSingle = ({ socket, match }) => {
 	return (
 		<section className="chatsingle">
 			<section className="chatsection">
-				<div className="chatsection__header">
-					<h1 className="chatsection__title">Title</h1>
-				</div>
+				<section className="chatsection__header">
+					<h1 className="chatsection__header--title">Title</h1>
+					<article className="chatsection__header--buttons"> X X</article>
+				</section>
 					<Chat sendChatMessage={sendChatMessage} handleChange={handleChange} chatInput={chatInput} isTyping={isTyping} messages={messages}/>
 			</section>
 			<section className="usersection">
-				<div className="usersection__header">
-					<h2 className="usersection__title">People</h2>
-				</div>
+				<section className="usersection__header">
+					<h2 className="usersection__header--title">People</h2>
+				</section>
 				<article className="usersection__content">Placeholder content</article>
 			</section>
 		</section>
