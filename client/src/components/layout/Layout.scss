@@ -4,6 +4,14 @@
 	display: flex;
 	width: 100%;
 	min-height: 100vh;
-	padding: 40px;
+	padding: 20px;
 	background-color: $background-light;
+
+	@media screen and (min-width: $breakpoint-sm) {
+		padding: 30px;
+	}
+
+	@media screen and (min-width: $breakpoint-lg) {
+		padding: 40px;
+	}
 }

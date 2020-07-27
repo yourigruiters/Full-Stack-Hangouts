@@ -41,9 +41,14 @@
 
 	&__filter {
 		display: flex;
+		flex-direction: column;
 		justify-content: start;
-		align-items: center;
 		margin-bottom: 30px;
+
+		@media screen and (min-width: $breakpoint-xs) {
+			flex-direction: row;
+			align-items: center;
+		}
 
 		&__combo {
 			display: flex;
