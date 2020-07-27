@@ -7,7 +7,7 @@ import Select from "../select/Select";
 import "./Main-layout.scss";
 import Room from "../room/Room";
 
-const MainLayout = ({ title, paragraph, roomsData }) => {
+const MainLayout = ({ title, type, paragraph, roomsData }) => {
 	return (
 		<section className="main-layout">
 			<section className="main-layout__introduction">
@@ -36,7 +36,7 @@ const MainLayout = ({ title, paragraph, roomsData }) => {
 			</section>
 			<section className="main-layout__rooms">
 				{roomsData.map((room, index) => (
-					<Room key={index} room={room}></Room>
+					<Room key={index} room={room} type={type}></Room>
 				))}
 			</section>
 		</section>
