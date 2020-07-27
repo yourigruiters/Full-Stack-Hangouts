@@ -2,6 +2,8 @@ import React from "react";
 import * as _ from "lodash";
 import "./VideoSingle.view.scss";
 import { Link } from "react-router-dom";
+import Button from "../../components/button/Button";
+
 
 const VideoSingle = ({ socket, match }) => {
 	const [messages, setMessages] = React.useState([]);
@@ -38,17 +40,18 @@ const VideoSingle = ({ socket, match }) => {
         </section>
         <section className="videosection__content">
           <section className="videosection__content__info">
-            <h2>Video Title</h2>
+            <h2>Cat Licks Paws (10 Hour Version)</h2>
+            <h4>1.123.345 Views</h4>
           </section>
           <section className="videosection__content__queue">
             <section className="videosection__content__queue__header">
-              <h2>Video queue</h2>
-              <button>Add To Queue</button>
+              <h2>Playlist</h2>
+              <Button type="primary">Add to Queue</Button>
             </section>
             <section className="videosection__content__queue__videos">
-              <h1>Test</h1>
-              <h1>Test</h1>
-              <h1>Test</h1>
+              <h1>Video 1</h1>
+              <h1>Video 2</h1>
+              <h1>Video 3</h1>
             </section>
           </section>
         </section>
