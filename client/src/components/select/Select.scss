@@ -1,11 +1,10 @@
 @import "../../styles/variables.scss";
 
-.button {
-	width: auto;
-	height: auto;
-	margin-right: auto;
-	padding: 7px 15px 9px;
-	font-size: 14px;
+.select {
+	width: 100%;
+	height: 32px;
+	padding: 7px 15px;
+	font-size: 16px;
 	border: none;
 	border-radius: 6px;
 	outline: none;
@@ -16,12 +15,11 @@
 		font-size: 1.2vw;
 	}
 
-	&--primary {
-		color: $white;
-		background-color: $orange-dark;
+	color: $white;
+	background-color: $input-background;
+	border: 1px solid $input-background;
 
-		&:hover {
-			background-color: $orange-light;
-		}
+	&:hover {
+		border: 1px solid $orange-light;
 	}
 }
