@@ -6,7 +6,7 @@ import Input from "../input/Input";
 import Select from "../select/Select";
 import "./Main-layout.scss";
 import Room from "../room/Room";
-import { filter } from "lodash";
+import CreateRoom from "../create-room/Create-room";
 
 const categories = ["animals", "chill", "sports", "series", "music", "various"];
 
@@ -17,6 +17,7 @@ const MainLayout = ({ title, type, paragraph, roomsData }) => {
 	});
 	const [rooms, setRooms] = React.useState([]);
 	const [isLoading, setIsLoading] = React.useState(true);
+	const [createIsOpen, setCreateIsOpen] = React.useState(false);
 
 	React.useEffect(() => {
 		setRooms(roomsData);
@@ -24,7 +25,6 @@ const MainLayout = ({ title, type, paragraph, roomsData }) => {
 	}, [roomsData]);
 
 	const handleChange = (event) => {
-		console.log("sdfds");
 		setFilterData({ ...filterData, [event.target.name]: event.target.value });
 	};
 
@@ -60,7 +60,12 @@ const MainLayout = ({ title, type, paragraph, roomsData }) => {
 					<Paragraph>{paragraph}</Paragraph>
 				</article>
 				<article className="main-layout__introduction__button">
-					<Button type="primary">Create a room</Button>
+					<Button type="primary" onClick={() => setCreateIsOpen(true)}>
+						Create a room
+					</Button>
+					{createIsOpen && (
+						<CreateRoom setCreateIsOpen={setCreateIsOpen} type={type} />
+					)}
 				</article>
 			</section>
 			<section className="main-layout__divider" />

@@ -11,7 +11,7 @@ let rooms = [
 	{
 		title: "Public Lounge",
 		slug: "public-lounge",
-		type: "chat",
+		type: "chats",
 		host: "",
 		private: false,
 		password: "",
@@ -44,7 +44,7 @@ let rooms = [
 	{
 		title: "Public Cinema",
 		slug: "public-cinema",
-		type: "video",
+		type: "videos",
 		host: "",
 		private: false,
 		password: "",
@@ -77,7 +77,7 @@ let rooms = [
 	{
 		title: "Animals playlist",
 		slug: "animals-playlist",
-		type: "video",
+		type: "videos",
 		host: "",
 		private: false,
 		password: "",
@@ -110,7 +110,7 @@ let rooms = [
 	{
 		title: "Live soccer",
 		slug: "live-soccer",
-		type: "chat",
+		type: "chats",
 		host: "",
 		private: false,
 		password: "",
@@ -143,7 +143,7 @@ let rooms = [
 	{
 		title: "Netflix",
 		slug: "netflix-videos",
-		type: "video",
+		type: "videos",
 		host: "",
 		private: false,
 		password: "",
@@ -176,7 +176,7 @@ let rooms = [
 	{
 		title: "Music playlist",
 		slug: "music-playlist",
-		type: "video",
+		type: "videos",
 		host: "",
 		private: false,
 		password: "",

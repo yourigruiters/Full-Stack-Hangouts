@@ -7,7 +7,7 @@ const Videos = ({ socket }) => {
 	const [roomsData, setRoomsData] = React.useState([]);
 
 	React.useEffect(() => {
-		socket.emit("get_rooms", "video");
+		socket.emit("get_rooms", "videos");
 
 		socket.on("get_rooms", (roomsData) => {
 			setRoomsData(roomsData);

@@ -1,0 +1,12 @@
+@import "../../styles/variables.scss";
+
+.create-room {
+	position: absolute;
+	right: 0px;
+	top: 50px;
+	width: 240px;
+	padding: 20px;
+	height: auto;
+	border-radius: 12px;
+	background-color: rgba(0, 0, 0, 0.8);
+}

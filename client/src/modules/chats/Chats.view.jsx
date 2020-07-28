@@ -7,7 +7,7 @@ const Chats = ({ socket }) => {
 	const [roomsData, setRoomsData] = React.useState([]);
 
 	React.useEffect(() => {
-		socket.emit("get_rooms", "chat");
+		socket.emit("get_rooms", "chats");
 
 		socket.on("get_rooms", (roomsData) => {
 			setRoomsData(roomsData);
