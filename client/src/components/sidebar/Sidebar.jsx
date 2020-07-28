@@ -1,7 +1,7 @@
 import React from "react";
 import "./Sidebar.scss";
 import { NavLink, withRouter } from "react-router-dom";
-import { NavbarVideos, NavbarChats } from "../../icons/icons";
+import { NavbarVideos, NavbarChats, NavbavLogout } from "../../icons/icons";
 
 const Sidebar = ({ history }) => {
 	const logout = () => {
@@ -14,13 +14,13 @@ const Sidebar = ({ history }) => {
 			<nav className="sidebar__nav">
 				<NavLink to="/dashboard/videos">
 					<article className="sidebar__nav__combo">
-						<NavbarVideos />
+						<NavbarChats />
 						<p>Videos</p>
 					</article>
 				</NavLink>
 				<NavLink to="/dashboard/chats">
 					<article className="sidebar__nav__combo">
-						<NavbarChats />
+						<NavbarVideos />
 						<p>Chats</p>
 					</article>
 				</NavLink>
@@ -30,7 +30,7 @@ const Sidebar = ({ history }) => {
 					className="sidebar__nav__combo sidebar__nav__combo--logout"
 					onClick={logout}
 				>
-					<NavbarChats />
+					<NavbavLogout />
 					<p>Logout</p>
 				</article>
 			</div>
