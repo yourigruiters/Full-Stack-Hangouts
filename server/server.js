@@ -290,35 +290,26 @@ io.on("connection", (socket) => {
 
 	// check_room - Check if room exist - if not send back error message
 
-	// create_room - creating a new room - send user there directly
+	// create_room - creating a new room - send back SLUG/TYPE
+	socket.on("create_room", (roomData) => {
+		const newRoom = roomData;
+
+		newRoom.host = socket.user.name;
+
+		rooms.push(newRoom);
+
+		socket.emit("create_room", newRoom.slug);
+	});
 
 	socket.on("joining_room", (roomName) => {
-		console.log(roomName, "HAS A NEW USER JOINING");
 		socket.join(roomName);
 
 		let room = rooms.find((room) => room.slug === roomName);
 
-		console.log("#### ROOM", room);
-
 		if (room === undefined) {
-			rooms.push({
-				id: rooms.length,
-				title: roomName,
-				slug: roomName.replace("-", " ").toLowerCase(),
-				type: "chat",
-				host: "",
-				private: false,
-				password: "",
-				category: "Chill",
-				maxUsers: 20,
-				default: true,
-				users: [],
-				queue: [],
-			});
-
-			// FIND INDEX OF CREATED ROOM ABOVE - USING ALREADY EXISTING CODE FINDINDEX
-			// USE HERE INSTEAD of Rooms.Length
-			room = rooms[rooms.length];
+			console.log("room doesn't exist, sending error");
+			socket.emit("room_not_found");
+			return;
 		}
 
 		const user = {
@@ -328,12 +319,7 @@ io.on("connection", (socket) => {
 			countryCode: socket.user.countryCode,
 		};
 
-		console.log("#### ROOM STILL UNDEFINED", room, rooms, rooms.length);
-
-		// This mgiht be wrong with the new approach from above
 		room.users.push(user);
-
-		console.log("#### ROOM AFTER PUSHING", room);
 
 		const message = {
 			user: socket.user.name,
@@ -400,6 +386,7 @@ io.on("connection", (socket) => {
 		room.currentTime = stateObject.playedSeconds;
 		io.to(roomName).emit("video_progress", room.currentTime);
 	});
+
 	socket.on("disconnect", () => {
 		rooms = rooms.map((room) => {
 			if (socket.user) {

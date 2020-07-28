@@ -1,4 +1,5 @@
 import React from "react";
+import { withRouter } from "react-router-dom";
 import Button from "../button/Button";
 import Title from "../title/Title";
 import Paragraph from "../paragraph/Paragraph";
@@ -10,7 +11,7 @@ import CreateRoom from "../create-room/Create-room";
 
 const categories = ["animals", "chill", "sports", "series", "music", "various"];
 
-const MainLayout = ({ title, type, paragraph, roomsData }) => {
+const MainLayout = ({ title, type, paragraph, roomsData, socket, history }) => {
 	const [filterData, setFilterData] = React.useState({
 		category: "",
 		search: "",
@@ -18,6 +19,12 @@ const MainLayout = ({ title, type, paragraph, roomsData }) => {
 	const [rooms, setRooms] = React.useState([]);
 	const [isLoading, setIsLoading] = React.useState(true);
 	const [createIsOpen, setCreateIsOpen] = React.useState(false);
+
+	React.useEffect(() => {
+		socket.on("create_room", (slug) => {
+			history.push(`/dashboard/${type}/${slug}`);
+		});
+	}, []);
 
 	React.useEffect(() => {
 		setRooms(roomsData);
@@ -31,12 +38,13 @@ const MainLayout = ({ title, type, paragraph, roomsData }) => {
 	React.useEffect(() => {
 		if (!isLoading) {
 			let filteredRooms = roomsData;
-			console.log(filteredRooms);
+
 			if (filterData.category !== "") {
 				filteredRooms = filteredRooms.filter(
 					(room) => room.category === filterData.category
 				);
 			}
+
 			if (filterData.search !== "") {
 				filteredRooms = filteredRooms.filter((room) => {
 					return Object.keys(room).some((keys) => {
@@ -64,7 +72,11 @@ const MainLayout = ({ title, type, paragraph, roomsData }) => {
 						Create a room
 					</Button>
 					{createIsOpen && (
-						<CreateRoom setCreateIsOpen={setCreateIsOpen} type={type} />
+						<CreateRoom
+							setCreateIsOpen={setCreateIsOpen}
+							type={type}
+							socket={socket}
+						/>
 					)}
 				</article>
 			</section>
@@ -102,4 +114,4 @@ const MainLayout = ({ title, type, paragraph, roomsData }) => {
 	);
 };
 
-export default MainLayout;
+export default withRouter(MainLayout);

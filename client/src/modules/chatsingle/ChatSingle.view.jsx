@@ -2,11 +2,17 @@ import React from "react";
 import * as _ from "lodash";
 import { NavLink, withRouter } from "react-router-dom";
 import "./ChatSingle.view.scss";
-import Chat from '../../components/chat/Chat';
-import { ChatLocked, ChatOpen, UserList, LeftArrow, Exit, BackArrow } from "../../icons/icons";
+import Chat from "../../components/chat/Chat";
+import {
+	ChatLocked,
+	ChatOpen,
+	UserList,
+	LeftArrow,
+	Exit,
+	BackArrow,
+} from "../../icons/icons";
 
-
-const ChatSingle = ({ socket, match }) => {
+const ChatSingle = ({ socket, match, history }) => {
 	const [messages, setMessages] = React.useState([]);
 	const [isTyping, setIsTyping] = React.useState([]);
 	const [users, setUsers] = React.useState([]);
@@ -21,6 +27,10 @@ const ChatSingle = ({ socket, match }) => {
 	React.useEffect(() => {
 		socket.emit("joining_room", roomName);
 
+		socket.on("room_not_found", () => {
+			history.push("/dashboard/chats");
+		});
+
 		socket.on("room_data", (roomData) => {
 			setIsTyping(roomData.isTyping);
 			setUsers(roomData.users);
@@ -32,7 +42,7 @@ const ChatSingle = ({ socket, match }) => {
 				private: privateroom,
 				category: category,
 				maxUsers: maxUsers,
-			})
+			});
 		});
 
 		socket.on("changed_typing", (isTypingPeople) => {
@@ -104,33 +114,53 @@ const ChatSingle = ({ socket, match }) => {
 
 					<article className="chatsection__header--buttons">
 						<article className="iconbutton iconbutton__lock">
-							{roomInfo.privateroom ? <ChatLocked /> : <ChatOpen /> }
+							{roomInfo.privateroom ? <ChatLocked /> : <ChatOpen />}
 						</article>
 					</article>
 
 					<section className="chatsection__header--end">
-							<article className="buttons">
-								<a className="buttons__toggle" onClick={() => {
-									!toggleList ? setToggleList(true) : setToggleList(false)
-									}}>
-									<article className="iconbutton iconbutton__people">
-										<LeftArrow />
-										<UserList />
-									</article>
-									<h4 className="people__amount">{users.length}/{roomInfo.maxUsers}</h4>
-								</a>
-							</article>
+						<article className="buttons">
+							<a
+								className="buttons__toggle"
+								onClick={() => {
+									!toggleList ? setToggleList(true) : setToggleList(false);
+								}}
+							>
+								<article className="iconbutton iconbutton__people">
+									<LeftArrow />
+									<UserList />
+								</article>
+								<h4 className="people__amount">
+									{users.length}/{roomInfo.maxUsers}
+								</h4>
+							</a>
+						</article>
 					</section>
 				</section>
 
-				<Chat sendChatMessage={sendChatMessage} handleChange={handleChange} chatInput={chatInput} isTyping={isTyping} messages={messages}/>
+				<Chat
+					sendChatMessage={sendChatMessage}
+					handleChange={handleChange}
+					chatInput={chatInput}
+					isTyping={isTyping}
+					messages={messages}
+				/>
 			</section>
 
-			<section className={toggleList ? 'usersection buttons__toggle--show' : 'usersection buttons__toggle--hide'}>
+			<section
+				className={
+					toggleList
+						? "usersection buttons__toggle--show"
+						: "usersection buttons__toggle--hide"
+				}
+			>
 				<section className="usersection__header">
-					<a className="buttons__toggle--close" onClick={() => {
-						!toggleList ? setToggleList(true) : setToggleList(false)
-						}}>
+					<a
+						className="buttons__toggle--close"
+						onClick={() => {
+							!toggleList ? setToggleList(true) : setToggleList(false);
+						}}
+					>
 						<article className="usersection__header--title iconbutton">
 							<Exit />
 						</article>
@@ -139,16 +169,17 @@ const ChatSingle = ({ socket, match }) => {
 				<article className="usersection__content">
 					{users.map((user, index) => (
 						<article key={index} className="peoplelist">
-							<img src={`https://www.countryflags.io/${user.countryCode}/flat/64.png`} className="peoplelist__flag"/>
-							<p className="peoplelist__text">
-								{user.name}
-							</p>
+							<img
+								src={`https://www.countryflags.io/${user.countryCode}/flat/64.png`}
+								className="peoplelist__flag"
+							/>
+							<p className="peoplelist__text">{user.name}</p>
 						</article>
 					))}
-				</article> 
+				</article>
 			</section>
 		</section>
 	);
 };
 
-export default ChatSingle;
+export default withRouter(ChatSingle);
