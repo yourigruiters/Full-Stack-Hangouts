@@ -40,6 +40,8 @@ let rooms = [
 		],
 		queue: [],
 		isTyping: [],
+		playing: true,
+		currentTime: 0,
 	},
 	{
 		title: "Public Cinema",
@@ -71,8 +73,14 @@ let rooms = [
 				countryCode: "SE",
 			},
 		],
-		queue: [],
+		queue: [
+			"https://www.youtube.com/watch?v=QoikCfr55So",
+			"https://www.youtube.com/watch?v=BJkhMtvd_zQ",
+			"https://www.youtube.com/watch?v=ClkLaDOo5zs",
+		],
 		isTyping: [],
+		playing: true,
+		currentTime: 0,
 	},
 	{
 		title: "Animals playlist",
@@ -106,6 +114,8 @@ let rooms = [
 		],
 		queue: [],
 		isTyping: [],
+		playing: true,
+		currentTime: 0,
 	},
 	{
 		title: "Live soccer",
@@ -139,6 +149,8 @@ let rooms = [
 		],
 		queue: [],
 		isTyping: [],
+		playing: true,
+		currentTime: 0,
 	},
 	{
 		title: "Netflix",
@@ -172,6 +184,8 @@ let rooms = [
 		],
 		queue: [],
 		isTyping: [],
+		playing: true,
+		currentTime: 0,
 	},
 	{
 		title: "Music playlist",
@@ -205,6 +219,8 @@ let rooms = [
 		],
 		queue: [],
 		isTyping: [],
+		playing: true,
+		currentTime: 0,
 	},
 ];
 
@@ -332,6 +348,8 @@ io.on("connection", (socket) => {
 			users: room.users,
 			queue: room.queue,
 			isTyping: room.isTyping,
+			playing: room.playing,
+			currentTime: room.currentTime,
 		};
 
 		emitMessage(roomName, message);
@@ -364,7 +382,23 @@ io.on("connection", (socket) => {
 			isPlayingState
 		);
 
+		let room = rooms.find((room) => room.slug === roomName);
+		room.playing = isPlayingState;
+		// socket.broadcast.to(roomName).emit('emit_playpause_change', room.playing);
 		io.to(roomName).emit("playpause_changing", isPlayingState);
+	});
+
+	socket.on("next_video", (roomName) => {
+		let room = rooms.find((room) => room.slug === roomName);
+		const newPlaylist = room.queue;
+		const newVideo = newPlaylist.shift();
+		io.to(roomName).emit("next_video", newPlaylist, newVideo);
+	});
+
+	socket.on("video_progress", (roomName, stateObject) => {
+		let room = rooms.find((room) => room.slug === roomName);
+		room.currentTime = stateObject.playedSeconds;
+		io.to(roomName).emit("video_progress", room.currentTime);
 	});
 	socket.on("disconnect", () => {
 		rooms = rooms.map((room) => {
