@@ -2,14 +2,15 @@ import React from "react";
 import * as _ from "lodash";
 import "./ChatSingle.view.scss";
 import Chat from '../../components/chat/Chat';
+import { ChatLock, UserList, LeftArrow } from "../../icons/icons";
+
 
 const ChatSingle = ({ socket, match }) => {
 	const [messages, setMessages] = React.useState([]);
 	const [isTyping, setIsTyping] = React.useState([]);
 	const [sendIsTyping, setSendIsTyping] = React.useState(false);
 	const [chatInput, setChatInput] = React.useState("");
-	
-	const [toggle, setToggle] = React.useState(false);
+	const [toggleList, setToggleList] = React.useState(false);
 
 	const roomName = match.params.roomName;
 
@@ -68,19 +69,31 @@ const ChatSingle = ({ socket, match }) => {
 		<section className="chatsingle">
 			<section className="chatsection">
 				<section className="chatsection__header">
-					<h1 className="chatsection__header--title">Title</h1>
-					<article className="chatsection__header--buttons"> X X</article>
+					<section className="chatsection__header--start">
+						<article className="chatsection__header--icon">
+							<LeftArrow />
+						</article>
+						<h1 className="chatsection__header--title">Title</h1>
+					</section>
+					<article className="chatsection__header--buttons">
+						<article className="iconbutton__people">
+							<UserList />
+						</article>
+						<article className="iconbutton__lock">
+							<ChatLock />
+						</article>
+					</article>
 				</section>
 				<Chat sendChatMessage={sendChatMessage} handleChange={handleChange} chatInput={chatInput} isTyping={isTyping} messages={messages}/>
 			</section>
 			<section className="usersection">
 				<section className="usersection__header">
 					<span><a className="toggle" onClick={() => {
-						!toggle ? setToggle(true) : setToggle(false)
-					}}><h2 className="usersection__header--title">{toggle ? 'X' : '<' } People</h2></a>
+						!toggleList ? setToggleList(true) : setToggleList(false)
+					}}><h2 className="usersection__header--title">{toggleList ? 'X' : '<' } People</h2></a>
 					</span>
 				</section>
-				<article className={toggle ? 'usersection__content toggle--show' : 'usersection__content toggle--hide'}>Placeholder content
+				<article className={toggleList ? 'usersection__content toggle--show' : 'usersection__content toggle--hide'}>Placeholder content
 				</article> 
 			</section>
 		</section>

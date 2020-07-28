@@ -33,8 +33,30 @@
 		height: 40px; 
 		padding: 10px;
 		background-color: #0f0f12;
+
+		&--start {
+			display: flex;
+			align-items: baseline;
+		}
 	}
 
+	.chatsection__header--icon {
+		margin-right: 10px;
+	}
+
+	.chatsection__header--buttons {
+		display: flex;
+	}
+
+	.iconbutton {
+		
+		&__people{
+		}
+
+		&__lock{
+		}
+	}
+	
   @media screen and (min-width: $breakpoint-lg) {
     width: 75%;
   }
