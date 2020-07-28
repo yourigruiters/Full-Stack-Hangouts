@@ -8,6 +8,8 @@ import { ChatLock, UserList, LeftArrow } from "../../icons/icons";
 const ChatSingle = ({ socket, match }) => {
 	const [messages, setMessages] = React.useState([]);
 	const [isTyping, setIsTyping] = React.useState([]);
+	const [users, setUsers] = React.useState([]);
+	// const [queue, setQueue] = React.useState([]);
 	const [sendIsTyping, setSendIsTyping] = React.useState(false);
 	const [chatInput, setChatInput] = React.useState("");
 	const [toggleList, setToggleList] = React.useState(false);
@@ -17,8 +19,14 @@ const ChatSingle = ({ socket, match }) => {
 	React.useEffect(() => {
 		socket.emit("joining_room", roomName);
 
-		socket.on("changed_typing", (user) => {
-			setIsTyping(user);
+		socket.on("room_data", (roomData) => {
+			setIsTyping(roomData.isTyping);
+			setUsers(roomData.users);
+			// setQueue(roomData.queue);
+		});
+
+		socket.on("changed_typing", (isTypingPeople) => {
+			setIsTyping(isTypingPeople);
 		});
 
 		socket.on("message", (messageObject) => {
@@ -93,7 +101,17 @@ const ChatSingle = ({ socket, match }) => {
 					}}><h2 className="usersection__header--title">{toggleList ? 'X' : '<' } People</h2></a>
 					</span>
 				</section>
-				<article className={toggleList ? 'usersection__content toggle--show' : 'usersection__content toggle--hide'}>Placeholder content
+				<article className={toggleList ? 'usersection__content toggle--show' : 'usersection__content toggle--hide'}>
+				{users.map((user, index) => (
+        <article key={index} className="chat__message">
+          <p className="chat__message--text">
+            <span>
+              {user.name} - <b>{user.country}:</b>{" "}
+            </span>
+            {user.countryCode}
+          </p>
+        </article>
+      ))}
 				</article> 
 			</section>
 		</section>
