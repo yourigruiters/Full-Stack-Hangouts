@@ -1,17 +1,5 @@
 @import "../../styles/variables.scss";
 
-.toggle {
-	&:hover {
-		color: $orange-dark;
-	}
-		&--hide {
-			display: none;
-		}
-		&--show {
-			display: block;
-		}
-}
-
 .chatsingle {
   width: 100%;
   display: flex;
@@ -38,26 +26,51 @@
 			display: flex;
 			align-items: center;
 		}
+
+		&--end {
+			display: flex;
+		}
 	}
 
 	.chatsection__header--icon {
 		margin-right: 10px;
 	}
+}
 
-	.chatsection__header--buttons {
+.buttons {
+	display: flex;
+	align-items: baseline;
+
+	&__toggle {
 		display: flex;
-		align-items: baseline;
+    justify-content: center;
+		align-items: center;
+		
+		&--hide {
+			display: none;
+		}
+
+		&--show {
+			display: block;
+		}
+
+		&--close {
+
+		}
+}
+}
+
+.iconbutton {
+	display: flex;
+	align-items: baseline;
+
+	svg {
+		width: 20px;
+		height: 20px;
 	}
 
-	.iconbutton {
-		display: flex;
-		align-items: baseline;
-
-		svg {
-			width: 20px;
-			height: 20px;
-			margin-bottom: 0px;
-		}
+	&:hover path {
+		fill: $orange-light;
 	}
 }
 
@@ -67,7 +80,9 @@
 
 	&__header {
 		display: flex;
-		flex-direction: row;
+    justify-content: flex-end;
+    height: 40px;
+    align-items: center;
 		background-color: $background-dark;
 
 		&--title {
