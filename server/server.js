@@ -173,7 +173,7 @@ io.on("connection", (socket) => {
 
 		const roomData = {
 			title: room.title,
-			private: room.private, 
+			privateroom: room.private, 
 			category: room.category,
 			maxUsers: room.maxUsers,
 			users: room.users,

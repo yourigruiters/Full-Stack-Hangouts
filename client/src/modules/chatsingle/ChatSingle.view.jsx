@@ -13,6 +13,7 @@ const ChatSingle = ({ socket, match }) => {
 	const [sendIsTyping, setSendIsTyping] = React.useState(false);
 	const [chatInput, setChatInput] = React.useState("");
 	const [toggleList, setToggleList] = React.useState(false);
+	const [roomInfo, setRoomInfo] = React.useState([]);
 
 	const roomName = match.params.roomName;
 
@@ -23,6 +24,14 @@ const ChatSingle = ({ socket, match }) => {
 			setIsTyping(roomData.isTyping);
 			setUsers(roomData.users);
 			// setQueue(roomData.queue);
+
+			const { title, privateroom, category, maxUsers } = roomData;
+			setRoomInfo({
+				title: title,
+				private: privateroom,
+				category: category,
+				maxUsers: maxUsers,
+			})
 		});
 
 		socket.on("changed_typing", (isTypingPeople) => {
@@ -81,10 +90,11 @@ const ChatSingle = ({ socket, match }) => {
 						<article className="chatsection__header--icon">
 							<LeftArrow />
 						</article>
-						<h1 className="chatsection__header--title">Title</h1>
+						<h1 className="chatsection__header--title">{roomInfo.title}</h1>
 					</section>
 					<article className="chatsection__header--buttons">
 						<article className="iconbutton__people">
+	<h2 className="people__amount">{users.length}/{roomInfo.maxUsers}</h2>
 							<UserList />
 						</article>
 						<article className="iconbutton__lock">
