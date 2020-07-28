@@ -30,6 +30,7 @@ const socket = openSocket("localhost:5000");
 
 const App = ({ history }) => {
 	const [isLoading, setIsLoading] = React.useState(true);
+	const [formError, setFormError] = React.useState(false);
 	const [visitorData, setVisitorData] = React.useState({
 		name: "",
 		country: "",
@@ -107,6 +108,8 @@ const App = ({ history }) => {
 										socket={socket}
 										visitorData={visitorData}
 										setVisitorData={setVisitorData}
+										formError={formError}
+										setFormError={setFormError}
 									/>
 								)}
 							/>

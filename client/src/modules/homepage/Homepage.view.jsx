@@ -5,13 +5,27 @@ import Button from "../../components/button/Button";
 import Paragraph from "../../components/paragraph/Paragraph";
 import homepage from "../../images/homepage.jpg";
 
-const Homepage = ({ socket, history, visitorData, setVisitorData }) => {
+const Homepage = ({
+	socket,
+	history,
+	visitorData,
+	setVisitorData,
+	formError,
+	setFormError,
+}) => {
 	const handleFormData = (event) => {
 		setVisitorData({ ...visitorData, name: event.target.value });
 	};
 
 	const loginNewVisitor = (event) => {
 		event.preventDefault();
+
+		if (visitorData.name === "") {
+			setFormError(true);
+			return;
+		}
+
+		setFormError(false);
 
 		socket.emit("connect_visitor", visitorData);
 
@@ -43,7 +57,13 @@ const Homepage = ({ socket, history, visitorData, setVisitorData }) => {
 								type="text"
 								value={name}
 								onChange={(e) => handleFormData(e)}
+								maxLength="25"
 							/>
+							{formError && (
+								<p className="homepage__spacer__content__form__error">
+									Please enter a valid username..
+								</p>
+							)}
 							<Button type="primary">Enter hangouts</Button>
 						</form>
 					</section>

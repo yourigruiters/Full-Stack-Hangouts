@@ -92,7 +92,7 @@
 					}
 
 					input[type="text"] {
-						margin-bottom: 15px;
+						margin-bottom: 0px;
 						padding: 6px;
 						border: 1px solid #ced4da;
 						background-color: $white;
@@ -106,8 +106,14 @@
 					}
 
 					.button {
+						margin-top: 15px;
 						margin-right: auto;
 					}
+				}
+
+				&__error {
+					margin-top: 5px;
+					color: $orange-dark;
 				}
 			}
 		}
