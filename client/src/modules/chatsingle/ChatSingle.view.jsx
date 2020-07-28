@@ -118,13 +118,13 @@ const ChatSingle = ({ socket, match }) => {
 			</section>
 			<section className={toggleList ? 'usersection buttons__toggle--show' : 'usersection buttons__toggle--hide'}>
 				<section className="usersection__header">
-					<span><a className="buttons__toggle--close" onClick={() => {
+					<a className="buttons__toggle--close" onClick={() => {
 						!toggleList ? setToggleList(true) : setToggleList(false)
 						}}>
-							<article className="usersection__header--title iconbutton">
-								<Exit />
-							</article></a>
-					</span>
+						<article className="usersection__header--title iconbutton">
+							<Exit />
+						</article>
+					</a>
 				</section>
 				<article className="usersection__content">
 					{users.map((user, index) => (
