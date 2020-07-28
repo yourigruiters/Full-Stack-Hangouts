@@ -1,5 +1,17 @@
 @import "../../styles/variables.scss";
 
+.toggle {
+	&:hover {
+		color: $orange-dark;
+	}
+		&--hide {
+			display: none;
+		}
+		&--show {
+			display: block;
+		}
+}
+
 .chatsingle {
   width: 100%;
   display: flex;
@@ -21,34 +33,59 @@
 		height: 40px; 
 		padding: 10px;
 		background-color: #0f0f12;
+
+		&--start {
+			display: flex;
+			align-items: center;
+		}
 	}
 
-  @media screen and (min-width: $breakpoint-lg) {
-    width: 75%;
-  }
+	.chatsection__header--icon {
+		margin-right: 10px;
+	}
+
+	.chatsection__header--buttons {
+		display: flex;
+		align-items: baseline;
+	}
+
+	.iconbutton {
+		display: flex;
+		align-items: baseline;
+
+		svg {
+			width: 20px;
+			height: 20px;
+			margin-bottom: 0px;
+		}
+	}
 }
 
 .usersection {
-  display: none;
 	width: 100%;
-	background-color: $background-dark;
+	// background-color: $background-dark;
 
 	&__header {
-		height: 40px; 
-		padding: 10px;
-		background-color: #0f0f12;
+		display: flex;
+		flex-direction: row;
+		background-color: $background-dark;
 
 		&--title {
-
+			color: $white;
+			&:hover {
+				color: $orange-dark;
+			}
 		}
 	}
 
 	&__content {
+		min-height: 600px;
 		padding: 10px;
+		background-color: $background-dark;
+		transition: transform 0.3s 0s;
 	}
 
   @media screen and (min-width: $breakpoint-lg) {
-    display: block;
     width: 25%;
   }
 }

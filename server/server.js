@@ -324,9 +324,18 @@ io.on("connection", (socket) => {
 			type: "joined",
 		};
 
-		//FUNCTION TO SEND MSG
+		const roomData = {
+			title: room.title,
+			privateroom: room.private, 
+			category: room.category,
+			maxUsers: room.maxUsers,
+			users: room.users,
+			queue: room.queue,
+			isTyping: room.isTyping,
+		}
+
 		emitMessage(roomName, message);
-		// io.to(roomName).emit("message", message);
+		io.to(roomName).emit("room_data", roomData);
 	});
 
 	socket.on("sending_message", (messageObject) => {
