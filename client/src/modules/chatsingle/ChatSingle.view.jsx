@@ -41,10 +41,16 @@ const ChatSingle = ({ socket, match }) => {
 
 		socket.on("message", (messageObject) => {
 			const { user, type, message } = messageObject;
+
+			const today = new Date();
+			const hour = today.getHours();
+			const minutes = today.getMinutes();
+			const time = `${hour}:${minutes}`;
+
 			setMessages((prevState) => {
 				const newMessage = {
 					name: user,
-					timestamp: new Date().toISOString(),
+					timestamp: time,
 					type: type,
 				};
 				if (type === "joined" || type === "left") {

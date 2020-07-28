@@ -15,9 +15,10 @@ const Chat = ({ messages, sendChatMessage, chatInput, handleChange, isTyping }) 
     <article className="chat__area">
       {messages.map((message, index) => (
         <article key={index} className="chat__message">
+          <article className="chat__message--time">{message.timestamp}</article>
           <p className="chat__message--text">
             <span>
-              {message.timestamp} - <b>{message.name}:</b>{" "}
+              <b>{message.name}: </b>
             </span>
             {message.message}
           </p>
