@@ -11,7 +11,7 @@ let rooms = [
 	{
 		title: "Public Lounge",
 		slug: "public-lounge",
-		type: "chat",
+		type: "chats",
 		host: "",
 		private: false,
 		password: "",
@@ -39,14 +39,14 @@ let rooms = [
 			},
 		],
 		queue: [],
-    isTyping: [],
-    playing: true,
-    currentTime: 0,
+		isTyping: [],
+		playing: true,
+		currentTime: 0,
 	},
 	{
 		title: "Public Cinema",
 		slug: "public-cinema",
-		type: "video",
+		type: "videos",
 		host: "",
 		private: false,
 		password: "",
@@ -73,15 +73,19 @@ let rooms = [
 				countryCode: "SE",
 			},
 		],
-		queue: ['https://www.youtube.com/watch?v=QoikCfr55So','https://www.youtube.com/watch?v=BJkhMtvd_zQ','https://www.youtube.com/watch?v=ClkLaDOo5zs'],
-    isTyping: [],
-    playing: true,
-    currentTime: 0,
+		queue: [
+			"https://www.youtube.com/watch?v=QoikCfr55So",
+			"https://www.youtube.com/watch?v=BJkhMtvd_zQ",
+			"https://www.youtube.com/watch?v=ClkLaDOo5zs",
+		],
+		isTyping: [],
+		playing: true,
+		currentTime: 0,
 	},
 	{
 		title: "Animals playlist",
 		slug: "animals-playlist",
-		type: "video",
+		type: "videos",
 		host: "",
 		private: false,
 		password: "",
@@ -109,14 +113,14 @@ let rooms = [
 			},
 		],
 		queue: [],
-    isTyping: [],
-    playing: true,
-    currentTime: 0,
+		isTyping: [],
+		playing: true,
+		currentTime: 0,
 	},
 	{
 		title: "Live soccer",
 		slug: "live-soccer",
-		type: "chat",
+		type: "chats",
 		host: "",
 		private: false,
 		password: "",
@@ -144,18 +148,18 @@ let rooms = [
 			},
 		],
 		queue: [],
-    isTyping: [],
-    playing: true,
-    currentTime: 0,
+		isTyping: [],
+		playing: true,
+		currentTime: 0,
 	},
 	{
-		title: "Anime Weebs",
-		slug: "anima-weebs",
-		type: "video",
+		title: "Netflix",
+		slug: "netflix-videos",
+		type: "videos",
 		host: "",
 		private: false,
 		password: "",
-		category: "anime",
+		category: "series",
 		maxUsers: 20,
 		default: true,
 		users: [
@@ -179,14 +183,14 @@ let rooms = [
 			},
 		],
 		queue: [],
-    isTyping: [],
-    playing: true,
-    currentTime: 0,
+		isTyping: [],
+		playing: true,
+		currentTime: 0,
 	},
 	{
 		title: "Music playlist",
 		slug: "music-playlist",
-		type: "video",
+		type: "videos",
 		host: "",
 		private: false,
 		password: "",
@@ -214,9 +218,9 @@ let rooms = [
 			},
 		],
 		queue: [],
-    isTyping: [],
-    playing: true,
-    currentTime: 0,
+		isTyping: [],
+		playing: true,
+		currentTime: 0,
 	},
 ];
 
@@ -338,15 +342,15 @@ io.on("connection", (socket) => {
 
 		const roomData = {
 			title: room.title,
-			privateroom: room.private, 
+			privateroom: room.private,
 			category: room.category,
 			maxUsers: room.maxUsers,
 			users: room.users,
 			queue: room.queue,
-      isTyping: room.isTyping,
-      playing: room.playing,
-      currentTime: room.currentTime,
-		}
+			isTyping: room.isTyping,
+			playing: room.playing,
+			currentTime: room.currentTime,
+		};
 
 		emitMessage(roomName, message);
 		io.to(roomName).emit("room_data", roomData);
@@ -370,28 +374,32 @@ io.on("connection", (socket) => {
 		emitTypingChange(roomName, "stopped_typing", socket);
 	});
 
-  socket.on("playpause_changing", (roomName, isPlayingState) => {
-    console.log('RECEIVED PLAYPAUSE CHANGE FROM', roomName, ' STATE IS', isPlayingState);
+	socket.on("playpause_changing", (roomName, isPlayingState) => {
+		console.log(
+			"RECEIVED PLAYPAUSE CHANGE FROM",
+			roomName,
+			" STATE IS",
+			isPlayingState
+		);
 
-    let room = rooms.find((room) => room.slug === roomName);
-    room.playing = isPlayingState;
-    // socket.broadcast.to(roomName).emit('emit_playpause_change', room.playing);
-    io.to(roomName).emit("playpause_changing", isPlayingState);
+		let room = rooms.find((room) => room.slug === roomName);
+		room.playing = isPlayingState;
+		// socket.broadcast.to(roomName).emit('emit_playpause_change', room.playing);
+		io.to(roomName).emit("playpause_changing", isPlayingState);
+	});
 
-  })
+	socket.on("next_video", (roomName) => {
+		let room = rooms.find((room) => room.slug === roomName);
+		const newPlaylist = room.queue;
+		const newVideo = newPlaylist.shift();
+		io.to(roomName).emit("next_video", newPlaylist, newVideo);
+	});
 
-  socket.on("next_video", (roomName) => {
-    let room = rooms.find((room) => room.slug === roomName);
-    const newPlaylist = room.queue;
-    const newVideo = newPlaylist.shift();
-    io.to(roomName).emit("next_video", newPlaylist, newVideo);
-  });
-
-  socket.on("video_progress", (roomName, stateObject) => {
-    let room = rooms.find((room) => room.slug === roomName);
-    room.currentTime = stateObject.playedSeconds;
-    io.to(roomName).emit("video_progress", room.currentTime);
-  })
+	socket.on("video_progress", (roomName, stateObject) => {
+		let room = rooms.find((room) => room.slug === roomName);
+		room.currentTime = stateObject.playedSeconds;
+		io.to(roomName).emit("video_progress", room.currentTime);
+	});
 	socket.on("disconnect", () => {
 		rooms = rooms.map((room) => {
 			if (socket.user) {
