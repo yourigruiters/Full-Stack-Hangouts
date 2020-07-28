@@ -101,11 +101,13 @@ const ChatSingle = ({ socket, match }) => {
 						</NavLink>
 						<h1 className="chatsection__header--title">{roomInfo.title}</h1>
 					</section>
+
 					<article className="chatsection__header--buttons">
 						<article className="iconbutton iconbutton__lock">
 							{roomInfo.privateroom ? <ChatLocked /> : <ChatOpen /> }
 						</article>
 					</article>
+
 					<section className="chatsection__header--end">
 							<article className="buttons">
 								<a className="buttons__toggle" onClick={() => {
@@ -120,7 +122,7 @@ const ChatSingle = ({ socket, match }) => {
 							</article>
 					</section>
 				</section>
-				
+
 				<Chat sendChatMessage={sendChatMessage} handleChange={handleChange} chatInput={chatInput} isTyping={isTyping} messages={messages}/>
 			</section>
 
@@ -136,12 +138,10 @@ const ChatSingle = ({ socket, match }) => {
 				</section>
 				<article className="usersection__content">
 					{users.map((user, index) => (
-						<article key={index} className="chat__message">
-							<p className="chat__message--text">
-								<span>
-									{user.name} - <b>{user.country}: </b>
-								</span>
-								{user.countryCode}
+						<article key={index} className="peoplelist">
+							<img src={`https://www.countryflags.io/${user.countryCode}/flat/64.png`} className="peoplelist__flag"/>
+							<p className="peoplelist__text">
+								{user.name}
 							</p>
 						</article>
 					))}

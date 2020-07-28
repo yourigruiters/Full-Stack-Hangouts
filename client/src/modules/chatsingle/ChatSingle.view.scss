@@ -105,3 +105,16 @@
     width: 25%;
   }
 }
+
+.peoplelist {
+	display: flex;
+	align-items: center;
+
+	&__text {
+		margin-left: 0 5px;
+	}
+
+	&__flag {
+		width: 20px;
+	}
+}
