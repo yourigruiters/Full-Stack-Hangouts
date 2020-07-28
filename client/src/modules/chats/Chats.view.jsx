@@ -10,22 +10,21 @@ const Chats = ({ socket }) => {
 		socket.emit("get_rooms", "chat");
 
 		socket.on("get_rooms", (roomsData) => {
-			console.log(roomsData, "Fetched chats");
 			setRoomsData(roomsData);
 		});
 	}, []);
 
 	const mainLayoutData = {
-    title: "Chats",
-    type: "chats",
+		title: "Chats",
+		type: "chats",
 		paragraph:
 			"Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugit quae quisquam, soluta, sapiente necessitatibus error doloribus perspiciatis accusantium aut accusamus officia blanditiis. Delectus nesciunt quas expedita.",
 	};
 
 	return (
 		<MainLayout
-      title={mainLayoutData.title}
-      type={mainLayoutData.type}
+			title={mainLayoutData.title}
+			type={mainLayoutData.type}
 			paragraph={mainLayoutData.paragraph}
 			roomsData={roomsData}
 		/>

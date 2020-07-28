@@ -141,13 +141,13 @@ let rooms = [
 		isTyping: [],
 	},
 	{
-		title: "Anime Weebs",
-		slug: "anima-weebs",
+		title: "Netflix",
+		slug: "netflix-videos",
 		type: "video",
 		host: "",
 		private: false,
 		password: "",
-		category: "anime",
+		category: "series",
 		maxUsers: 20,
 		default: true,
 		users: [
@@ -326,13 +326,13 @@ io.on("connection", (socket) => {
 
 		const roomData = {
 			title: room.title,
-			privateroom: room.private, 
+			privateroom: room.private,
 			category: room.category,
 			maxUsers: room.maxUsers,
 			users: room.users,
 			queue: room.queue,
 			isTyping: room.isTyping,
-		}
+		};
 
 		emitMessage(roomName, message);
 		io.to(roomName).emit("room_data", roomData);
@@ -356,12 +356,16 @@ io.on("connection", (socket) => {
 		emitTypingChange(roomName, "stopped_typing", socket);
 	});
 
-  socket.on("playpause_changing", (roomName, isPlayingState) => {
-    console.log('RECEIVED PLAYPAUSE CHANGE FROM', roomName, ' STATE IS', isPlayingState);
+	socket.on("playpause_changing", (roomName, isPlayingState) => {
+		console.log(
+			"RECEIVED PLAYPAUSE CHANGE FROM",
+			roomName,
+			" STATE IS",
+			isPlayingState
+		);
 
-    io.to(roomName).emit("playpause_changing", isPlayingState);
-
-  })
+		io.to(roomName).emit("playpause_changing", isPlayingState);
+	});
 	socket.on("disconnect", () => {
 		rooms = rooms.map((room) => {
 			if (socket.user) {
