@@ -356,6 +356,12 @@ io.on("connection", (socket) => {
 		emitTypingChange(roomName, "stopped_typing", socket);
 	});
 
+  socket.on("playpause_changing", (roomName, isPlayingState) => {
+    console.log('RECEIVED PLAYPAUSE CHANGE FROM', roomName, ' STATE IS', isPlayingState);
+
+    io.to(roomName).emit("playpause_changing", isPlayingState);
+
+  })
 	socket.on("disconnect", () => {
 		rooms = rooms.map((room) => {
 			if (socket.user) {
