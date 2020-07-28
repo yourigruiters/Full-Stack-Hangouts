@@ -13,6 +13,7 @@ const VideoSingle = ({ socket, match }) => {
   const [currentVideo, setCurrentVideo] = React.useState('https://www.youtube.com/watch?v=aD_xkjDIAFM');
 
   const roomName = match.params.roomName;
+  let videoPlayerReference = React.useRef(null)
 
 	React.useEffect(() => {
 
@@ -56,6 +57,10 @@ const VideoSingle = ({ socket, match }) => {
       setCurrentVideo(newVideo);
     })
 
+    socket.on("video_progress", (currentTime) => {
+      videoPlayerReference.current.seekTo(currentTime, 'seconds');
+    })
+
   }, []);
 
   const sendVideoState = (videoState) => {
@@ -68,7 +73,12 @@ const VideoSingle = ({ socket, match }) => {
 
   const handleProgress = (state) => {
     console.log('RECEIVED STATE', state);
+    socket.emit("video_progress", roomName, state);
   }
+    // const ref = (e) => {
+  //   console.log('ref', e);
+
+  // }
 
 	return (
 		<section className="videosingle">
@@ -82,6 +92,7 @@ const VideoSingle = ({ socket, match }) => {
             className="videosection__video__player"
             width='auto'
             height='auto'
+            ref={videoPlayerReference}
             url={currentVideo}
             playing={isPlaying}
             controls={true}
