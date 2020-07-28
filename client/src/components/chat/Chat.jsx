@@ -5,10 +5,14 @@ import Button from '../button/Button'
 const Chat = ({ messages, sendChatMessage, chatInput, handleChange, isTyping }) => {
   
   const shiftSubmit = (e) => {
-    if (e.key === 'Enter' && e.shiftKey) {         
+    if (e.keyCode === 13 && e.shiftKey) {
+
+    } else if (e.keyCode === 13) {
       sendChatMessage(e)
     }
   }
+
+  console.log(messages);
 
   return <section className="chat">
   <section className="chatsection__body">
@@ -16,7 +20,7 @@ const Chat = ({ messages, sendChatMessage, chatInput, handleChange, isTyping }) 
       {messages.map((message, index) => (
         <article key={index} className="chat__message">
           <article className="chat__message--time">{message.timestamp}</article>
-          <p className="chat__message--text">
+          <p className={`chat__message--text chat__message--${message.type}`}>
             <span>
               <b>{message.name}: </b>
             </span>
@@ -26,6 +30,7 @@ const Chat = ({ messages, sendChatMessage, chatInput, handleChange, isTyping }) 
       ))}
     </article>
   </section>
+
   <section className="chatsection__footer">
     <form onSubmit={(e) => sendChatMessage(e)} className="chat__input">
       <textarea
@@ -37,11 +42,12 @@ const Chat = ({ messages, sendChatMessage, chatInput, handleChange, isTyping }) 
       />
       <Button type="primary">Send Message</Button>
     </form>
+
     <article className="isTypingSpacer">
     {isTyping.length > 0 && isTyping.length > 2 ? (
-					<p>Multiple people are typing...</p>
+					<p className="isTypingSpacer__text">Multiple people are typing...</p>
 				) : (
-					<p>
+					<p className="isTypingSpacer__text">
 						{isTyping.map((user, index) => {
 							let string = "";
 							string += user.name;

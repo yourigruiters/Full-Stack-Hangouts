@@ -30,7 +30,12 @@
       right: 0;
       top: 0;
       text-align: right;
-      color: grey;
+      color: $light-grey;
+    }
+
+    &--joined {
+      font-style: italic;
+      color: $light-grey ;
     }
   }
 
@@ -67,4 +72,9 @@
 
 .isTypingSpacer {
   height: 35px;
+
+  &__text {
+    font-style: italic;
+    color: $light-grey;
+  }
 }

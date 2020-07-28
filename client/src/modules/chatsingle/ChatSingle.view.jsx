@@ -120,8 +120,10 @@ const ChatSingle = ({ socket, match }) => {
 							</article>
 					</section>
 				</section>
+				
 				<Chat sendChatMessage={sendChatMessage} handleChange={handleChange} chatInput={chatInput} isTyping={isTyping} messages={messages}/>
 			</section>
+
 			<section className={toggleList ? 'usersection buttons__toggle--show' : 'usersection buttons__toggle--hide'}>
 				<section className="usersection__header">
 					<a className="buttons__toggle--close" onClick={() => {
@@ -137,7 +139,7 @@ const ChatSingle = ({ socket, match }) => {
 						<article key={index} className="chat__message">
 							<p className="chat__message--text">
 								<span>
-									{user.name} - <b>{user.country}:</b>{" "}
+									{user.name} - <b>{user.country}: </b>
 								</span>
 								{user.countryCode}
 							</p>
