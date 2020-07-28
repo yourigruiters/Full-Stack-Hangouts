@@ -2,20 +2,40 @@ import React from "react";
 import * as _ from "lodash";
 import "./ChatSingle.view.scss";
 import Chat from '../../components/chat/Chat';
+import { ChatLock, UserList, LeftArrow } from "../../icons/icons";
+
 
 const ChatSingle = ({ socket, match }) => {
 	const [messages, setMessages] = React.useState([]);
 	const [isTyping, setIsTyping] = React.useState([]);
+	const [users, setUsers] = React.useState([]);
+	// const [queue, setQueue] = React.useState([]);
 	const [sendIsTyping, setSendIsTyping] = React.useState(false);
 	const [chatInput, setChatInput] = React.useState("");
+	const [toggleList, setToggleList] = React.useState(false);
+	const [roomInfo, setRoomInfo] = React.useState([]);
 
 	const roomName = match.params.roomName;
 
 	React.useEffect(() => {
 		socket.emit("joining_room", roomName);
 
-		socket.on("changed_typing", (user) => {
-			setIsTyping(user);
+		socket.on("room_data", (roomData) => {
+			setIsTyping(roomData.isTyping);
+			setUsers(roomData.users);
+			// setQueue(roomData.queue);
+
+			const { title, privateroom, category, maxUsers } = roomData;
+			setRoomInfo({
+				title: title,
+				private: privateroom,
+				category: category,
+				maxUsers: maxUsers,
+			})
+		});
+
+		socket.on("changed_typing", (isTypingPeople) => {
+			setIsTyping(isTypingPeople);
 		});
 
 		socket.on("message", (messageObject) => {
@@ -66,16 +86,49 @@ const ChatSingle = ({ socket, match }) => {
 		<section className="chatsingle">
 			<section className="chatsection">
 				<section className="chatsection__header">
-					<h1 className="chatsection__header--title">Title</h1>
-					<article className="chatsection__header--buttons"> X X</article>
+					<section className="chatsection__header--start">
+						<article className="chatsection__header--icon">
+							<LeftArrow />
+						</article>
+						<h1 className="chatsection__header--title">{roomInfo.title}</h1>
+					</section>
+					<article className="chatsection__header--buttons">
+						<article className="iconbutton iconbutton__people">
+							<h2 className="people__amount">{users.length}/{roomInfo.maxUsers}</h2>
+							<UserList />
+						</article>
+						<article className="iconbutton iconbutton__lock">
+							<ChatLock />
+						</article>
+					</article>
+					<section className="usersection__header">
+						<span><a className="toggle" onClick={() => {
+							!toggleList ? setToggleList(true) : setToggleList(false)
+						}}><h2 className="usersection__header--title">{toggleList ? 'X' : '<' } People</h2></a>
+						</span>
+					</section>
 				</section>
-					<Chat sendChatMessage={sendChatMessage} handleChange={handleChange} chatInput={chatInput} isTyping={isTyping} messages={messages}/>
+				<Chat sendChatMessage={sendChatMessage} handleChange={handleChange} chatInput={chatInput} isTyping={isTyping} messages={messages}/>
 			</section>
-			<section className="usersection">
+			<section className={toggleList ? 'usersection toggle--show' : 'usersection toggle--hide'}>
 				<section className="usersection__header">
-					<h2 className="usersection__header--title">People</h2>
+					<span><a className="toggle" onClick={() => {
+						!toggleList ? setToggleList(true) : setToggleList(false)
+					}}><h2 className="usersection__header--title">X</h2></a>
+					</span>
 				</section>
-				<article className="usersection__content">Placeholder content</article>
+				<article className="usersection__content">
+				{users.map((user, index) => (
+        <article key={index} className="chat__message">
+          <p className="chat__message--text">
+            <span>
+              {user.name} - <b>{user.country}:</b>{" "}
+            </span>
+            {user.countryCode}
+          </p>
+        </article>
+      ))}
+				</article> 
 			</section>
 		</section>
 	);
