@@ -28,7 +28,7 @@ const generateNameConfig = {
 
 const socket = openSocket("localhost:5000");
 
-const App = ({ history, location }) => {
+const App = ({ history }) => {
 	const [isLoading, setIsLoading] = React.useState(true);
 	const [triedLocation, setTriedLocation] = React.useState("/");
 	const [formError, setFormError] = React.useState(false);
@@ -38,51 +38,35 @@ const App = ({ history, location }) => {
 		countryCode: "",
 	});
 
-	// Whether to display sidebar or not
 	const showSidebarArray = ["/"];
 	const currentPage = history.location.pathname;
 	const showSidebar = !showSidebarArray.includes(currentPage);
 
-	// Setting up connection to application
-	// Could be a new visitor or an sessionVisitor
 	React.useEffect(() => {
-		let visitor = {};
+		if (currentPage === "/") {
+			generateUserData();
+		}
+	}, [history.location.pathname]);
+
+	React.useEffect(() => {
 		const sessionVisitorData = JSON.parse(localStorage.getItem("userData"));
 		// FIX - IF PAGE IS NOT / (ROOT) - SEND TO ROOT
 		console.log("What is sessionVisitorData", sessionVisitorData);
 
 		if (!sessionVisitorData) {
-			setTriedLocation(location.pathname);
-			console.log(location.pathname, "LOCATION");
-			// FIX - TAKE URL AND SEND USER BACK TO THAT URL IN THE END
+			setTriedLocation(currentPage);
 			history.push("/");
-			axios
-				.get("http://geoplugin.net/json.gp")
-				.then((res) => {
-					const { geoplugin_countryCode, geoplugin_countryName } = res.data;
-
-					visitor = {
-						name: uniqueNamesGenerator(generateNameConfig),
-						countryCode: geoplugin_countryCode,
-						country: geoplugin_countryName,
-					};
-
-					console.log("setting visitor", visitor);
-					setVisitorData(visitor);
-				})
-				.catch((err) => console.error(err.message));
+			generateUserData();
 		} else {
-			// FIX - [Take from fix above] - IF USER WANTS TO ACTUALLY GO TO HOMEPAGE
-			// WE DO SEND THEM TO OUR MAIN PAGE (VIDEOS)
-			visitor = {
+			const visitor = {
 				name: sessionVisitorData.name,
 				countryCode: sessionVisitorData.countryCode,
 				country: sessionVisitorData.country,
 			};
+
 			socket.emit("connect_visitor", visitor);
-			console.log(currentPage, "currentpage");
+
 			if (currentPage === "/") {
-				console.log("Sending to videos");
 				history.push("/dashboard/videos");
 			} else {
 				history.push(currentPage);
@@ -91,6 +75,23 @@ const App = ({ history, location }) => {
 
 		setIsLoading(false);
 	}, []);
+
+	const generateUserData = () => {
+		axios
+			.get("http://geoplugin.net/json.gp")
+			.then((res) => {
+				const { geoplugin_countryCode, geoplugin_countryName } = res.data;
+
+				const visitor = {
+					name: uniqueNamesGenerator(generateNameConfig),
+					countryCode: geoplugin_countryCode,
+					country: geoplugin_countryName,
+				};
+
+				setVisitorData(visitor);
+			})
+			.catch((err) => console.error(err.message));
+	};
 
 	return (
 		<>

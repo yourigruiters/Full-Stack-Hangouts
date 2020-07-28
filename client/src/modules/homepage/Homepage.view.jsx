@@ -32,7 +32,6 @@ const Homepage = ({
 
 		socket.on("connect_visitor", () => {
 			localStorage.setItem("userData", JSON.stringify(visitorData));
-			// SET 1st PARAM of Function to REdux
 			if (triedLocation !== "/") {
 				history.push(triedLocation);
 			} else {
