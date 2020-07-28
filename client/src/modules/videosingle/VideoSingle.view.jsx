@@ -3,14 +3,16 @@ import * as _ from "lodash";
 import "./VideoSingle.view.scss";
 import { Link } from "react-router-dom";
 import Button from "../../components/button/Button";
+import ReactPlayer from 'react-player';
 
 
 const VideoSingle = ({ socket, match }) => {
-	const [messages, setMessages] = React.useState([]);
+  const [messages, setMessages] = React.useState([]);
+  const [isPlaying, setIsPlaying] = React.useState(true);
+
+  const roomName = match.params.roomName;
 
 	React.useEffect(() => {
-		const roomName = match.params.roomName;
-		console.log(roomName, "IS CHANGING AT RANDOM TIMES");
 
 		socket.emit("joining_room", roomName);
 
@@ -25,8 +27,25 @@ const VideoSingle = ({ socket, match }) => {
 
 				return [...prevState, message];
 			});
-		});
-	}, []);
+    });
+  }, []);
+
+  React.useEffect(() => {
+    console.log("SENDING PLAYPAUSE CHANGE");
+    socket.emit("playpause_changing", roomName, isPlaying);
+
+    socket.on("playpause_changing", (isPlayingState) => {
+      console.log('RECEEIVED FROM SERVER', isPlayingState);
+      setIsPlaying(isPlayingState);
+      console.log('PLAY STATE IS NOW', isPlaying);
+    })
+  }, [isPlaying]);
+
+
+  
+  const handlePlayPause = () => {
+    setIsPlaying(!isPlaying);
+  }
 
 	return (
 		<section className="videosingle">
@@ -36,8 +55,19 @@ const VideoSingle = ({ socket, match }) => {
         </section>
         {/* COMPONENT HERE */}
         <section classname="videosection__video">
-        <iframe width="100%" height="315" src="https://www.youtube.com/embed/ZLm6q1-S6gM" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-        </section>
+          <ReactPlayer 
+            className="videosection__video__player"
+            width='auto'
+            height='auto'
+            url={['https://www.youtube.com/watch?v=ysz5S6PUM-U', 'https://www.youtube.com/watch?v=Xzh8BdaaAvs']}
+            playing={isPlaying}
+            controls={true}
+            volume={null}
+            muted={true}
+          />
+          </section>
+          <button onClick={() => handlePlayPause()}>{isPlaying ? 'Pause' : 'Play'}</button>
+        
         <section className="videosection__content">
           <section className="videosection__content__info">
             <h2>Cat Licks Paws (10 Hour Version)</h2>
