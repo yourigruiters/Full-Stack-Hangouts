@@ -9,47 +9,200 @@ const port = 5000;
 
 let rooms = [
 	{
-		id: 0,
 		title: "Public Lounge",
 		slug: "public-lounge",
 		type: "chat",
 		host: "",
 		private: false,
 		password: "",
-		category: "Chill",
+		category: "chill",
 		maxUsers: 20,
 		default: true,
-		users: [],
+		users: [
+			{
+				id: "ZAcruUixXkxDgUPHAAAB",
+				name: "Systematic Flamingo",
+				country: "Sweden",
+				countryCode: "SE",
+			},
+			{
+				id: "ZAcruUixXkxDgUPHAA123",
+				name: "Thick Skink",
+				country: "Sweden",
+				countryCode: "SE",
+			},
+			{
+				id: "ZAcruUixXkxDgUPHA345B",
+				name: "Constitutional Cicada",
+				country: "Sweden",
+				countryCode: "SE",
+			},
+		],
 		queue: [],
 		isTyping: [],
 	},
 	{
-		id: 1,
 		title: "Public Cinema",
 		slug: "public-cinema",
 		type: "video",
 		host: "",
 		private: false,
 		password: "",
-		category: "Chill",
+		category: "chill",
 		maxUsers: 20,
 		default: true,
-		users: [],
+		users: [
+			{
+				id: "ZAcruUixXkxDgUPHAAAB",
+				name: "Systematic Flamingo",
+				country: "Sweden",
+				countryCode: "SE",
+			},
+			{
+				id: "ZAcruUixXkxDgUPHAA123",
+				name: "Thick Skink",
+				country: "Sweden",
+				countryCode: "SE",
+			},
+			{
+				id: "ZAcruUixXkxDgUPHA345B",
+				name: "Constitutional Cicada",
+				country: "Sweden",
+				countryCode: "SE",
+			},
+		],
 		queue: [],
 		isTyping: [],
 	},
 	{
-		id: 2,
-		title: "Another chatroom 2",
-		slug: "another-chatroom-2",
+		title: "Animals playlist",
+		slug: "animals-playlist",
+		type: "video",
+		host: "",
+		private: false,
+		password: "",
+		category: "animals",
+		maxUsers: 20,
+		default: true,
+		users: [
+			{
+				id: "ZAcruUixXkxDgUPHAAAB",
+				name: "Systematic Flamingo",
+				country: "Sweden",
+				countryCode: "SE",
+			},
+			{
+				id: "ZAcruUixXkxDgUPHAA123",
+				name: "Thick Skink",
+				country: "Sweden",
+				countryCode: "SE",
+			},
+			{
+				id: "ZAcruUixXkxDgUPHA345B",
+				name: "Constitutional Cicada",
+				country: "Sweden",
+				countryCode: "SE",
+			},
+		],
+		queue: [],
+		isTyping: [],
+	},
+	{
+		title: "Live soccer",
+		slug: "live-soccer",
 		type: "chat",
 		host: "",
 		private: false,
 		password: "",
-		category: "Chill",
+		category: "sports",
 		maxUsers: 20,
 		default: true,
-		users: [],
+		users: [
+			{
+				id: "ZAcruUixXkxDgUPHAAAB",
+				name: "Systematic Flamingo",
+				country: "Sweden",
+				countryCode: "SE",
+			},
+			{
+				id: "ZAcruUixXkxDgUPHAA123",
+				name: "Thick Skink",
+				country: "Sweden",
+				countryCode: "SE",
+			},
+			{
+				id: "ZAcruUixXkxDgUPHA345B",
+				name: "Constitutional Cicada",
+				country: "Sweden",
+				countryCode: "SE",
+			},
+		],
+		queue: [],
+		isTyping: [],
+	},
+	{
+		title: "Anime Weebs",
+		slug: "anima-weebs",
+		type: "video",
+		host: "",
+		private: false,
+		password: "",
+		category: "anime",
+		maxUsers: 20,
+		default: true,
+		users: [
+			{
+				id: "ZAcruUixXkxDgUPHAAAB",
+				name: "Systematic Flamingo",
+				country: "Sweden",
+				countryCode: "SE",
+			},
+			{
+				id: "ZAcruUixXkxDgUPHAA123",
+				name: "Thick Skink",
+				country: "Sweden",
+				countryCode: "SE",
+			},
+			{
+				id: "ZAcruUixXkxDgUPHA345B",
+				name: "Constitutional Cicada",
+				country: "Sweden",
+				countryCode: "SE",
+			},
+		],
+		queue: [],
+		isTyping: [],
+	},
+	{
+		title: "Music playlist",
+		slug: "music-playlist",
+		type: "video",
+		host: "",
+		private: false,
+		password: "",
+		category: "audio",
+		maxUsers: 20,
+		default: true,
+		users: [
+			{
+				id: "ZAcruUixXkxDgUPHAAAB",
+				name: "Systematic Flamingo",
+				country: "Sweden",
+				countryCode: "SE",
+			},
+			{
+				id: "ZAcruUixXkxDgUPHAA123",
+				name: "Thick Skink",
+				country: "Sweden",
+				countryCode: "SE",
+			},
+			{
+				id: "ZAcruUixXkxDgUPHA345B",
+				name: "Constitutional Cicada",
+				country: "Sweden",
+				countryCode: "SE",
+			},
+		],
 		queue: [],
 		isTyping: [],
 	},
@@ -207,22 +360,22 @@ io.on("connection", (socket) => {
 		rooms = rooms.map((room) => {
 			if (socket.user) {
 				emitTypingChange(room.slug, "stopped_typing", socket);
+			}
 
-				// FIX kick user out, were only checking to write a message
-				const foundUser = room.users.findIndex(
-					(user) => user.name === socket.user.name
-				);
+			// FIX kick user out, were only checking to write a message
+			const foundUser = room.users.findIndex(
+				(user) => user.name === socket.user.name
+			);
 
-				if (foundUser !== -1) {
-					room.users.splice(foundUser, 1);
+			if (foundUser !== -1) {
+				room.users.splice(foundUser, 1);
 
-					const message = {
-						user: socket.user.name,
-						type: "left",
-					};
+				const message = {
+					user: socket.user.name,
+					type: "left",
+				};
 
-					io.to(room.slug).emit("message", message);
-				}
+				io.to(room.slug).emit("message", message);
 			}
 
 			return room;
