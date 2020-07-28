@@ -34,6 +34,10 @@
 		&--end {
 			display: flex;
 		}
+
+		&--buttons {
+			display: flex;
+		}
 	}
 
 	.chatsection__header--icon {
@@ -77,6 +81,24 @@
 	&:hover path {
 		fill: $orange-light;
 	}
+
+	&__people {
+		&--amount {
+			margin-right: 15px;
+			font-size: 16px;
+			font-weight: 300;
+		}
+	}
+}
+
+.password {
+	&__active {
+		display: block
+	}
+
+	&__inactive {
+		display: none;
+	}
 }
 
 .usersection {
@@ -113,10 +135,10 @@
 .peoplelist {
 	display: flex;
 	align-items: end;
-	margin: 3px 0;
+	margin: 8px 0;
 
 	&__text {
-		margin: 0 5px;
+		margin: 0 10px;
 	}
 
 	&__flag {

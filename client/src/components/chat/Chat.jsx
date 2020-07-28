@@ -3,7 +3,7 @@ import "./Chat.scss";
 import Button from '../button/Button'
 
 const Chat = ({ messages, sendChatMessage, chatInput, handleChange, isTyping }) => {
-  
+
   const shiftSubmit = (e) => {
     if (e.keyCode === 13 && e.shiftKey) {
 
@@ -11,8 +11,6 @@ const Chat = ({ messages, sendChatMessage, chatInput, handleChange, isTyping }) 
       sendChatMessage(e)
     }
   }
-
-  console.log(messages);
 
   return <section className="chat">
   <section className="chatsection__body">
@@ -32,7 +30,7 @@ const Chat = ({ messages, sendChatMessage, chatInput, handleChange, isTyping }) 
   </section>
 
   <section className="chatsection__footer">
-    <form onSubmit={(e) => sendChatMessage(e)} className="chat__input">
+    <form onSubmit={(e) => {sendChatMessage(e)}} className="chat__input">
       <textarea
         value={chatInput}
         placeholder="Type something..."

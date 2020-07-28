@@ -14,6 +14,7 @@ const ChatSingle = ({ socket, match }) => {
 	const [sendIsTyping, setSendIsTyping] = React.useState(false);
 	const [chatInput, setChatInput] = React.useState("");
 	const [toggleList, setToggleList] = React.useState(false);
+	const [password, setPassword] = React.useState(false);
 	const [roomInfo, setRoomInfo] = React.useState([]);
 
 	const roomName = match.params.roomName;
@@ -45,7 +46,8 @@ const ChatSingle = ({ socket, match }) => {
 			const today = new Date();
 			const hour = today.getHours();
 			const minutes = today.getMinutes();
-			const time = `${hour}:${minutes}`;
+			const seconds = today.getSeconds();
+			const time = `${hour}:${minutes}:${seconds}`;
 
 			setMessages((prevState) => {
 				const newMessage = {
@@ -103,9 +105,12 @@ const ChatSingle = ({ socket, match }) => {
 					</section>
 
 					<article className="chatsection__header--buttons">
-						<article className="iconbutton iconbutton__lock">
+						<article className="iconbutton iconbutton__lock" onClick={() => {
+									!password ? setPassword(true) : setPassword(false)
+									}}>
 							{roomInfo.privateroom ? <ChatLocked /> : <ChatOpen /> }
 						</article>
+						<h4 className={password ? 'password password__active' : 'password password__inactive'}>password</h4>
 					</article>
 
 					<section className="chatsection__header--end">
@@ -116,7 +121,7 @@ const ChatSingle = ({ socket, match }) => {
 									<article className="iconbutton iconbutton__people">
 										<UserList />
 									</article>
-									<h4 className="people__amount">{users.length}/{roomInfo.maxUsers}</h4>
+									<h4 className="iconbutton__people--amount">{users.length}/{roomInfo.maxUsers}</h4>
 									<article className="iconbutton iconbutton__people">
 										<LeftArrow />
 									</article>
