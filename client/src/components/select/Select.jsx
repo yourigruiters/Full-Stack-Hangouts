@@ -1,9 +1,9 @@
 import React from "react";
 import "./Select.scss";
 
-const Select = ({ type, children }) => {
+const Select = ({ type, name, onChange, children }) => {
 	return (
-		<select type={type} className="select">
+		<select type={type} name={name} className="select" onChange={onChange}>
 			{children}
 		</select>
 	);

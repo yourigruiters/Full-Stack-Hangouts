@@ -23,4 +23,22 @@
 			background-color: $orange-light;
 		}
 	}
+
+	&--create {
+		color: $white;
+		background-color: $green-dark;
+
+		&:hover {
+			background-color: $green-light;
+		}
+	}
+
+	&--cancel {
+		color: $white;
+		background-color: $red-dark;
+
+		&:hover {
+			background-color: $red-light;
+		}
+	}
 }

@@ -1,0 +1,32 @@
+@import "../../styles/variables.scss";
+
+.create-room {
+	position: absolute;
+	right: 0px;
+	top: 50px;
+	width: 300px;
+	padding: 20px;
+	height: auto;
+	border-radius: 12px;
+	background-color: rgba(0, 0, 0, 0.8);
+
+	&__combo {
+		display: flex;
+		flex-direction: column;
+		margin-bottom: 10px;
+
+		.paragraph {
+			margin-bottom: 3px;
+		}
+
+		&__error {
+			color: $red-dark;
+		}
+	}
+
+	&__buttons {
+		display: flex;
+		justify-content: space-between;
+		margin-top: 20px;
+	}
+}

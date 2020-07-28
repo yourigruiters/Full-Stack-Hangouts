@@ -9,12 +9,29 @@ import ReactPlayer from 'react-player';
 const VideoSingle = ({ socket, match }) => {
   const [messages, setMessages] = React.useState([]);
   const [isPlaying, setIsPlaying] = React.useState(true);
+  const [queue, setQueue] = React.useState([]);
+  const [currentVideo, setCurrentVideo] = React.useState('https://www.youtube.com/watch?v=aD_xkjDIAFM');
 
   const roomName = match.params.roomName;
+  let videoPlayerReference = React.useRef(null)
 
 	React.useEffect(() => {
 
 		socket.emit("joining_room", roomName);
+
+    socket.on("room_data", (roomData) => {
+			// setIsTyping(roomData.isTyping);
+			// setUsers(roomData.users);
+			setQueue(roomData.queue);
+
+			// const { title, privateroom, category, maxUsers } = roomData;
+			// setRoomInfo({
+			// 	title: title,
+			// 	private: privateroom,
+			// 	category: category,
+			// 	maxUsers: maxUsers,
+			// })
+		});
 
 		socket.on("message", (messageObject) => {
 			setMessages((prevState) => {
@@ -28,23 +45,40 @@ const VideoSingle = ({ socket, match }) => {
 				return [...prevState, message];
 			});
     });
-  }, []);
-
-  React.useEffect(() => {
-    socket.emit("playpause_changing", roomName, isPlaying);
 
     socket.on("playpause_changing", (isPlayingState) => {
+      console.log('RECEIVED STATE', isPlayingState)
       setIsPlaying(isPlayingState);
-    })
-  }, [isPlaying]);
+    })  
 
-  const handlePlayPause = () => {
-    setIsPlaying(!isPlaying);
+    socket.on("next_video", (newPlaylist, newVideo) => {
+      console.log('RECEIVED NEXTVIDEO', newPlaylist, newVideo)
+      setQueue(newPlaylist);
+      setCurrentVideo(newVideo);
+    })
+
+    socket.on("video_progress", (currentTime) => {
+      videoPlayerReference.current.seekTo(currentTime, 'seconds');
+    })
+
+  }, []);
+
+  const sendVideoState = (videoState) => {
+    socket.emit("playpause_changing", roomName, videoState);
+  }
+
+  const playNextVideoInPlaylist = () => {
+    socket.emit("next_video", roomName)
   }
 
   const handleProgress = (state) => {
     console.log('RECEIVED STATE', state);
+    socket.emit("video_progress", roomName, state);
   }
+    // const ref = (e) => {
+  //   console.log('ref', e);
+
+  // }
 
 	return (
 		<section className="videosingle">
@@ -58,16 +92,18 @@ const VideoSingle = ({ socket, match }) => {
             className="videosection__video__player"
             width='auto'
             height='auto'
-            url={['https://www.youtube.com/watch?v=ysz5S6PUM-U', 'https://www.youtube.com/watch?v=Xzh8BdaaAvs']}
+            ref={videoPlayerReference}
+            url={currentVideo}
             playing={isPlaying}
             controls={true}
             volume={null}
             muted={true}
             onProgress={(e) => handleProgress(e)}
+            onPlay={() => sendVideoState(true)}
+            onPause={() => sendVideoState(false)}
+            onEnded={() => playNextVideoInPlaylist()}
           />
-          </section>
-          <button onClick={() => handlePlayPause()}>{isPlaying ? 'Pause' : 'Play'}</button>
-        
+          </section>        
         <section className="videosection__content">
           <section className="videosection__content__info">
             <h2>Cat Licks Paws (10 Hour Version)</h2>
@@ -79,9 +115,7 @@ const VideoSingle = ({ socket, match }) => {
               <Button type="primary">Add to Queue</Button>
             </section>
             <section className="videosection__content__queue__videos">
-              <h1>Video 1</h1>
-              <h1>Video 2</h1>
-              <h1>Video 3</h1>
+              {queue.map((video, index) => (<h1 key={index}>{video}</h1>))}
             </section>
           </section>
         </section>

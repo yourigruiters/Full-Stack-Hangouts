@@ -50,8 +50,6 @@ const App = ({ history }) => {
 
 	React.useEffect(() => {
 		const sessionVisitorData = JSON.parse(localStorage.getItem("userData"));
-		// FIX - IF PAGE IS NOT / (ROOT) - SEND TO ROOT
-		console.log("What is sessionVisitorData", sessionVisitorData);
 
 		if (!sessionVisitorData) {
 			setTriedLocation(currentPage);

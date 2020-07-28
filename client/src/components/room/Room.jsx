@@ -7,9 +7,9 @@ import "./Room.scss";
 const Room = ({ room, type }) => {
 	return (
 		<section className="room">
-			<Paragraph>Room {room.title}</Paragraph>
+			<Paragraph>{room.title}</Paragraph>
 			<Link to={`/dashboard/${type}/${room.slug}`}>
-				<Button type="primary">Go to Room</Button>
+				<Button type="primary">Visit room</Button>
 			</Link>
 		</section>
 	);
