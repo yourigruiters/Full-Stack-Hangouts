@@ -9,7 +9,6 @@ const port = 5000;
 
 let rooms = [
 	{
-		id: 0,
 		title: "Public Lounge",
 		slug: "public-lounge",
 		type: "chat",
@@ -43,7 +42,6 @@ let rooms = [
 		isTyping: [],
 	},
 	{
-		id: 1,
 		title: "Public Cinema",
 		slug: "public-cinema",
 		type: "video",
@@ -77,7 +75,6 @@ let rooms = [
 		isTyping: [],
 	},
 	{
-		id: 2,
 		title: "Animals playlist",
 		slug: "animals-playlist",
 		type: "video",
@@ -111,7 +108,6 @@ let rooms = [
 		isTyping: [],
 	},
 	{
-		id: 3,
 		title: "Live soccer",
 		slug: "live-soccer",
 		type: "chat",
@@ -145,7 +141,6 @@ let rooms = [
 		isTyping: [],
 	},
 	{
-		id: 1,
 		title: "Anime Weebs",
 		slug: "anima-weebs",
 		type: "video",
@@ -179,7 +174,6 @@ let rooms = [
 		isTyping: [],
 	},
 	{
-		id: 1,
 		title: "Music playlist",
 		slug: "music-playlist",
 		type: "video",
@@ -357,22 +351,22 @@ io.on("connection", (socket) => {
 		rooms = rooms.map((room) => {
 			if (socket.user) {
 				emitTypingChange(room.slug, "stopped_typing", socket);
+			}
 
-				// FIX kick user out, were only checking to write a message
-				const foundUser = room.users.findIndex(
-					(user) => user.name === socket.user.name
-				);
+			// FIX kick user out, were only checking to write a message
+			const foundUser = room.users.findIndex(
+				(user) => user.name === socket.user.name
+			);
 
-				if (foundUser !== -1) {
-					room.users.splice(foundUser, 1);
+			if (foundUser !== -1) {
+				room.users.splice(foundUser, 1);
 
-					const message = {
-						user: socket.user.name,
-						type: "left",
-					};
+				const message = {
+					user: socket.user.name,
+					type: "left",
+				};
 
-					io.to(room.slug).emit("message", message);
-				}
+				io.to(room.slug).emit("message", message);
 			}
 
 			return room;
