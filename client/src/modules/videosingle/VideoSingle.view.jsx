@@ -31,20 +31,19 @@ const VideoSingle = ({ socket, match }) => {
   }, []);
 
   React.useEffect(() => {
-    console.log("SENDING PLAYPAUSE CHANGE");
     socket.emit("playpause_changing", roomName, isPlaying);
 
     socket.on("playpause_changing", (isPlayingState) => {
-      console.log('RECEEIVED FROM SERVER', isPlayingState);
       setIsPlaying(isPlayingState);
-      console.log('PLAY STATE IS NOW', isPlaying);
     })
   }, [isPlaying]);
 
-
-  
   const handlePlayPause = () => {
     setIsPlaying(!isPlaying);
+  }
+
+  const handleProgress = (state) => {
+    console.log('RECEIVED STATE', state);
   }
 
 	return (
@@ -64,6 +63,7 @@ const VideoSingle = ({ socket, match }) => {
             controls={true}
             volume={null}
             muted={true}
+            onProgress={(e) => handleProgress(e)}
           />
           </section>
           <button onClick={() => handlePlayPause()}>{isPlaying ? 'Pause' : 'Play'}</button>
