@@ -93,25 +93,31 @@ const ChatSingle = ({ socket, match }) => {
 						<h1 className="chatsection__header--title">{roomInfo.title}</h1>
 					</section>
 					<article className="chatsection__header--buttons">
-						<article className="iconbutton__people">
-	<h2 className="people__amount">{users.length}/{roomInfo.maxUsers}</h2>
+						<article className="iconbutton iconbutton__people">
+							<h2 className="people__amount">{users.length}/{roomInfo.maxUsers}</h2>
 							<UserList />
 						</article>
-						<article className="iconbutton__lock">
+						<article className="iconbutton iconbutton__lock">
 							<ChatLock />
 						</article>
 					</article>
+					<section className="usersection__header">
+						<span><a className="toggle" onClick={() => {
+							!toggleList ? setToggleList(true) : setToggleList(false)
+						}}><h2 className="usersection__header--title">{toggleList ? 'X' : '<' } People</h2></a>
+						</span>
+					</section>
 				</section>
 				<Chat sendChatMessage={sendChatMessage} handleChange={handleChange} chatInput={chatInput} isTyping={isTyping} messages={messages}/>
 			</section>
-			<section className="usersection">
+			<section className={toggleList ? 'usersection toggle--show' : 'usersection toggle--hide'}>
 				<section className="usersection__header">
 					<span><a className="toggle" onClick={() => {
 						!toggleList ? setToggleList(true) : setToggleList(false)
-					}}><h2 className="usersection__header--title">{toggleList ? 'X' : '<' } People</h2></a>
+					}}><h2 className="usersection__header--title">X</h2></a>
 					</span>
 				</section>
-				<article className={toggleList ? 'usersection__content toggle--show' : 'usersection__content toggle--hide'}>
+				<article className="usersection__content">
 				{users.map((user, index) => (
         <article key={index} className="chat__message">
           <p className="chat__message--text">

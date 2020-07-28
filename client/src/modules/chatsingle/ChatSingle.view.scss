@@ -36,7 +36,7 @@
 
 		&--start {
 			display: flex;
-			align-items: baseline;
+			align-items: center;
 		}
 	}
 
@@ -46,32 +46,28 @@
 
 	.chatsection__header--buttons {
 		display: flex;
+		align-items: baseline;
 	}
 
 	.iconbutton {
-		
-		&__people{
-		}
+		display: flex;
+		align-items: baseline;
 
-		&__lock{
+		svg {
+			width: 20px;
+			height: 20px;
+			margin-bottom: 0px;
 		}
 	}
-	
-  @media screen and (min-width: $breakpoint-lg) {
-    width: 75%;
-  }
 }
 
 .usersection {
-  display: none;
 	width: 100%;
 	// background-color: $background-dark;
 
 	&__header {
 		display: flex;
 		flex-direction: row;
-		height: 40px; 
-		padding: 10px;
 		background-color: $background-dark;
 
 		&--title {
@@ -90,7 +86,6 @@
 	}
 
   @media screen and (min-width: $breakpoint-lg) {
-    display: block;
     width: 25%;
   }
 }
