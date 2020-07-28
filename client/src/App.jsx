@@ -1,5 +1,5 @@
 import React from "react";
-import { Switch, Route, withRouter } from "react-router-dom";
+import { Switch, Route, withRouter, useLocation } from "react-router-dom";
 import axios from "axios";
 import {
 	uniqueNamesGenerator,
@@ -28,8 +28,9 @@ const generateNameConfig = {
 
 const socket = openSocket("localhost:5000");
 
-const App = ({ history }) => {
+const App = ({ history, location }) => {
 	const [isLoading, setIsLoading] = React.useState(true);
+	const [triedLocation, setTriedLocation] = React.useState("/");
 	const [formError, setFormError] = React.useState(false);
 	const [visitorData, setVisitorData] = React.useState({
 		name: "",
@@ -51,6 +52,8 @@ const App = ({ history }) => {
 		console.log("What is sessionVisitorData", sessionVisitorData);
 
 		if (!sessionVisitorData) {
+			setTriedLocation(location.pathname);
+			console.log(location.pathname, "LOCATION");
 			// FIX - TAKE URL AND SEND USER BACK TO THAT URL IN THE END
 			history.push("/");
 			axios
@@ -110,6 +113,7 @@ const App = ({ history }) => {
 										setVisitorData={setVisitorData}
 										formError={formError}
 										setFormError={setFormError}
+										triedLocation={triedLocation}
 									/>
 								)}
 							/>

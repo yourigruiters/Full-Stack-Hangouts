@@ -12,6 +12,7 @@ const Homepage = ({
 	setVisitorData,
 	formError,
 	setFormError,
+	triedLocation,
 }) => {
 	const handleFormData = (event) => {
 		setVisitorData({ ...visitorData, name: event.target.value });
@@ -32,7 +33,11 @@ const Homepage = ({
 		socket.on("connect_visitor", () => {
 			localStorage.setItem("userData", JSON.stringify(visitorData));
 			// SET 1st PARAM of Function to REdux
-			history.push("/dashboard/videos");
+			if (triedLocation !== "/") {
+				history.push(triedLocation);
+			} else {
+				history.push("/dashboard/videos");
+			}
 		});
 	};
 
