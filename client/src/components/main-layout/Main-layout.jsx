@@ -60,7 +60,7 @@ const MainLayout = ({ title, type, paragraph, roomsData }) => {
 					<Paragraph>{paragraph}</Paragraph>
 				</article>
 				<article className="main-layout__introduction__button">
-					<Button type="primary" onClick={() => setCreateIsOpen(true)}>
+					<Button type="primary" onClick={() => setCreateIsOpen(!createIsOpen)}>
 						Create a room
 					</Button>
 					{createIsOpen && (

@@ -97,16 +97,20 @@ const CreateRoom = ({ setCreateIsOpen, type }) => {
 	return (
 		<section className="create-room">
 			<form onSubmit={(e) => handleSubmit(e)}>
-				<Paragraph>Title:</Paragraph>
-				<Input
-					type="text"
-					onChange={(e) => handleChange(e)}
-					name="title"
-					value={formData.title}
-				/>
-				{formErrors.title && <p>ERROR</p>}
+				<article className="create-room__combo">
+					<Paragraph>Title:</Paragraph>
+					<Input
+						type="text"
+						onChange={(e) => handleChange(e)}
+						name="title"
+						value={formData.title}
+					/>
+					{formErrors.title && (
+						<p className="create-room__combo__error">{formErrors.title}</p>
+					)}
+				</article>
 
-				<article className="main-layout__filter__combo">
+				<article className="create-room__combo">
 					<Paragraph>Category:</Paragraph>
 					<Select onChange={(e) => handleChange(e)} name="category">
 						<option value=""></option>
@@ -118,31 +122,43 @@ const CreateRoom = ({ setCreateIsOpen, type }) => {
 							);
 						})}
 					</Select>
-					{formErrors.category && <p>ERROR</p>}
+					{formErrors.category && (
+						<p className="create-room__combo__error">{formErrors.category}</p>
+					)}
 				</article>
-				<Paragraph>maxUsers:</Paragraph>
-				<Select onChange={(e) => handleChange(e)} name="maxUsers">
-					{maxUsers.map((userAmount, index) => {
-						return (
-							<option key={index} value={userAmount}>
-								{userAmount}
-							</option>
-						);
-					})}
-				</Select>
 
-				<Paragraph>Password:</Paragraph>
-				<Input
-					type="text"
-					onChange={(e) => handleChange(e)}
-					name="password"
-					value={formData.password}
-				/>
-				{formErrors.password && <p>ERROR</p>}
-				<Button type="create">Create</Button>
-				<Button type="cancel" onClick={() => setCreateIsOpen(false)}>
-					Cancel
-				</Button>
+				<article className="create-room__combo">
+					<Paragraph>maxUsers:</Paragraph>
+					<Select onChange={(e) => handleChange(e)} name="maxUsers">
+						{maxUsers.map((userAmount, index) => {
+							return (
+								<option key={index} value={userAmount}>
+									{userAmount}
+								</option>
+							);
+						})}
+					</Select>
+				</article>
+
+				<article className="create-room__combo">
+					<Paragraph>Password:</Paragraph>
+					<Input
+						type="text"
+						onChange={(e) => handleChange(e)}
+						name="password"
+						value={formData.password}
+					/>
+					{formErrors.password && (
+						<p className="create-room__combo__error">{formErrors.password}</p>
+					)}
+				</article>
+
+				<article className="create-room__buttons">
+					<Button type="create">Create</Button>
+					<Button type="cancel" onClick={() => setCreateIsOpen(false)}>
+						Cancel
+					</Button>
+				</article>
 			</form>
 		</section>
 	);
