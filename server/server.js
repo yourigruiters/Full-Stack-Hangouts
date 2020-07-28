@@ -39,7 +39,9 @@ let rooms = [
 			},
 		],
 		queue: [],
-		isTyping: [],
+    isTyping: [],
+    playing: true,
+    currentTime: 0,
 	},
 	{
 		title: "Public Cinema",
@@ -71,8 +73,10 @@ let rooms = [
 				countryCode: "SE",
 			},
 		],
-		queue: [],
-		isTyping: [],
+		queue: ['https://www.youtube.com/watch?v=QoikCfr55So','https://www.youtube.com/watch?v=BJkhMtvd_zQ','https://www.youtube.com/watch?v=ClkLaDOo5zs'],
+    isTyping: [],
+    playing: true,
+    currentTime: 0,
 	},
 	{
 		title: "Animals playlist",
@@ -105,7 +109,9 @@ let rooms = [
 			},
 		],
 		queue: [],
-		isTyping: [],
+    isTyping: [],
+    playing: true,
+    currentTime: 0,
 	},
 	{
 		title: "Live soccer",
@@ -138,7 +144,9 @@ let rooms = [
 			},
 		],
 		queue: [],
-		isTyping: [],
+    isTyping: [],
+    playing: true,
+    currentTime: 0,
 	},
 	{
 		title: "Anime Weebs",
@@ -171,7 +179,9 @@ let rooms = [
 			},
 		],
 		queue: [],
-		isTyping: [],
+    isTyping: [],
+    playing: true,
+    currentTime: 0,
 	},
 	{
 		title: "Music playlist",
@@ -204,7 +214,9 @@ let rooms = [
 			},
 		],
 		queue: [],
-		isTyping: [],
+    isTyping: [],
+    playing: true,
+    currentTime: 0,
 	},
 ];
 
@@ -331,7 +343,9 @@ io.on("connection", (socket) => {
 			maxUsers: room.maxUsers,
 			users: room.users,
 			queue: room.queue,
-			isTyping: room.isTyping,
+      isTyping: room.isTyping,
+      playing: room.playing,
+      currentTime: room.currentTime,
 		}
 
 		emitMessage(roomName, message);
@@ -359,8 +373,18 @@ io.on("connection", (socket) => {
   socket.on("playpause_changing", (roomName, isPlayingState) => {
     console.log('RECEIVED PLAYPAUSE CHANGE FROM', roomName, ' STATE IS', isPlayingState);
 
+    let room = rooms.find((room) => room.slug === roomName);
+    room.playing = isPlayingState;
+    // socket.broadcast.to(roomName).emit('emit_playpause_change', room.playing);
     io.to(roomName).emit("playpause_changing", isPlayingState);
 
+  })
+
+  socket.on("next_video", (roomName) => {
+    let room = rooms.find((room) => room.slug === roomName);
+    const newPlaylist = room.queue;
+    const newVideo = newPlaylist.shift();
+    io.to(roomName).emit("next_video", newPlaylist, newVideo);
   })
 	socket.on("disconnect", () => {
 		rooms = rooms.map((room) => {
