@@ -22,6 +22,10 @@
 		padding: 10px;
 		background-color: #0f0f12;
 
+		&--title {
+			font-size: 19px;
+		}
+
 		&--start {
 			display: flex;
 			align-items: center;
@@ -108,10 +112,11 @@
 
 .peoplelist {
 	display: flex;
-	align-items: center;
+	align-items: end;
+	margin: 3px 0;
 
 	&__text {
-		margin-left: 0 5px;
+		margin: 0 5px;
 	}
 
 	&__flag {

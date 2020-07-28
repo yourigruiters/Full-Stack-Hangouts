@@ -114,10 +114,12 @@ const ChatSingle = ({ socket, match }) => {
 									!toggleList ? setToggleList(true) : setToggleList(false)
 									}}>
 									<article className="iconbutton iconbutton__people">
-										<LeftArrow />
 										<UserList />
 									</article>
 									<h4 className="people__amount">{users.length}/{roomInfo.maxUsers}</h4>
+									<article className="iconbutton iconbutton__people">
+										<LeftArrow />
+									</article>
 								</a>
 							</article>
 					</section>

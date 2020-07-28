@@ -40,7 +40,7 @@ const Chat = ({ messages, sendChatMessage, chatInput, handleChange, isTyping }) 
         onKeyDown={(e) => shiftSubmit(e)}
         className="chat__input--text"
       />
-      <Button type="primary">Send Message</Button>
+      <Button type="primary">Send</Button>
     </form>
 
     <article className="isTypingSpacer">
