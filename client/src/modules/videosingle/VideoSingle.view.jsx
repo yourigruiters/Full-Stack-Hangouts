@@ -27,14 +27,6 @@ const VideoSingle = ({ socket, match, history }) => {
 			// setIsTyping(roomData.isTyping);
 			// setUsers(roomData.users);
 			setQueue(roomData.queue);
-
-			// const { title, privateroom, category, maxUsers } = roomData;
-			// setRoomInfo({
-			// 	title: title,
-			// 	private: privateroom,
-			// 	category: category,
-			// 	maxUsers: maxUsers,
-			// })
 		});
 
 		socket.on("message", (messageObject) => {
@@ -75,13 +67,9 @@ const VideoSingle = ({ socket, match, history }) => {
 	};
 
 	const handleProgress = (state) => {
-		console.log("RECEIVED STATE", state);
+		console.log("HNADLEPROGRESS", state);
 		socket.emit("video_progress", roomName, state);
 	};
-	// const ref = (e) => {
-	//   console.log('ref', e);
-
-	// }
 
 	return (
 		<section className="videosingle">
@@ -89,12 +77,11 @@ const VideoSingle = ({ socket, match, history }) => {
 				<section className="videosection__header">
 					<h1>Video Room Name</h1>
 				</section>
-				{/* COMPONENT HERE */}
 				<section className="videosection__video">
 					<ReactPlayer
 						className="videosection__video__player"
-						width="auto"
-						height="auto"
+						width="100%"
+						height="100%"
 						ref={videoPlayerReference}
 						url={currentVideo}
 						playing={isPlaying}
@@ -102,16 +89,17 @@ const VideoSingle = ({ socket, match, history }) => {
 						volume={null}
 						muted={true}
 						onProgress={(e) => handleProgress(e)}
+						onSeek={(e) => console.log("onSeek", e)}
 						onPlay={() => sendVideoState(true)}
 						onPause={() => sendVideoState(false)}
 						onEnded={() => playNextVideoInPlaylist()}
 					/>
 				</section>
 				<section className="videosection__content">
-					<section className="videosection__content__info">
-						<h2>Cat Licks Paws (10 Hour Version)</h2>
-						<h4>1.123.345 Views</h4>
-					</section>
+					{/* <section className="videosection__content__info">
+            <h2>Cat Licks Paws (10 Hour Version)</h2>
+            <h4>1.123.345 Views</h4>
+          </section> */}
 					<section className="videosection__content__queue">
 						<section className="videosection__content__queue__header">
 							<h2>Playlist</h2>

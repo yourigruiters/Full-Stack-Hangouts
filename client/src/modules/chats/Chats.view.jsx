@@ -18,7 +18,7 @@ const Chats = ({ socket }) => {
 		title: "Chats",
 		type: "chats",
 		paragraph:
-			"Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugit quae quisquam, soluta, sapiente necessitatibus error doloribus perspiciatis accusantium aut accusamus officia blanditiis. Delectus nesciunt quas expedita.",
+			"Find a topic you are passionate about and join a room to discuss it with like-minded people. If you cannot find a room for you - Create one!"
 	};
 
 	return (

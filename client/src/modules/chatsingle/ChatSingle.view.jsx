@@ -16,10 +16,10 @@ const ChatSingle = ({ socket, match, history }) => {
 	const [messages, setMessages] = React.useState([]);
 	const [isTyping, setIsTyping] = React.useState([]);
 	const [users, setUsers] = React.useState([]);
-	// const [queue, setQueue] = React.useState([]);
 	const [sendIsTyping, setSendIsTyping] = React.useState(false);
 	const [chatInput, setChatInput] = React.useState("");
 	const [toggleList, setToggleList] = React.useState(false);
+	const [password, setPassword] = React.useState(false);
 	const [roomInfo, setRoomInfo] = React.useState([]);
 
 	const roomName = match.params.roomName;
@@ -34,7 +34,6 @@ const ChatSingle = ({ socket, match, history }) => {
 		socket.on("room_data", (roomData) => {
 			setIsTyping(roomData.isTyping);
 			setUsers(roomData.users);
-			// setQueue(roomData.queue);
 
 			const { title, privateroom, category, maxUsers } = roomData;
 			setRoomInfo({
@@ -55,7 +54,8 @@ const ChatSingle = ({ socket, match, history }) => {
 			const today = new Date();
 			const hour = today.getHours();
 			const minutes = today.getMinutes();
-			const time = `${hour}:${minutes}`;
+			const seconds = today.getSeconds();
+			const time = `${hour}:${minutes}:${seconds}`;
 
 			setMessages((prevState) => {
 				const newMessage = {
@@ -125,10 +125,24 @@ const ChatSingle = ({ socket, match, history }) => {
 						<h1 className="chatsection__header--title">{roomInfo.title}</h1>
 					</section>
 
-					<article className="chatsection__header--buttons">
-						<article className="iconbutton iconbutton__lock">
+					<article className="chatsection__header--middle">
+						<article
+							className="iconbutton iconbutton--lock"
+							onClick={() => {
+								!password ? setPassword(true) : setPassword(false);
+							}}
+						>
 							{roomInfo.privateroom ? <ChatLocked /> : <ChatOpen />}
 						</article>
+						<h4
+							className={
+								password && roomInfo.privateroom
+									? "password password__active"
+									: "password password__inactive"
+							}
+						>
+							password
+						</h4>
 					</article>
 
 					<section className="chatsection__header--end">
@@ -139,18 +153,19 @@ const ChatSingle = ({ socket, match, history }) => {
 									!toggleList ? setToggleList(true) : setToggleList(false);
 								}}
 							>
-								<article className="iconbutton iconbutton__people">
-									<LeftArrow />
+								<article className="iconbutton iconbutton--people">
 									<UserList />
 								</article>
-								<h4 className="people__amount">
+								<h4 className="iconbutton--people--amount">
 									{users.length}/{roomInfo.maxUsers}
 								</h4>
+								<article className="iconbutton iconbutton--people">
+									<LeftArrow />
+								</article>
 							</a>
 						</article>
 					</section>
 				</section>
-
 				<Chat
 					sendChatMessage={sendChatMessage}
 					handleChange={handleChange}

@@ -9,11 +9,18 @@ const Chat = ({
 	handleChange,
 	isTyping,
 }) => {
+	// scrollChat breaks scroll but 'works'
+	const scrollChat = () => {
+		const div = document.querySelector(".chatsection__body");
+		div.scrollTop = div.scrollHeight - div.clientHeight;
+	};
+
 	const shiftSubmit = (e) => {
 		if (e.keyCode === 13 && e.shiftKey) {
 		} else if (e.keyCode === 13) {
 			sendChatMessage(e);
 		}
+		scrollChat();
 	};
 
 	return (
@@ -39,7 +46,12 @@ const Chat = ({
 			</section>
 
 			<section className="chatsection__footer">
-				<form onSubmit={(e) => sendChatMessage(e)} className="chat__input">
+				<form
+					onSubmit={(e) => {
+						sendChatMessage(e);
+					}}
+					className="chat__input"
+				>
 					<textarea
 						value={chatInput}
 						placeholder="Type something..."
@@ -47,7 +59,7 @@ const Chat = ({
 						onKeyDown={(e) => shiftSubmit(e)}
 						className="chat__input--text"
 					/>
-					<Button type="primary">Send Message</Button>
+					<Button type="primary">Send</Button>
 				</form>
 
 				<article className="isTypingSpacer">
