@@ -8,6 +8,14 @@ import Select from "../select/Select";
 import "./Main-layout.scss";
 import Room from "../room/Room";
 import FormOverlay from "../form-overlay/Form-overlay";
+import {
+	ChatLocked,
+	ChatOpen,
+	UserList,
+	LeftArrow,
+	Exit,
+	BackArrow,
+} from "../../icons/icons";
 
 const categories = ["animals", "chill", "sports", "series", "music", "various"];
 const maxUsers = [
@@ -219,9 +227,12 @@ const MainLayout = ({ title, type, paragraph, roomsData, socket, history }) => {
 
 								<article className="create-room__buttons">
 									<Button type="create">Create</Button>
-									<Button type="cancel" onClick={() => setCreateIsOpen(false)}>
+									{/* <Button type="cancel" onClick={() => setCreateIsOpen(false)}>
 										Cancel
-									</Button>
+									</Button> */}
+									<a onClick={() => setCreateIsOpen(false)} className="create-room__buttons__exit">
+										<Exit />
+									</a>
 								</article>
 							</form>
 						</FormOverlay>

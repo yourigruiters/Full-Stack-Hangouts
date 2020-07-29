@@ -86,8 +86,32 @@
 		flex-wrap: wrap;
 		justify-content: space-around;
 
-		@media screen and (min-width: $breakpoint-lg) {
+		@media screen and (min-width: $breakpoint-md) {
 			justify-content: space-between;
+		}
+
+		@media screen and (min-width: $breakpoint-lg) {
+			justify-content: flex-start;
+		}
+	}
+}
+
+.create-room__buttons {
+	position: relative;
+
+	&__exit {
+		position: absolute;
+		right: -11px;
+    bottom: -9px;
+	}
+	svg {
+		width: 30px;
+		height: 30px;
+		margin: 0 5px;
+
+		&:hover {
+			fill: $orange-dark;
+			cursor: pointer;
 		}
 	}
 }
