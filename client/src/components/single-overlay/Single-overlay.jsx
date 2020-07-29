@@ -53,7 +53,8 @@ const SingleOverlay = ({ history, type, socket, match }) => {
 			setCurrentVideo(roomData.isPlaying);
 			setQueue(roomData.queue);
 
-			setIsTyping(roomData.isTyping);
+      setIsTyping(roomData.isTyping);
+      console.log('SETTING ROOMDATA USERS', roomData.users)
 			setUsers(roomData.users);
 
 			const { title, privateroom, category, maxUsers } = roomData;
