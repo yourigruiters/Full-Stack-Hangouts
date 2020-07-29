@@ -210,7 +210,7 @@ let rooms = [
 		host: "",
 		private: false,
 		password: "",
-		category: "audio",
+		category: "music",
 		maxUsers: 20,
 		default: true,
 		users: [

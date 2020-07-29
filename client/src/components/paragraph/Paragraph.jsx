@@ -1,8 +1,8 @@
 import React from "react";
 import "./Paragraph.scss";
 
-const Paragraph = ({ children }) => {
-  return <p className="paragraph">{children}</p>;
+const Paragraph = ({ children, className }) => {
+  return <p className={`paragraph ${className}`}>{children}</p>;
 };
 
 export default Paragraph;

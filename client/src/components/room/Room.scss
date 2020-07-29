@@ -1,12 +1,82 @@
 @import "../../styles/variables.scss";
 
 .room {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	height: 165px;
 	width: 100%;
 	max-width: 300px;
 	margin-right: 50px;
 	margin-bottom: 50px;
-	height: auto;
 	padding: 20px;
-	border-radius: 6px;
-	border: 1px solid $orange-light;
+	// border: 1px solid #e67e22;
+	// background-image: url(https://images.unsplash.com/photo-1541781774459-bb2af2f05b55?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1942&q=80);
+	background-position: center;
+	background-size: cover;
+	text-align: end;
+
+	&__header {
+		display: flex;
+    width: 100%;
+    justify-content: flex-end;
+
+		&__text {
+			position: absolute;
+			left: 0px;
+			padding: 5px 10px 5px 15px;
+			background-color:rgba(0,0,0,0.7);
+			text-align: left;
+			border-radius: 0px 3px 3px 0;
+		}
+
+		&__title {
+			color: $white;
+			font-size: 16px;
+			font-weight: 400;
+		}
+	
+		&__category {
+			color: $white;
+			font-style: italic;
+			font-size: 14px;
+		}
+
+		&__people {
+			display: flex;
+			justify-content: flex-end;
+	
+			svg {
+				width: 20px;
+				height: 20px;
+				margin: 0 5px;
+				fill: $orange-dark;
+			}
+		}
+
+		&__numbers {
+			color: $orange-dark;
+		}
+	}
+
+	&__footer {
+		display: flex;
+		justify-content: flex-end;
+		width: 100%;
+
+		&__input {
+			padding: 0 10px;
+			margin-right: 10px;
+			border: none;
+			border-radius: 6px;
+			background-color: $input-background;
+			color: $light-grey;
+			text-align: center;
+
+			&:focus {
+				background-color: $background-dark;
+			}
+		}
+	}
 }
