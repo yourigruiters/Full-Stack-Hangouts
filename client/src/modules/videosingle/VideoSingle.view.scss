@@ -10,7 +10,8 @@
 	display: flex;
 	width: 75%;
 	flex-direction: column;
-	padding-bottom: 15px;
+  padding-bottom: 15px;
+  
 
 	&__header {
 		background-color: $background-dark;
@@ -20,8 +21,9 @@
 		padding: 5px;
   }
   &__video {
+    height: 100%;
     position: relative;
-    padding-top: 56.25%; /* Player ratio: 100 / (1280 / 720) */
+    
     &__player {
       // position: absolute;
       top: 0;
