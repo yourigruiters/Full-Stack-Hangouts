@@ -1,6 +1,7 @@
 @import "../../styles/variables.scss";
 
 .room {
+	position: relative;
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
@@ -10,24 +11,36 @@
 	margin-right: 50px;
 	margin-bottom: 50px;
 	padding: 20px;
-	border: 1px solid #e67e22;
-	background-image: url(https://images.unsplash.com/photo-1541781774459-bb2af2f05b55?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1942&q=80);
+	// border: 1px solid #e67e22;
+	// background-image: url(https://images.unsplash.com/photo-1541781774459-bb2af2f05b55?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1942&q=80);
 	background-position: center;
 	background-size: cover;
 	text-align: end;
 
 	&__header {
 		display: flex;
-		justify-content: space-between;
-		text-align: left;
+    width: 100%;
+    justify-content: flex-end;
+
+		&__text {
+			position: absolute;
+			left: 0px;
+			padding: 5px 10px 5px 15px;
+			background-color:rgba(0,0,0,0.7);
+			text-align: left;
+			border-radius: 0px 3px 3px 0;
+		}
 
 		&__title {
-			color: black;
+			color: $white;
+			font-size: 16px;
+			font-weight: 400;
 		}
 	
 		&__category {
-			color: black;
+			color: $white;
 			font-style: italic;
+			font-size: 14px;
 		}
 
 		&__people {
@@ -40,12 +53,8 @@
 				margin: 0 5px;
 				fill: $orange-dark;
 			}
-		
-			// &:hover path {
-			// 	fill: $orange-light;
-			// }
-	
 		}
+
 		&__numbers {
 			color: $orange-dark;
 		}
@@ -53,12 +62,21 @@
 
 	&__footer {
 		display: flex;
-		justify-content: space-between;
+		justify-content: flex-end;
 		width: 100%;
 
 		&__input {
+			padding: 0 10px;
+			margin-right: 10px;
 			border: none;
 			border-radius: 6px;
+			background-color: $input-background;
+			color: $light-grey;
+			text-align: center;
+
+			&:focus {
+				background-color: $background-dark;
+			}
 		}
 	}
 }
