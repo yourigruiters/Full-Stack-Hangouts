@@ -24,7 +24,7 @@ const Chat = ({
 
 	const scrollToBottom = () => {
 		if (chatArea) {
-			chatArea.current.scrollTop = chatArea.current.scrollHeight;
+			console.log("test");
 		}
 	};
 
