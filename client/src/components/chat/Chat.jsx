@@ -19,9 +19,7 @@ const Chat = ({ messages, sendChatMessage, chatInput, handleChange, isTyping }) 
         <article key={index} className="chat__message">
           <article className="chat__message--time">{message.timestamp}</article>
           <p className={`chat__message--text chat__message--${message.type}`}>
-            <span>
-              <b>{message.name}: </b>
-            </span>
+            <span><b>{message.name}: </b></span>
             {message.message}
           </p>
         </article>

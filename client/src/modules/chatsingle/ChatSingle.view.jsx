@@ -68,7 +68,7 @@ const ChatSingle = ({ socket, match }) => {
 
 	const sendChatMessage = (event) => {
 		event.preventDefault();
-
+		
 		const message = {
 			room: roomName,
 			message: chatInput,
@@ -104,32 +104,31 @@ const ChatSingle = ({ socket, match }) => {
 						<h1 className="chatsection__header--title">{roomInfo.title}</h1>
 					</section>
 
-					<article className="chatsection__header--buttons">
-						<article className="iconbutton iconbutton__lock" onClick={() => {
-									!password ? setPassword(true) : setPassword(false)
-									}}>
+					<article className="chatsection__header--middle">
+						<article className="iconbutton iconbutton--lock" onClick={() => {
+								!password ? setPassword(true) : setPassword(false)
+								}}>
 							{roomInfo.privateroom ? <ChatLocked /> : <ChatOpen /> }
 						</article>
-						<h4 className={password ? 'password password__active' : 'password password__inactive'}>password</h4>
+						<h4 className={password && !roomInfo.privateroom ? 'password password__active' : 'password password__inactive'}>password</h4>
 					</article>
 
 					<section className="chatsection__header--end">
-							<article className="buttons">
-								<a className="buttons__toggle" onClick={() => {
-									!toggleList ? setToggleList(true) : setToggleList(false)
-									}}>
-									<article className="iconbutton iconbutton__people">
-										<UserList />
-									</article>
-									<h4 className="iconbutton__people--amount">{users.length}/{roomInfo.maxUsers}</h4>
-									<article className="iconbutton iconbutton__people">
-										<LeftArrow />
-									</article>
-								</a>
-							</article>
+						<article className="buttons">
+							<a className="buttons__toggle" onClick={() => {
+								!toggleList ? setToggleList(true) : setToggleList(false)
+								}}>
+								<article className="iconbutton iconbutton--people">
+									<UserList />
+								</article>
+								<h4 className="iconbutton--people--amount">{users.length}/{roomInfo.maxUsers}</h4>
+								<article className="iconbutton iconbutton--people">
+									<LeftArrow />
+								</article>
+							</a>
+						</article>
 					</section>
 				</section>
-
 				<Chat sendChatMessage={sendChatMessage} handleChange={handleChange} chatInput={chatInput} isTyping={isTyping} messages={messages}/>
 			</section>
 
@@ -147,9 +146,7 @@ const ChatSingle = ({ socket, match }) => {
 					{users.map((user, index) => (
 						<article key={index} className="peoplelist">
 							<img src={`https://www.countryflags.io/${user.countryCode}/flat/64.png`} className="peoplelist__flag"/>
-							<p className="peoplelist__text">
-								{user.name}
-							</p>
+							<p className="peoplelist__text">{user.name}</p>
 						</article>
 					))}
 				</article> 
