@@ -1,12 +1,64 @@
 @import "../../styles/variables.scss";
 
 .room {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	height: 165px;
 	width: 100%;
 	max-width: 300px;
 	margin-right: 50px;
 	margin-bottom: 50px;
-	height: auto;
 	padding: 20px;
-	border-radius: 6px;
-	border: 1px solid $orange-light;
+	border: 1px solid #e67e22;
+	background-image: url(https://images.unsplash.com/photo-1541781774459-bb2af2f05b55?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1942&q=80);
+	background-position: center;
+	background-size: cover;
+	text-align: end;
+
+	&__header {
+		display: flex;
+		justify-content: space-between;
+		text-align: left;
+
+		&__title {
+			color: black;
+		}
+	
+		&__category {
+			color: black;
+			font-style: italic;
+		}
+
+		&__people {
+			display: flex;
+			justify-content: flex-end;
+	
+			svg {
+				width: 20px;
+				height: 20px;
+				margin: 0 5px;
+				fill: $orange-dark;
+			}
+		
+			// &:hover path {
+			// 	fill: $orange-light;
+			// }
+	
+		}
+		&__numbers {
+			color: $orange-dark;
+		}
+	}
+
+	&__footer {
+		display: flex;
+		justify-content: space-between;
+		width: 100%;
+
+		&__input {
+			border: none;
+			border-radius: 6px;
+		}
+	}
 }
