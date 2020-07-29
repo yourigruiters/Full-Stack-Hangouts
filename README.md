@@ -72,6 +72,8 @@ The application has been built with Youtube as the primary focus, but supports S
 
 ##### Landing page
 
+![Homepage](/readme_screenshots/homepage.PNG)
+
 ###### Menu Room (Pick a Chat)
 
 ###### Chat Room
