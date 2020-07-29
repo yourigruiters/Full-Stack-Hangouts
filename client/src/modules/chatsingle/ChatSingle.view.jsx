@@ -110,7 +110,7 @@ const ChatSingle = ({ socket, match }) => {
 								}}>
 							{roomInfo.privateroom ? <ChatLocked /> : <ChatOpen /> }
 						</article>
-						<h4 className={password && !roomInfo.privateroom ? 'password password__active' : 'password password__inactive'}>password</h4>
+						<h4 className={password && roomInfo.privateroom ? 'password password__active' : 'password password__inactive'}>password</h4>
 					</article>
 
 					<section className="chatsection__header--end">

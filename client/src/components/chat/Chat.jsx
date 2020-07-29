@@ -4,12 +4,19 @@ import Button from '../button/Button'
 
 const Chat = ({ messages, sendChatMessage, chatInput, handleChange, isTyping }) => {
 
+  // scrollChat breaks scroll but 'works'
+  const scrollChat = () => {
+    const div = document.querySelector('.chatsection__body');
+    div.scrollTop = div.scrollHeight - div.clientHeight;
+  }
+
   const shiftSubmit = (e) => {
     if (e.keyCode === 13 && e.shiftKey) {
 
     } else if (e.keyCode === 13) {
       sendChatMessage(e)
     }
+    scrollChat()
   }
 
   return <section className="chat">

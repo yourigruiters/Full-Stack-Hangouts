@@ -17,8 +17,7 @@ const Videos = ({ socket }) => {
 	const mainLayoutData = {
 		title: "Videos",
 		type: "videos",
-		paragraph:
-			"Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugit quae quisquam, soluta, sapiente necessitatibus error doloribus perspiciatis accusantium aut accusamus officia blanditiis. Delectus nesciunt quas expedita.",
+		paragraph: "Here in the video section you can filter through rooms and find a topic you are interested in - Create your own room to watch videos together with your friends or join a public room and make new ones."
 	};
 
 	return (
