@@ -6,7 +6,6 @@ import Input from "../input/Input";
 import ReactPlayer from "react-player";
 import FormOverlay from "../form-overlay/Form-overlay";
 import getYoutubeID from "get-youtube-id";
-import axios from "axios";
 
 const Video = ({
 	queue,
@@ -17,7 +16,9 @@ const Video = ({
 	currentVideo,
 	isPlaying,
 	roomName,
+	user,
 	socket,
+	host,
 }) => {
 	const [createIsOpen, setCreateIsOpen] = React.useState(false);
 	const [formData, setFormData] = React.useState({
@@ -32,6 +33,14 @@ const Video = ({
 	const YouTubeGetID = (url) => {
 		const youtubeUrl = getYoutubeID(url);
 		return youtubeUrl !== null;
+	};
+
+	const becomeHost = () => {
+		socket.emit("become_host", roomName);
+	};
+
+	const syncToHostProgress = () => {
+		socket.emit("sync_to_host", roomName);
 	};
 
 	const handleSubmit = (event) => {
@@ -80,7 +89,6 @@ const Video = ({
 					volume={null}
 					muted={true}
 					onProgress={(e) => handleProgress(e)}
-					onSeek={(e) => console.log("onSeek", e)}
 					onPlay={() => sendVideoState(true)}
 					onPause={() => sendVideoState(false)}
 					onEnded={() => playNextVideoInPlaylist()}
@@ -95,9 +103,26 @@ const Video = ({
 				)}
 			</section>
 			<section className="video__content">
+				{host === "" && <div>HAAAAAAAAAAAEREARER MAKE A FUCKING HOST</div>}
 				<section className="video__content__queue">
 					<section className="video__content__queue__header">
 						<h2>Queue</h2>
+						<h3>{host}</h3>
+						{host === "" && (
+							<Button type="primary" onClick={() => becomeHost()}>
+								Become host
+							</Button>
+						)}
+						{host === user && (
+							<Button type="primary" onClick={() => playNextVideoInPlaylist()}>
+								Next video
+							</Button>
+						)}
+						{host !== user && host !== "" && (
+							<Button type="primary" onClick={() => syncToHostProgress()}>
+								Sync to host
+							</Button>
+						)}
 						<article className="video__content__queue__header__buttons">
 							<Button
 								type="primary"

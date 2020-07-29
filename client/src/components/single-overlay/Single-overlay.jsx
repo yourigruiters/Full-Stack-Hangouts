@@ -28,32 +28,33 @@ const SingleOverlay = ({ history, type, socket, match }) => {
 	const [isPlaying, setIsPlaying] = React.useState(true);
 	const [queue, setQueue] = React.useState([]);
 	const [currentVideo, setCurrentVideo] = React.useState("");
+	const [host, setHost] = React.useState("");
+	const [user, setUser] = React.useState("");
 
 	const videoPlayerReference = React.useRef(null);
-
-	React.useEffect(() => {
-		if (currentVideo === "" && queue.length > 0) {
-			socket.emit("next_video", roomName);
-		}
-	}, [queue]);
-
 	const roomName = match.params.roomName;
-	const roomPassword = match.params.password;
 
 	React.useEffect(() => {
+		console.log("joining on roomname", roomName);
 		socket.emit("joining_room", roomName);
+		socket.emit("get_visitor", roomName);
 
 		socket.on("room_not_found", () => {
 			history.push(`/dashboard/${type}`);
 		});
 
+		socket.on("get_visitor", (user) => {
+			setUser(user.name);
+		});
+
 		socket.on("room_data", (roomData) => {
+			console.log("roomData", roomData);
 			setCurrentVideo(roomData.isPlaying);
 			setQueue(roomData.queue);
 
-      setIsTyping(roomData.isTyping);
-      console.log('SETTING ROOMDATA USERS', roomData.users)
+			setIsTyping(roomData.isTyping);
 			setUsers(roomData.users);
+			setHost(roomData.host);
 
 			const {
 				title,
@@ -108,8 +109,11 @@ const SingleOverlay = ({ history, type, socket, match }) => {
 			setUsers(usersStillThere);
 		});
 
+		socket.on("sync_to_host", (currentTime) => {
+			videoPlayerReference.current.seekTo(currentTime, "seconds");
+		});
+
 		socket.on("new_queue", (queue) => {
-			console.log(queue);
 			setQueue((prevState) => {
 				return queue;
 			});
@@ -119,13 +123,15 @@ const SingleOverlay = ({ history, type, socket, match }) => {
 			history.push(`/dashboard/${type}`);
 		});
 
+		socket.on("new_host", (host) => {
+			setHost(host);
+		});
+
 		socket.on("playpause_changing", (isPlayingState) => {
-			console.log("RECEIVED STATE", isPlayingState);
 			setIsPlaying(isPlayingState);
 		});
 
 		socket.on("next_video", (newPlaylist, newVideo) => {
-			console.log("Trying to set new video", newPlaylist, newVideo);
 			setQueue((prevState) => {
 				return newPlaylist;
 			});
@@ -181,16 +187,24 @@ const SingleOverlay = ({ history, type, socket, match }) => {
 
 	// FROM CHRIS
 	const sendVideoState = (videoState) => {
-		socket.emit("playpause_changing", roomName, videoState);
+		if (host === user) {
+			socket.emit("playpause_changing", roomName, videoState);
+		}
 	};
 
 	const playNextVideoInPlaylist = () => {
-		setCurrentVideo("");
-		socket.emit("next_video", roomName);
+		if (host === user) {
+			console.log("FIRING NEXT VIDEO");
+			setCurrentVideo("");
+			socket.emit("next_video", roomName);
+		}
 	};
 
 	const handleProgress = (state) => {
-		socket.emit("video_progress", roomName, state);
+		console.log(host, user, "testing users");
+		if (host === user) {
+			socket.emit("video_progress", roomName, state);
+		}
 	};
 	// STOP FROM CHRIS
 
@@ -242,7 +256,7 @@ const SingleOverlay = ({ history, type, socket, match }) => {
 									{users.length}/{roomInfo.maxUsers}
 								</h4>
 								<article className="iconbutton iconbutton--people">
-									{type === "videos" ? <NavbarVideos/> : <UserList />}
+									{type === "videos" ? <NavbarVideos /> : <UserList />}
 								</article>
 							</a>
 						</article>
@@ -259,6 +273,8 @@ const SingleOverlay = ({ history, type, socket, match }) => {
 						isPlaying={isPlaying}
 						roomName={roomName}
 						socket={socket}
+						host={host}
+						user={user}
 					/>
 				) : (
 					<Chat
