@@ -8,11 +8,24 @@ const Chat = ({
 	chatInput,
 	handleChange,
 	isTyping,
+	error,
 }) => {
 	// scrollChat breaks scroll but 'works'
 	const scrollChat = () => {
 		const div = document.querySelector(".chatsection__body");
 		div.scrollTop = div.scrollHeight - div.clientHeight;
+	};
+
+	const chatArea = React.useRef(document.createElement("article"));
+
+	React.useEffect(() => {
+		scrollToBottom();
+	}, [messages]);
+
+	const scrollToBottom = () => {
+		if (chatArea) {
+			chatArea.current.scrollTop = chatArea.current.scrollHeight;
+		}
 	};
 
 	const shiftSubmit = (e) => {
@@ -26,7 +39,7 @@ const Chat = ({
 	return (
 		<section className="chat">
 			<section className="chatsection__body">
-				<article className="chat__area">
+				<article className="chat__area" ref={chatArea}>
 					{messages.map((message, index) => (
 						<article key={index} className="chat__message">
 							<article className="chat__message--time">
@@ -36,7 +49,12 @@ const Chat = ({
 								className={`chat__message--text chat__message--${message.type}`}
 							>
 								<span>
-									<b>{message.name}: </b>
+									<b
+										style={{ color: message.chatColor }}
+										className={`chat__user chat__user--${message.chatColor}`}
+									>
+										{message.name}:{" "}
+									</b>
 								</span>
 								{message.message}
 							</p>
@@ -63,27 +81,24 @@ const Chat = ({
 				</form>
 
 				<article className="isTypingSpacer">
-					{isTyping.length > 0 && isTyping.length > 2 ? (
-						<p className="isTypingSpacer__text">
-							Multiple people are typing...
-						</p>
-					) : (
-						<p className="isTypingSpacer__text">
-							{isTyping.map((user, index) => {
-								let string = "";
-								string += user.name;
-								if (index === 0 && isTyping.length === 1) {
-									string += " is typing...";
-								} else if (index === 0) {
-									string += " and ";
-								}
-								if (index === 1) {
-									string += " are typing...";
-								}
-								return string;
-							})}
-						</p>
-					)}
+					<p className="isTypingSpacer__text">
+						{error && <span>Can't send empty message!</span>}
+						{isTyping.length > 0 && isTyping.length > 2
+							? "Multiple peopleare typing..."
+							: isTyping.map((user, index) => {
+									let string = "";
+									string += user.name;
+									if (index === 0 && isTyping.length === 1) {
+										string += " is typing...";
+									} else if (index === 0) {
+										string += " and ";
+									}
+									if (index === 1) {
+										string += " are typing...";
+									}
+									return string;
+							  })}
+					</p>
 				</article>
 			</section>
 		</section>

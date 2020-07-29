@@ -19,6 +19,7 @@ const ChatSingle = ({ socket, match, history }) => {
 	const [sendIsTyping, setSendIsTyping] = React.useState(false);
 	const [chatInput, setChatInput] = React.useState("");
 	const [toggleList, setToggleList] = React.useState(false);
+	const [error, setError] = React.useState(false);
 	const [password, setPassword] = React.useState(false);
 	const [roomInfo, setRoomInfo] = React.useState([]);
 
@@ -49,19 +50,23 @@ const ChatSingle = ({ socket, match, history }) => {
 		});
 
 		socket.on("message", (messageObject) => {
-			const { user, type, message } = messageObject;
+			const { user, type, message, chatColor } = messageObject;
 
 			const today = new Date();
-			const hour = today.getHours();
-			const minutes = today.getMinutes();
-			const seconds = today.getSeconds();
+			let hour = today.getHours();
+			hour = hour.toString().length === 2 ? hour : "0" + hour;
+			let minutes = today.getMinutes();
+			minutes = minutes.toString().length === 2 ? minutes : "0" + minutes;
+			let seconds = today.getSeconds();
+			seconds = seconds.toString().length === 2 ? seconds : "0" + seconds;
 			const time = `${hour}:${minutes}:${seconds}`;
 
 			setMessages((prevState) => {
 				const newMessage = {
 					name: user,
 					timestamp: time,
-					type: type,
+					type,
+					chatColor,
 				};
 				if (type === "joined" || type === "left") {
 					newMessage.message = `has ${type} the chatroom`;
@@ -84,6 +89,13 @@ const ChatSingle = ({ socket, match, history }) => {
 
 	const sendChatMessage = (event) => {
 		event.preventDefault();
+
+		if (chatInput === "") {
+			setError(true);
+			return;
+		} else {
+			setError(false);
+		}
 
 		const message = {
 			room: roomName,
@@ -168,6 +180,7 @@ const ChatSingle = ({ socket, match, history }) => {
 				</section>
 				<Chat
 					sendChatMessage={sendChatMessage}
+					error={error}
 					handleChange={handleChange}
 					chatInput={chatInput}
 					isTyping={isTyping}
