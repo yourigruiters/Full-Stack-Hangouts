@@ -8,7 +8,6 @@ import {
 	ChatLocked,
 	ChatOpen,
 	UserList,
-	LeftArrow,
 	Exit,
 	BackArrow,
 } from "../../icons/icons";
@@ -32,7 +31,8 @@ const SingleOverlay = ({ history, type, socket, match }) => {
 
 	React.useEffect(() => {
 		console.log("NEW VIDEO URL HAS ARRIVED, SHOULD START", isPlaying);
-		// videoPlayerReference.playing = true;
+    // videoPlayerReference.playing = true;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [currentVideo, queue]);
 
 	// STOP FROM CHRIS
@@ -133,7 +133,8 @@ const SingleOverlay = ({ history, type, socket, match }) => {
 			videoPlayerReference.current.seekTo(roomData.currentTime, "seconds");
 		});
 
-		// STOP FROM CHRIS
+    // STOP FROM CHRIS
+    // eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	const sendChatMessage = (event) => {

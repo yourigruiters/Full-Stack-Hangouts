@@ -3,7 +3,6 @@ import * as _ from "lodash";
 import "./Homepage.view.scss";
 import Button from "../../components/button/Button";
 import Paragraph from "../../components/paragraph/Paragraph";
-import homepage from "../../images/homepage.jpg";
 
 const Homepage = ({
 	socket,

@@ -3,7 +3,6 @@ import "./Video.scss";
 import Button from "../button/Button";
 import Paragraph from "../paragraph/Paragraph";
 import Input from "../input/Input";
-import Select from "../select/Select";
 import ReactPlayer from "react-player";
 import FormOverlay from "../form-overlay/Form-overlay";
 

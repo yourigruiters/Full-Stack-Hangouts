@@ -1,5 +1,5 @@
 import React from "react";
-import { Switch, Route, withRouter, useLocation } from "react-router-dom";
+import { Switch, Route, withRouter } from "react-router-dom";
 import axios from "axios";
 import {
 	uniqueNamesGenerator,
@@ -45,7 +45,8 @@ const App = ({ history }) => {
 	React.useEffect(() => {
 		if (currentPage === "/") {
 			generateUserData();
-		}
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [history.location.pathname]);
 
 	React.useEffect(() => {
@@ -71,7 +72,8 @@ const App = ({ history }) => {
 			}
 		}
 
-		setIsLoading(false);
+    setIsLoading(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	const generateUserData = () => {
