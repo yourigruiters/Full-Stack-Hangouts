@@ -43,10 +43,10 @@ const App = ({ history }) => {
 	const showSidebar = !showSidebarArray.includes(currentPage);
 
 	React.useEffect(() => {
-		if (currentPage === "/") {
+		if (currentPage === "/" && visitorData.name === "") {
 			generateUserData();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [history.location.pathname]);
 
 	React.useEffect(() => {
@@ -72,8 +72,8 @@ const App = ({ history }) => {
 			}
 		}
 
-    setIsLoading(false);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+		setIsLoading(false);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	const generateUserData = () => {
@@ -139,8 +139,7 @@ const App = ({ history }) => {
 										render={(props) => <Videos {...props} socket={socket} />}
 									/>
 									<Route
-										path="/dashboard/videos/:roomName"
-										exact
+										path="/dashboard/videos/:roomName/:password?"
 										render={(props) => (
 											<VideoSingle {...props} socket={socket} />
 										)}
@@ -151,8 +150,7 @@ const App = ({ history }) => {
 										render={(props) => <Chats {...props} socket={socket} />}
 									/>
 									<Route
-										path="/dashboard/chats/:roomName"
-										exact
+										path="/dashboard/chats/:roomName/:password?"
 										render={(props) => (
 											<ChatSingle {...props} socket={socket} />
 										)}

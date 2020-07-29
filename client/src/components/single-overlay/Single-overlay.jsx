@@ -38,6 +38,7 @@ const SingleOverlay = ({ history, type, socket, match }) => {
 	}, [queue]);
 
 	const roomName = match.params.roomName;
+	const roomPassword = match.params.password;
 
 	React.useEffect(() => {
 		socket.emit("joining_room", roomName);
@@ -47,11 +48,6 @@ const SingleOverlay = ({ history, type, socket, match }) => {
 		});
 
 		socket.on("room_data", (roomData) => {
-			console.log("Checking current time", roomData.currentTime);
-			if (roomData.currentTime !== 0 && videoPlayerReference.current) {
-				videoPlayerReference.current.seekTo(roomData.currentTime, "seconds");
-			}
-
 			setCurrentVideo(roomData.isPlaying);
 			setQueue(roomData.queue);
 
@@ -59,10 +55,17 @@ const SingleOverlay = ({ history, type, socket, match }) => {
       console.log('SETTING ROOMDATA USERS', roomData.users)
 			setUsers(roomData.users);
 
-			const { title, privateroom, category, maxUsers } = roomData;
+			const {
+				title,
+				privateroom,
+				category,
+				maxUsers,
+				passwordToRoom,
+			} = roomData;
 			setRoomInfo({
 				title: title,
 				private: privateroom,
+				password: passwordToRoom,
 				category: category,
 				maxUsers: maxUsers,
 			});
