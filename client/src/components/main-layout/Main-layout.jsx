@@ -64,10 +64,9 @@ const MainLayout = ({ title, type, paragraph, roomsData, socket, history }) => {
 	const handleSubmit = (event) => {
 		event.preventDefault();
 
-		const checkFields = ["title", "password", "category"];
+		const checkFields = ["title", "category"];
 		const checkFieldErrors = {
 			title: "Please enter a valid title",
-			password: "Please enter a valid password",
 			category: "Please chose a category",
 		};
 		const errors = {};
@@ -89,7 +88,7 @@ const MainLayout = ({ title, type, paragraph, roomsData, socket, history }) => {
 				slug: slug,
 				type: type,
 				host: "",
-				private: formData.private,
+				private: formData.password !== "",
 				password: formData.password,
 				category: formData.category,
 				maxUsers: formData.maxUsers,
@@ -110,8 +109,8 @@ const MainLayout = ({ title, type, paragraph, roomsData, socket, history }) => {
 	React.useEffect(() => {
 		socket.on("create_room", (slug) => {
 			history.push(`/dashboard/${type}/${slug}`);
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+		});
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	React.useEffect(() => {
@@ -145,8 +144,8 @@ const MainLayout = ({ title, type, paragraph, roomsData, socket, history }) => {
 			}
 
 			setRooms(filteredRooms);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [filterData]);
 
 	return (
@@ -230,7 +229,10 @@ const MainLayout = ({ title, type, paragraph, roomsData, socket, history }) => {
 									{/* <Button type="cancel" onClick={() => setCreateIsOpen(false)}>
 										Cancel
 									</Button> */}
-									<a onClick={() => setCreateIsOpen(false)} className="create-room__buttons__exit">
+									<a
+										onClick={() => setCreateIsOpen(false)}
+										className="create-room__buttons__exit"
+									>
 										<Exit />
 									</a>
 								</article>
