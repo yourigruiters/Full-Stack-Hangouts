@@ -1,9 +1,9 @@
-# Limbo Hangouts - Final Project @ <salt/>
-2-week Full-stack application using Websockets built as our final project for <salt/>.
+# Limbo Hangouts - Final Project @ &lt;/salt&gt
+2-week Full-stack application using Websockets built as our final project for &lt;/salt&gt.
 
 ## Description
 
-Limbo Hangouts is a full-stack application built in 2 weeks as our final project for our Full Stack Web Developer course at <salt/>
+Limbo Hangouts is a full-stack application built in 2 weeks as our final project for our Full Stack Web Developer course at &lt;/salt&gt
 
 The requirements for the application was as following:
 The application...
