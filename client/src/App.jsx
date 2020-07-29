@@ -91,7 +91,6 @@ const App = ({ history }) => {
 				setVisitorData(visitor);
 			})
 			.catch((err) => {
-<<<<<<< HEAD
         if(err.message) {
           const visitor = {
             name: uniqueNamesGenerator(generateNameConfig),
@@ -103,19 +102,6 @@ const App = ({ history }) => {
         }
         console.error('Error:', err.message)
       });
-=======
-				if (err.message === "Network Error") {
-					const visitor = {
-						name: uniqueNamesGenerator(generateNameConfig),
-						countryCode: "SE",
-						country: "Sweden",
-					};
-
-					setVisitorData(visitor);
-				}
-				console.error("Error:", err.message);
-			});
->>>>>>> f5c6201bf5e062f6b56bacfe8c9780eca4a39847
 	};
 
 	return (
