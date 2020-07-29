@@ -232,8 +232,6 @@ app.get("/", (req, res) => {
 const emitMessage = (roomName, message) => {
 	if (roomName && message) {
 		io.to(roomName).emit("message", message);
-	} else {
-		console.log("ROOMNAME OR MESSAGE MISSING");
 	}
 };
 
@@ -273,7 +271,6 @@ const emitTypingChange = (roomName, type, socket) => {
 
 io.on("connection", (socket) => {
 	socket.on("connect_visitor", (visitorData) => {
-		console.log(visitorData, "connected visitor");
 		socket.user = visitorData;
 		// FIX: Check visitorData to ensure everything is correct
 		socket.emit("connect_visitor");
@@ -299,12 +296,16 @@ io.on("connection", (socket) => {
 	});
 
 	socket.on("joining_room", (roomName) => {
+		if (!socket.user) {
+			socket.emit("room_not_found");
+			return;
+		}
+
 		socket.join(roomName);
 
 		let room = rooms.find((room) => room.slug === roomName);
 
 		if (room === undefined) {
-			console.log("room doesn't exist, sending error");
 			socket.emit("room_not_found");
 			return;
 		}
@@ -347,11 +348,9 @@ io.on("connection", (socket) => {
 			return;
 		}
 
-		console.log("OLD ROOMS", rooms);
 		if (rooms[roomIndex].users.length < 1) {
 			rooms.splice(roomIndex, 1);
 			socket.emit("leaving_room");
-			console.log("NEW ROOMS", rooms);
 			return;
 		}
 
@@ -408,28 +407,25 @@ io.on("connection", (socket) => {
 	});
 
 	socket.on("disconnect", () => {
-		rooms = rooms.map((room) => {
+		rooms.forEach((room) => {
 			if (socket.user) {
+				const foundUser = room.users.findIndex(
+					(user) => user.name === socket.user.name
+				);
+
+				if (foundUser !== -1) {
+					room.users.splice(foundUser, 1);
+
+					const message = {
+						user: socket.user.name,
+						type: "left",
+					};
+
+					io.to(room.slug).emit("message", message);
+				}
+
 				emitTypingChange(room.slug, "stopped_typing", socket);
 			}
-
-			// FIX kick user out, were only checking to write a message
-			const foundUser = room.users.findIndex(
-				(user) => user.name === socket.user.name
-			);
-
-			if (foundUser !== -1) {
-				room.users.splice(foundUser, 1);
-
-				const message = {
-					user: socket.user.name,
-					type: "left",
-				};
-
-				io.to(room.slug).emit("message", message);
-			}
-
-			return room;
 		});
 	});
 });
