@@ -405,7 +405,7 @@ io.on("connection", (socket) => {
     if(Math.abs((room.currentTime - stateObject.playedSeconds)) > 3 ) {
       console.log('RUNNING EMIT')
       room.currentTime = stateObject.playedSeconds;
-      io.to(roomName).emit("video_progress", room.currentTime);
+      io.to(roomName).emit("video_progress", room);
     } else {
       room.currentTime = stateObject.playedSeconds;
     }

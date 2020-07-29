@@ -24,8 +24,8 @@ const VideoSingle = ({ socket, match, history }) => {
 		});
 
 		socket.on("room_data", (roomData) => {
-			// setIsTyping(roomData.isTyping);
-			// setUsers(roomData.users);
+
+      videoPlayerReference.current.seekTo(roomData.currentTime, "seconds");
 			setQueue(roomData.queue);
 		});
 
@@ -53,8 +53,9 @@ const VideoSingle = ({ socket, match, history }) => {
 			setCurrentVideo(newVideo);
 		});
 
-		socket.on("video_progress", (currentTime) => {
-			videoPlayerReference.current.seekTo(currentTime, "seconds");
+		socket.on("video_progress", (roomData) => {
+      setIsPlaying(true);
+			videoPlayerReference.current.seekTo(roomData.currentTime, "seconds");
 		});
 	}, []);
 
