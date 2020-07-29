@@ -84,5 +84,10 @@
 		display: flex;
 		flex-direction: row;
 		flex-wrap: wrap;
+		justify-content: space-around;
+
+		@media screen and (min-width: $breakpoint-lg) {
+			justify-content: space-between;
+		}
 	}
 }
