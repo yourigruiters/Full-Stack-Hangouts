@@ -24,18 +24,18 @@ const SingleOverlay = ({ history, type, socket, match }) => {
 	const [password, setPassword] = React.useState(false);
 	const [roomInfo, setRoomInfo] = React.useState([]);
 
-	// FROM CHRIS
 	const [isPlaying, setIsPlaying] = React.useState(true);
 	const [queue, setQueue] = React.useState([]);
 	const [currentVideo, setCurrentVideo] = React.useState("");
-	let videoPlayerReference = React.useRef(null);
+
+	const videoPlayerReference = React.useRef(null);
 
 	React.useEffect(() => {
-		console.log("NEW VIDEO URL HAS ARRIVED, SHOULD START", isPlaying);
-		// videoPlayerReference.playing = true;
-	}, [currentVideo, queue]);
-
-	// STOP FROM CHRIS
+		if (currentVideo === "" && queue.length > 0) {
+			setCurrentVideo("");
+			socket.emit("next_video", roomName);
+		}
+	}, [queue]);
 
 	const roomName = match.params.roomName;
 
@@ -47,16 +47,13 @@ const SingleOverlay = ({ history, type, socket, match }) => {
 		});
 
 		socket.on("room_data", (roomData) => {
-			// FROM CHRIS
 			console.log("Checking current time", roomData.currentTime);
 			if (roomData.currentTime !== 0 && videoPlayerReference.current) {
-				// NOT WORKING ?
-				console.log(videoPlayerReference);
 				videoPlayerReference.current.seekTo(roomData.currentTime, "seconds");
 			}
+
 			setCurrentVideo(roomData.isPlaying);
 			setQueue(roomData.queue);
-			// STOP FROM CHRIS
 
 			setIsTyping(roomData.isTyping);
 			setUsers(roomData.users);
@@ -107,11 +104,16 @@ const SingleOverlay = ({ history, type, socket, match }) => {
 			setUsers(usersStillThere);
 		});
 
+		socket.on("new_queue", (queue) => {
+			console.log(queue);
+			setQueue((prevState) => {
+				return queue;
+			});
+		});
+
 		socket.on("leaving_room", () => {
 			history.push(`/dashboard/${type}`);
 		});
-
-		// FROM CHRIS
 
 		socket.on("playpause_changing", (isPlayingState) => {
 			console.log("RECEIVED STATE", isPlayingState);
@@ -130,10 +132,11 @@ const SingleOverlay = ({ history, type, socket, match }) => {
 
 		socket.on("video_progress", (roomData) => {
 			setIsPlaying(true);
-			videoPlayerReference.current.seekTo(roomData.currentTime, "seconds");
-		});
 
-		// STOP FROM CHRIS
+			if (roomData.currentTime !== 0 && videoPlayerReference.current) {
+				videoPlayerReference.current.seekTo(roomData.currentTime, "seconds");
+			}
+		});
 	}, []);
 
 	const sendChatMessage = (event) => {
@@ -178,7 +181,7 @@ const SingleOverlay = ({ history, type, socket, match }) => {
 	};
 
 	const playNextVideoInPlaylist = () => {
-		console.log("zero", "ask new video");
+		setCurrentVideo("");
 		socket.emit("next_video", roomName);
 	};
 
@@ -250,6 +253,8 @@ const SingleOverlay = ({ history, type, socket, match }) => {
 						videoPlayerReference={videoPlayerReference}
 						currentVideo={currentVideo}
 						isPlaying={isPlaying}
+						roomName={roomName}
+						socket={socket}
 					/>
 				) : (
 					<Chat

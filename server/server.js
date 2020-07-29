@@ -421,16 +421,24 @@ io.on("connection", (socket) => {
 		io.to(roomName).emit("playpause_changing", isPlayingState);
 	});
 
+	socket.on("add_video", (videoData) => {
+		const roomIndex = rooms.findIndex(
+			(room) => room.slug === videoData.roomName
+		);
+		const newVideo = videoData.link;
+
+		rooms[roomIndex].queue.push(newVideo);
+
+		io.to(videoData.roomName).emit("new_queue", rooms[roomIndex].queue);
+	});
+
 	socket.on("next_video", (roomName) => {
 		const roomIndex = rooms.findIndex((room) => room.slug === roomName);
 		let newVideo = "";
-		if (rooms[roomIndex].queue.length === 0) {
-			// rooms[roomIndex].queue.push(
-			// 	"https://www.youtube.com/watch?v=MtTiV0WAF4U"
-			// );
-		} else {
+		if (rooms[roomIndex].queue.length !== 0) {
 			newVideo = rooms[roomIndex].queue.shift();
 		}
+
 		io.to(roomName).emit("next_video", rooms[roomIndex].queue, newVideo);
 	});
 

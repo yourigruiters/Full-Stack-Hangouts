@@ -3,7 +3,6 @@ import "./Video.scss";
 import Button from "../button/Button";
 import Paragraph from "../paragraph/Paragraph";
 import Input from "../input/Input";
-import Select from "../select/Select";
 import ReactPlayer from "react-player";
 import FormOverlay from "../form-overlay/Form-overlay";
 
@@ -15,34 +14,41 @@ const Video = ({
 	videoPlayerReference,
 	currentVideo,
 	isPlaying,
+	roomName,
+	socket,
 }) => {
 	const [createIsOpen, setCreateIsOpen] = React.useState(false);
 	const [formData, setFormData] = React.useState({
-		title: "",
-		private: false,
-		password: "",
-		category: "",
-		maxUsers: 20,
+		link: "",
 	});
 	const [formErrors, setFormErrors] = React.useState({});
 
 	const handleChange = (event) => {
 		setFormData({ ...formData, [event.target.name]: event.target.value });
 	};
+
+	const YouTubeGetID = (url) => {
+		url = url.split(/(vi\/|v%3D|v=|\/v\/|youtu\.be\/|\/embed\/)/);
+		console.log(url, "url parts");
+		return undefined !== url[2] ? url[2].split(/[^0-9a-z_\-]/i)[0] : url[0];
+	};
+
 	const handleSubmit = (event) => {
 		event.preventDefault();
 
-		const checkFields = ["title", "password", "category"];
+		const checkFields = ["link"];
 		const checkFieldErrors = {
-			title: "Please enter a valid title",
-			password: "Please enter a valid password",
-			category: "Please chose a category",
+			link: "Please enter a valid Youtube link",
 		};
 		const errors = {};
 		let errorCounter = 0;
 
 		checkFields.forEach((field) => {
-			if (formData[field] === "") {
+			console.log("youtube link", YouTubeGetID(formData[field]));
+			if (
+				formData[field] === "" &&
+				YouTubeGetID(formData[field]) !== undefined
+			) {
 				errors[field] = checkFieldErrors[field];
 				errorCounter++;
 			} else {
@@ -51,12 +57,19 @@ const Video = ({
 		});
 
 		if (errorCounter === 0) {
+			const videoData = {
+				roomName,
+				link: formData.link,
+			};
 			// ADD TO QUEUE
-			// socket.emit("create_room", SOMETHING);
+			socket.emit("add_video", videoData);
+			setCreateIsOpen(false);
 		}
 
 		setFormErrors(errors);
 	};
+
+	console.log(currentVideo, "isplayng");
 
 	return (
 		<section className="video">
@@ -77,6 +90,14 @@ const Video = ({
 					onPause={() => sendVideoState(false)}
 					onEnded={() => playNextVideoInPlaylist()}
 				/>
+				{currentVideo === "" && (
+					<article className="video__missing">
+						<p className="video__missing__title">
+							The queue is empty, add a new video to the queue to start
+							watching!
+						</p>
+					</article>
+				)}
 			</section>
 			<section className="video__content">
 				<section className="video__content__queue">
@@ -93,25 +114,16 @@ const Video = ({
 								<FormOverlay>
 									<form onSubmit={(e) => handleSubmit(e)}>
 										<article className="create-room__combo">
-											<Paragraph>Title:</Paragraph>
+											<Paragraph>Youtube link:</Paragraph>
 											<Input
 												type="text"
 												onChange={(e) => handleChange(e)}
-												name="title"
-												value={formData.title}
+												name="link"
+												value={formData.link}
 											/>
-											{formErrors.title && (
+											{formErrors.link && (
 												<p className="create-room__combo__error">
-													{formErrors.title}
-												</p>
-											)}
-										</article>
-
-										<article className="create-room__combo">
-											<Paragraph>Category:</Paragraph>
-											{formErrors.category && (
-												<p className="create-room__combo__error">
-													{formErrors.category}
+													{formErrors.link}
 												</p>
 											)}
 										</article>
@@ -131,8 +143,8 @@ const Video = ({
 						</article>
 					</section>
 					<section className="video__content__queue__videos">
-						{queue.map((video, index) => (
-							<h1 key={index}>{video}</h1>
+						{queue.map((queueItem, index) => (
+							<h1 key={index}>{queueItem}</h1>
 						))}
 					</section>
 				</section>
