@@ -29,9 +29,9 @@ let rooms = [
 		title: "Public Lounge",
 		slug: "public-lounge",
 		type: "chats",
-		host: "",
-		private: false,
-		password: "",
+		host: "ZAcruUixXkxDgUPHAAAB",
+		private: true,
+		password: "bob",
 		category: "chill",
 		maxUsers: 20,
 		default: true,
@@ -39,20 +39,20 @@ let rooms = [
 			{
 				id: "ZAcruUixXkxDgUPHAAAB",
 				name: "Systematic Flamingo",
-				country: "Sweden",
-				countryCode: "SE",
+				country: "United States",
+				countryCode: "US",
 			},
 			{
 				id: "ZAcruUixXkxDgUPHAA123",
 				name: "Thick Skink",
-				country: "Sweden",
-				countryCode: "SE",
+				country: "Mexico",
+				countryCode: "MX",
 			},
 			{
 				id: "ZAcruUixXkxDgUPHA345B",
 				name: "Constitutional Cicada",
-				country: "Sweden",
-				countryCode: "SE",
+				country: "Japan",
+				countryCode: "JP",
 			},
 		],
 		queue: [],
@@ -338,8 +338,8 @@ io.on("connection", (socket) => {
 		const user = {
 			id: socket.id,
 			name: socket.user.name,
-			country: socket.user.country,
-			countryCode: socket.user.countryCode,
+			country: socket.user.country || "Sweden",
+			countryCode: socket.user.countryCode || "SE",
 		};
 
 		room.users.push(user);

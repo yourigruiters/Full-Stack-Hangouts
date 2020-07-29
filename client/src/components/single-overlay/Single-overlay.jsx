@@ -58,7 +58,8 @@ const SingleOverlay = ({ history, type, socket, match }) => {
 			setQueue(roomData.queue);
 			// STOP FROM CHRIS
 
-			setIsTyping(roomData.isTyping);
+      setIsTyping(roomData.isTyping);
+      console.log('SETTING ROOMDATA USERS', roomData.users)
 			setUsers(roomData.users);
 
 			const { title, privateroom, category, maxUsers } = roomData;

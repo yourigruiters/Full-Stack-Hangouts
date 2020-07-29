@@ -87,17 +87,17 @@ const App = ({ history }) => {
 					countryCode: geoplugin_countryCode,
 					country: geoplugin_countryName,
 				};
-
+        console.log('SETTING VISITOR', visitor);
 				setVisitorData(visitor);
 			})
 			.catch((err) => {
-        if(err.message === "Network Error") {
+        if(err.message) {
           const visitor = {
             name: uniqueNamesGenerator(generateNameConfig),
             countryCode: "SE",
             country: "Sweden",
           };
-  
+          console.log('SETTING VISITOR ERROR', visitor);
           setVisitorData(visitor);
         }
         console.error('Error:', err.message)
