@@ -88,7 +88,18 @@ const App = ({ history }) => {
 
 				setVisitorData(visitor);
 			})
-			.catch((err) => console.error(err.message));
+			.catch((err) => {
+        if(err.message === "Network Error") {
+          const visitor = {
+            name: uniqueNamesGenerator(generateNameConfig),
+            countryCode: "SE",
+            country: "Sweden",
+          };
+  
+          setVisitorData(visitor);
+        }
+        console.error('Error:', err.message)
+      });
 	};
 
 	return (
