@@ -43,7 +43,7 @@ const App = ({ history }) => {
 	const showSidebar = !showSidebarArray.includes(currentPage);
 
 	React.useEffect(() => {
-		if (currentPage === "/") {
+		if (currentPage === "/" && visitorData.name === "") {
 			generateUserData();
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
