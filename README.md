@@ -6,10 +6,15 @@
 Limbo Hangouts is a full-stack application built in 2 weeks as our final project for our Full Stack Web Developer course at &lt;/salt&gt;
 
 The requirements for the application was as following:
+
 The application...
+
 ...has to have a frontend written in React and a backend written in Express
+
 ...has to follow modern code guidelines and practices
+
 ...has to be developed using agile methods over 2 sprints of 1 week each
+
 ...has to be presented at the end of the 2 sprints by making a 7-10 minute video following Demo rules.
 
 And for our team specifically, the application had to make use of Websockets for real-time communication.
