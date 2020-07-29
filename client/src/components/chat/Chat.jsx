@@ -53,7 +53,7 @@ const Chat = ({
 										style={{ color: message.chatColor }}
 										className={`chat__user chat__user--${message.chatColor}`}
 									>
-										{message.name}:{" "}
+										{message.name}:{" "}<br></br>
 									</b>
 								</span>
 								{message.message}
