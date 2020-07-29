@@ -22,6 +22,10 @@
 		padding: 10px;
 		background-color: #0f0f12;
 
+		&--title {
+			font-size: 19px;
+		}
+
 		&--start {
 			display: flex;
 			align-items: center;
@@ -29,6 +33,11 @@
 
 		&--end {
 			display: flex;
+		}
+
+		&--middle {
+			display: flex;
+			width: 100px;
 		}
 	}
 
@@ -63,6 +72,7 @@
 .iconbutton {
 	display: flex;
 	align-items: baseline;
+	cursor: pointer;
 
 	svg {
 		width: 20px;
@@ -72,6 +82,24 @@
 
 	&:hover path {
 		fill: $orange-light;
+	}
+
+	&--people {
+		&--amount {
+			margin-right: 15px;
+			font-size: 16px;
+			font-weight: 300;
+		}
+	}
+}
+
+.password {
+	&__active {
+		display: block
+	}
+
+	&__inactive {
+		display: none;
 	}
 }
 
@@ -95,7 +123,7 @@
 	}
 
 	&__content {
-		min-height: 600px;
+		min-height: 700px;
 		padding: 10px;
 		background-color: $background-dark;
 		transition: transform 0.3s 0s;
@@ -108,10 +136,11 @@
 
 .peoplelist {
 	display: flex;
-	align-items: center;
+	align-items: end;
+	margin: 8px 0;
 
 	&__text {
-		margin-left: 0 5px;
+		margin: 0 10px;
 	}
 
 	&__flag {

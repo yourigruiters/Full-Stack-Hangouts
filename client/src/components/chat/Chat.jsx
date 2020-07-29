@@ -3,16 +3,21 @@ import "./Chat.scss";
 import Button from '../button/Button'
 
 const Chat = ({ messages, sendChatMessage, chatInput, handleChange, isTyping }) => {
-  
+
+  // scrollChat breaks scroll but 'works'
+  const scrollChat = () => {
+    const div = document.querySelector('.chatsection__body');
+    div.scrollTop = div.scrollHeight - div.clientHeight;
+  }
+
   const shiftSubmit = (e) => {
     if (e.keyCode === 13 && e.shiftKey) {
 
     } else if (e.keyCode === 13) {
       sendChatMessage(e)
     }
+    scrollChat()
   }
-
-  console.log(messages);
 
   return <section className="chat">
   <section className="chatsection__body">
@@ -21,9 +26,7 @@ const Chat = ({ messages, sendChatMessage, chatInput, handleChange, isTyping }) 
         <article key={index} className="chat__message">
           <article className="chat__message--time">{message.timestamp}</article>
           <p className={`chat__message--text chat__message--${message.type}`}>
-            <span>
-              <b>{message.name}: </b>
-            </span>
+            <span><b>{message.name}: </b></span>
             {message.message}
           </p>
         </article>
@@ -32,7 +35,7 @@ const Chat = ({ messages, sendChatMessage, chatInput, handleChange, isTyping }) 
   </section>
 
   <section className="chatsection__footer">
-    <form onSubmit={(e) => sendChatMessage(e)} className="chat__input">
+    <form onSubmit={(e) => {sendChatMessage(e)}} className="chat__input">
       <textarea
         value={chatInput}
         placeholder="Type something..."
@@ -40,7 +43,7 @@ const Chat = ({ messages, sendChatMessage, chatInput, handleChange, isTyping }) 
         onKeyDown={(e) => shiftSubmit(e)}
         className="chat__input--text"
       />
-      <Button type="primary">Send Message</Button>
+      <Button type="primary">Send</Button>
     </form>
 
     <article className="isTypingSpacer">
