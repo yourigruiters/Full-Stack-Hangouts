@@ -90,11 +90,8 @@ let rooms = [
 				countryCode: "SE",
 			},
 		],
-		queue: [
-			"https://www.youtube.com/watch?v=QoikCfr55So",
-			"https://www.youtube.com/watch?v=BJkhMtvd_zQ",
-			"https://www.youtube.com/watch?v=ClkLaDOo5zs",
-		],
+		queue: [],
+		isPlaying: "https://www.youtube.com/watch?v=BAlx4kjI98g",
 		isTyping: [],
 		playing: true,
 		currentTime: 0,
@@ -130,6 +127,7 @@ let rooms = [
 			},
 		],
 		queue: [],
+		isPlaying: "https://www.youtube.com/watch?v=BAlx4kjI98g",
 		isTyping: [],
 		playing: true,
 		currentTime: 0,
@@ -200,6 +198,7 @@ let rooms = [
 			},
 		],
 		queue: [],
+		isPlaying: "https://www.youtube.com/watch?v=BAlx4kjI98g",
 		isTyping: [],
 		playing: true,
 		currentTime: 0,
@@ -235,6 +234,7 @@ let rooms = [
 			},
 		],
 		queue: [],
+		isPlaying: "https://www.youtube.com/watch?v=BAlx4kjI98g",
 		isTyping: [],
 		playing: true,
 		currentTime: 0,
@@ -357,6 +357,7 @@ io.on("connection", (socket) => {
 			maxUsers: room.maxUsers,
 			users: room.users,
 			queue: room.queue,
+			isPlaying: room.isPlaying,
 			isTyping: room.isTyping,
 			playing: room.playing,
 			currentTime: room.currentTime,
@@ -421,21 +422,32 @@ io.on("connection", (socket) => {
 	});
 
 	socket.on("next_video", (roomName) => {
-		let room = rooms.find((room) => room.slug === roomName);
-		const newPlaylist = room.queue;
-		const newVideo = newPlaylist.shift();
-		io.to(roomName).emit("next_video", newPlaylist, newVideo);
+		const roomIndex = rooms.findIndex((room) => room.slug === roomName);
+		let newVideo = "";
+		if (rooms[roomIndex].queue.length === 0) {
+			// rooms[roomIndex].queue.push(
+			// 	"https://www.youtube.com/watch?v=MtTiV0WAF4U"
+			// );
+		} else {
+			newVideo = rooms[roomIndex].queue.shift();
+		}
+		io.to(roomName).emit("next_video", rooms[roomIndex].queue, newVideo);
 	});
 
 	socket.on("video_progress", (roomName, stateObject) => {
 		let room = rooms.find((room) => room.slug === roomName);
-    if(Math.abs((room.currentTime - stateObject.playedSeconds)) > 3 ) {
-      console.log('RUNNING SEEK TO SECOND', stateObject.playedSeconds, 'IN ROOM', room.slug)
-      room.currentTime = stateObject.playedSeconds;
-      io.to(roomName).emit("video_progress", room);
-    } else {
-      room.currentTime = stateObject.playedSeconds;
-    }
+		if (Math.abs(room.currentTime - stateObject.playedSeconds) > 3) {
+			console.log(
+				"RUNNING SEEK TO SECOND",
+				stateObject.playedSeconds,
+				"IN ROOM",
+				room.slug
+			);
+			room.currentTime = stateObject.playedSeconds;
+			io.to(roomName).emit("video_progress", room);
+		} else {
+			room.currentTime = stateObject.playedSeconds;
+		}
 	});
 
 	socket.on("disconnect", () => {

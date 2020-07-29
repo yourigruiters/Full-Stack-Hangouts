@@ -1,0 +1,129 @@
+@import "../../styles/variables.scss";
+
+.single-overlay {
+	width: 100%;
+	display: flex;
+
+	&__mainsection {
+		display: flex;
+		flex-direction: column;
+		width: 100%;
+
+		&__header {
+			display: flex;
+			justify-content: space-between;
+			height: 40px;
+			padding: 10px;
+			background-color: #0f0f12;
+
+			&--title {
+				font-size: 19px;
+			}
+
+			&--start {
+				display: flex;
+				align-items: center;
+			}
+
+			&--end {
+				display: flex;
+			}
+
+			&--middle {
+				display: flex;
+				width: 100px;
+			}
+		}
+
+		&__header--icon {
+			margin-right: 10px;
+		}
+	}
+}
+
+.buttons {
+	display: flex;
+	align-items: baseline;
+
+	&__toggle {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+
+		&--hide {
+			display: none;
+		}
+
+		&--show {
+			display: block;
+		}
+
+		&--close {
+		}
+	}
+}
+
+.iconbutton {
+	display: flex;
+	align-items: baseline;
+	cursor: pointer;
+
+	svg {
+		width: 20px;
+		height: 20px;
+		margin: 0 5px;
+	}
+
+	&:hover path {
+		fill: $orange-light;
+	}
+
+	&--people {
+		&--amount {
+			margin-right: 5px;
+			font-size: 16px;
+			font-weight: 300;
+		}
+	}
+}
+
+.password {
+	&__active {
+		display: block;
+	}
+
+	&__inactive {
+		display: none;
+	}
+}
+
+.subsection {
+	width: 100%;
+	max-width: 300px;
+
+	&__header {
+		display: flex;
+		justify-content: flex-end;
+		height: 40px;
+		align-items: center;
+		background-color: $background-dark;
+
+		&--title {
+			color: $white;
+			&:hover {
+				color: $orange-dark;
+			}
+		}
+	}
+
+	&__content {
+		height: calc(100vh - 211px);
+		padding: 10px;
+		background-color: $background-dark;
+		transition: transform 0.3s 0s;
+	}
+
+	@media screen and (min-width: $breakpoint-lg) {
+		width: 25%;
+	}
+}
