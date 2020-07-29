@@ -1,6 +1,6 @@
 import React from "react";
 import * as _ from "lodash";
-import { NavLink, withRouter } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import "./ChatSingle.view.scss";
 import Chat from "../../components/chat/Chat";
 import {
@@ -72,6 +72,14 @@ const ChatSingle = ({ socket, match, history }) => {
 				return [...prevState, newMessage];
 			});
 		});
+
+		socket.on("someone_left", (usersStillThere) => {
+			setUsers(usersStillThere);
+		});
+
+		socket.on("leaving_room", () => {
+			history.push("/dashboard/chats");
+		});
 	}, []);
 
 	const sendChatMessage = (event) => {
@@ -99,16 +107,21 @@ const ChatSingle = ({ socket, match, history }) => {
 		setChatInput(value);
 	};
 
+	const leaveRoom = () => {
+		socket.emit("leaving_room", roomName);
+	};
+
 	return (
 		<section className="chatsingle">
 			<section className="chatsection">
 				<section className="chatsection__header">
 					<section className="chatsection__header--start">
-						<NavLink to="/dashboard/chats">
-							<article className="chatsection__header--icon iconbutton">
-								<BackArrow />
-							</article>
-						</NavLink>
+						<article
+							className="chatsection__header--icon iconbutton"
+							onClick={leaveRoom}
+						>
+							<BackArrow />
+						</article>
 						<h1 className="chatsection__header--title">{roomInfo.title}</h1>
 					</section>
 

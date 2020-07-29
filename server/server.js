@@ -288,9 +288,6 @@ io.on("connection", (socket) => {
 		socket.emit("get_rooms", filteredRooms);
 	});
 
-	// check_room - Check if room exist - if not send back error message
-
-	// create_room - creating a new room - send back SLUG/TYPE
 	socket.on("create_room", (roomData) => {
 		const newRoom = roomData;
 
@@ -342,12 +339,43 @@ io.on("connection", (socket) => {
 		io.to(roomName).emit("room_data", roomData);
 	});
 
-	socket.on("sending_message", (messageObject) => {
-		console.log(messageObject, "RECEIVED CHAT MESSAGE");
+	socket.on("leaving_room", (roomName) => {
+		const roomIndex = rooms.findIndex((room) => room.slug === roomName);
 
+		if (roomIndex === -1) {
+			socket.emit("leaving_room");
+			return;
+		}
+
+		console.log("OLD ROOMS", rooms);
+		if (rooms[roomIndex].users.length < 1) {
+			rooms.splice(roomIndex, 1);
+			socket.emit("leaving_room");
+			console.log("NEW ROOMS", rooms);
+			return;
+		}
+
+		const userIndex = rooms[roomIndex].users.findIndex(
+			(user) => user.name === socket.user.name
+		);
+
+		const message = {
+			user: socket.user.name,
+			type: "left",
+		};
+
+		rooms[roomIndex].users.splice(userIndex, 1);
+
+		const usersStillThere = rooms[roomIndex].users;
+
+		emitMessage(roomName, message);
+		socket.emit("leaving_room");
+		io.to(roomName).emit("someone_left", usersStillThere);
+	});
+
+	socket.on("sending_message", (messageObject) => {
 		messageObject.user = socket.user.name;
 		messageObject.type = "message";
-		console.log(messageObject, "NEW MESSAGE OBJECT");
 
 		emitMessage(messageObject.room, messageObject);
 	});
@@ -361,16 +389,8 @@ io.on("connection", (socket) => {
 	});
 
 	socket.on("playpause_changing", (roomName, isPlayingState) => {
-		console.log(
-			"RECEIVED PLAYPAUSE CHANGE FROM",
-			roomName,
-			" STATE IS",
-			isPlayingState
-		);
-
 		let room = rooms.find((room) => room.slug === roomName);
 		room.playing = isPlayingState;
-		// socket.broadcast.to(roomName).emit('emit_playpause_change', room.playing);
 		io.to(roomName).emit("playpause_changing", isPlayingState);
 	});
 
