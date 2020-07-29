@@ -7,6 +7,23 @@ const io = require("socket.io")(http, {
 
 const port = 5000;
 
+const chatColors = [
+	"#1abc9c",
+	"#16a085",
+	"#2ecc71",
+	"#27ae60",
+	"#3498db",
+	"#2980b9",
+	"#9b59b6",
+	"#8e44ad",
+	"#f1c40f",
+	"#f39c12",
+	"#e67e22",
+	"#d35400",
+	"#e74c3c",
+	"#c0392b",
+];
+
 let rooms = [
 	{
 		title: "Public Lounge",
@@ -239,6 +256,11 @@ const emitMessage = (roomName, message) => {
 const emitTypingChange = (roomName, type, socket) => {
 	const roomIndex = rooms.findIndex((room) => room.slug === roomName);
 
+	if (!socket.user) {
+		socket.emit("room_not_found");
+		return;
+	}
+
 	const user = {
 		id: socket.id,
 		name: socket.user.name,
@@ -271,7 +293,10 @@ const emitTypingChange = (roomName, type, socket) => {
 
 io.on("connection", (socket) => {
 	socket.on("connect_visitor", (visitorData) => {
+		const randomNumber = Math.floor(Math.random() * chatColors.length);
+		const randomChatcolor = chatColors[randomNumber];
 		socket.user = visitorData;
+		socket.user.chatColor = randomChatcolor;
 		// FIX: Check visitorData to ensure everything is correct
 		socket.emit("connect_visitor");
 	});
@@ -322,6 +347,7 @@ io.on("connection", (socket) => {
 		const message = {
 			user: socket.user.name,
 			type: "joined",
+			chatColor: socket.user.chatColor,
 		};
 
 		const roomData = {
@@ -361,6 +387,7 @@ io.on("connection", (socket) => {
 		const message = {
 			user: socket.user.name,
 			type: "left",
+			chatColor: socket.user.chatColor,
 		};
 
 		rooms[roomIndex].users.splice(userIndex, 1);
@@ -375,7 +402,7 @@ io.on("connection", (socket) => {
 	socket.on("sending_message", (messageObject) => {
 		messageObject.user = socket.user.name;
 		messageObject.type = "message";
-
+		messageObject.chatColor = socket.user.chatColor;
 		emitMessage(messageObject.room, messageObject);
 	});
 
@@ -424,6 +451,7 @@ io.on("connection", (socket) => {
 					const message = {
 						user: socket.user.name,
 						type: "left",
+						chatColor: socket.user.chatColor,
 					};
 
 					io.to(room.slug).emit("message", message);
