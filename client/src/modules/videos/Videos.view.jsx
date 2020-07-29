@@ -26,6 +26,7 @@ const Videos = ({ socket }) => {
 			type={mainLayoutData.type}
 			paragraph={mainLayoutData.paragraph}
 			roomsData={roomsData}
+			socket={socket}
 		/>
 	);
 };

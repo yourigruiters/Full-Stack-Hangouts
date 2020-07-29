@@ -28,7 +28,7 @@ const maxUsers = [
 	20,
 ];
 
-const CreateRoom = ({ setCreateIsOpen, type }) => {
+const CreateRoom = ({ setCreateIsOpen, type, socket }) => {
 	const [formData, setFormData] = React.useState({
 		title: "",
 		private: false,
@@ -45,8 +45,6 @@ const CreateRoom = ({ setCreateIsOpen, type }) => {
 	const handleSubmit = (event) => {
 		event.preventDefault();
 
-		console.log("test");
-
 		const checkFields = ["title", "password", "category"];
 		const checkFieldErrors = {
 			title: "Please enter a valid title",
@@ -57,7 +55,6 @@ const CreateRoom = ({ setCreateIsOpen, type }) => {
 		let errorCounter = 0;
 
 		checkFields.forEach((field) => {
-			console.log("formdata fields", formData[field]);
 			if (formData[field] === "") {
 				errors[field] = checkFieldErrors[field];
 				errorCounter++;
@@ -66,13 +63,11 @@ const CreateRoom = ({ setCreateIsOpen, type }) => {
 			}
 		});
 
-		console.log("errors", errors);
-
 		if (errorCounter === 0) {
-			console.log(formData.title.replace(" ", "_").toLowerCase());
+			const slug = formData.title.replace(/ /g, "_").toLowerCase();
 			const roomData = {
 				title: formData.title,
-				slug: "public-lounge",
+				slug: slug,
 				type: type,
 				host: "",
 				private: formData.private,
@@ -87,8 +82,7 @@ const CreateRoom = ({ setCreateIsOpen, type }) => {
 				currentTime: 0,
 			};
 
-			// Create room, on recieve push to room.
-			console.log("cookie", roomData);
+			socket.emit("create_room", roomData);
 		}
 
 		setFormErrors(errors);

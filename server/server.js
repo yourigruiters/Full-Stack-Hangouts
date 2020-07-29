@@ -232,8 +232,6 @@ app.get("/", (req, res) => {
 const emitMessage = (roomName, message) => {
 	if (roomName && message) {
 		io.to(roomName).emit("message", message);
-	} else {
-		console.log("ROOMNAME OR MESSAGE MISSING");
 	}
 };
 
@@ -273,7 +271,6 @@ const emitTypingChange = (roomName, type, socket) => {
 
 io.on("connection", (socket) => {
 	socket.on("connect_visitor", (visitorData) => {
-		console.log(visitorData, "connected visitor");
 		socket.user = visitorData;
 		// FIX: Check visitorData to ensure everything is correct
 		socket.emit("connect_visitor");
@@ -288,37 +285,29 @@ io.on("connection", (socket) => {
 		socket.emit("get_rooms", filteredRooms);
 	});
 
-	// check_room - Check if room exist - if not send back error message
+	socket.on("create_room", (roomData) => {
+		const newRoom = roomData;
 
-	// create_room - creating a new room - send user there directly
+		newRoom.host = socket.user.name;
+
+		rooms.push(newRoom);
+
+		socket.emit("create_room", newRoom.slug);
+	});
 
 	socket.on("joining_room", (roomName) => {
-		console.log(roomName, "HAS A NEW USER JOINING");
+		if (!socket.user) {
+			socket.emit("room_not_found");
+			return;
+		}
+
 		socket.join(roomName);
 
 		let room = rooms.find((room) => room.slug === roomName);
 
-		console.log("#### ROOM", room);
-
 		if (room === undefined) {
-			rooms.push({
-				id: rooms.length,
-				title: roomName,
-				slug: roomName.replace("-", " ").toLowerCase(),
-				type: "chat",
-				host: "",
-				private: false,
-				password: "",
-				category: "Chill",
-				maxUsers: 20,
-				default: true,
-				users: [],
-				queue: [],
-			});
-
-			// FIND INDEX OF CREATED ROOM ABOVE - USING ALREADY EXISTING CODE FINDINDEX
-			// USE HERE INSTEAD of Rooms.Length
-			room = rooms[rooms.length];
+			socket.emit("room_not_found");
+			return;
 		}
 
 		const user = {
@@ -328,12 +317,7 @@ io.on("connection", (socket) => {
 			countryCode: socket.user.countryCode,
 		};
 
-		console.log("#### ROOM STILL UNDEFINED", room, rooms, rooms.length);
-
-		// This mgiht be wrong with the new approach from above
 		room.users.push(user);
-
-		console.log("#### ROOM AFTER PUSHING", room);
 
 		const message = {
 			user: socket.user.name,
@@ -356,12 +340,41 @@ io.on("connection", (socket) => {
 		io.to(roomName).emit("room_data", roomData);
 	});
 
-	socket.on("sending_message", (messageObject) => {
-		console.log(messageObject, "RECEIVED CHAT MESSAGE");
+	socket.on("leaving_room", (roomName) => {
+		const roomIndex = rooms.findIndex((room) => room.slug === roomName);
 
+		if (roomIndex === -1) {
+			socket.emit("leaving_room");
+			return;
+		}
+
+		if (rooms[roomIndex].users.length < 1) {
+			rooms.splice(roomIndex, 1);
+			socket.emit("leaving_room");
+			return;
+		}
+
+		const userIndex = rooms[roomIndex].users.findIndex(
+			(user) => user.name === socket.user.name
+		);
+
+		const message = {
+			user: socket.user.name,
+			type: "left",
+		};
+
+		rooms[roomIndex].users.splice(userIndex, 1);
+
+		const usersStillThere = rooms[roomIndex].users;
+
+		emitMessage(roomName, message);
+		socket.emit("leaving_room");
+		io.to(roomName).emit("someone_left", usersStillThere);
+	});
+
+	socket.on("sending_message", (messageObject) => {
 		messageObject.user = socket.user.name;
 		messageObject.type = "message";
-		console.log(messageObject, "NEW MESSAGE OBJECT");
 
 		emitMessage(messageObject.room, messageObject);
 	});
@@ -375,16 +388,8 @@ io.on("connection", (socket) => {
 	});
 
 	socket.on("playpause_changing", (roomName, isPlayingState) => {
-		console.log(
-			"RECEIVED PLAYPAUSE CHANGE FROM",
-			roomName,
-			" STATE IS",
-			isPlayingState
-		);
-
 		let room = rooms.find((room) => room.slug === roomName);
 		room.playing = isPlayingState;
-		// socket.broadcast.to(roomName).emit('emit_playpause_change', room.playing);
 		io.to(roomName).emit("playpause_changing", isPlayingState);
 	});
 
@@ -405,29 +410,27 @@ io.on("connection", (socket) => {
       room.currentTime = stateObject.playedSeconds;
     }
 	});
+
 	socket.on("disconnect", () => {
-		rooms = rooms.map((room) => {
+		rooms.forEach((room) => {
 			if (socket.user) {
+				const foundUser = room.users.findIndex(
+					(user) => user.name === socket.user.name
+				);
+
+				if (foundUser !== -1) {
+					room.users.splice(foundUser, 1);
+
+					const message = {
+						user: socket.user.name,
+						type: "left",
+					};
+
+					io.to(room.slug).emit("message", message);
+				}
+
 				emitTypingChange(room.slug, "stopped_typing", socket);
 			}
-
-			// FIX kick user out, were only checking to write a message
-			const foundUser = room.users.findIndex(
-				(user) => user.name === socket.user.name
-			);
-
-			if (foundUser !== -1) {
-				room.users.splice(foundUser, 1);
-
-				const message = {
-					user: socket.user.name,
-					type: "left",
-				};
-
-				io.to(room.slug).emit("message", message);
-			}
-
-			return room;
 		});
 	});
 });
