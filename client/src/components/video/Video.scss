@@ -31,6 +31,7 @@
 	&__video {
 		height: 50vh;
 		position: relative;
+		margin-bottom: 25px;
 
 		&__player {
 			// position: absolute;
@@ -66,11 +67,14 @@
 				}
 			}
 
-			&__videos {
+			&__table {
 				display: flex;
 				flex-wrap: wrap;
 				flex-direction: row;
 				justify-content: space-around;
+
+				table {
+				}
 			}
 		}
 	}

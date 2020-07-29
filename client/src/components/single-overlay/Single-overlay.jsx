@@ -32,7 +32,6 @@ const SingleOverlay = ({ history, type, socket, match }) => {
 
 	React.useEffect(() => {
 		if (currentVideo === "" && queue.length > 0) {
-			setCurrentVideo("");
 			socket.emit("next_video", roomName);
 		}
 	}, [queue]);

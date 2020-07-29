@@ -5,6 +5,8 @@ import Paragraph from "../paragraph/Paragraph";
 import Input from "../input/Input";
 import ReactPlayer from "react-player";
 import FormOverlay from "../form-overlay/Form-overlay";
+import getYoutubeID from "get-youtube-id";
+import axios from "axios";
 
 const Video = ({
 	queue,
@@ -28,9 +30,8 @@ const Video = ({
 	};
 
 	const YouTubeGetID = (url) => {
-		url = url.split(/(vi\/|v%3D|v=|\/v\/|youtu\.be\/|\/embed\/)/);
-		console.log(url, "url parts");
-		return undefined !== url[2] ? url[2].split(/[^0-9a-z_\-]/i)[0] : url[0];
+		const youtubeUrl = getYoutubeID(url);
+		return youtubeUrl !== null;
 	};
 
 	const handleSubmit = (event) => {
@@ -44,11 +45,7 @@ const Video = ({
 		let errorCounter = 0;
 
 		checkFields.forEach((field) => {
-			console.log("youtube link", YouTubeGetID(formData[field]));
-			if (
-				formData[field] === "" &&
-				YouTubeGetID(formData[field]) !== undefined
-			) {
+			if (formData[field] === "" || !YouTubeGetID(formData[field])) {
 				errors[field] = checkFieldErrors[field];
 				errorCounter++;
 			} else {
@@ -61,15 +58,13 @@ const Video = ({
 				roomName,
 				link: formData.link,
 			};
-			// ADD TO QUEUE
+
 			socket.emit("add_video", videoData);
 			setCreateIsOpen(false);
 		}
 
 		setFormErrors(errors);
 	};
-
-	console.log(currentVideo, "isplayng");
 
 	return (
 		<section className="video">
@@ -102,7 +97,7 @@ const Video = ({
 			<section className="video__content">
 				<section className="video__content__queue">
 					<section className="video__content__queue__header">
-						<h2>Playlist</h2>
+						<h2>Queue</h2>
 						<article className="video__content__queue__header__buttons">
 							<Button
 								type="primary"
@@ -142,10 +137,24 @@ const Video = ({
 							)}
 						</article>
 					</section>
-					<section className="video__content__queue__videos">
-						{queue.map((queueItem, index) => (
-							<h1 key={index}>{queueItem}</h1>
-						))}
+					<section className="video__content__queue__table">
+						<table>
+							<thead>
+								<tr>
+									<td>#</td>
+									<td>Title</td>
+									<td>URL</td>
+									<td>Thumbnail</td>
+								</tr>
+							</thead>
+							<tbody>
+								{queue.map((queueItem, index) => (
+									<tr key={index}>
+										<td colSpan="4">{queueItem}</td>
+									</tr>
+								))}
+							</tbody>
+						</table>
 					</section>
 				</section>
 			</section>

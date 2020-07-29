@@ -444,6 +444,11 @@ io.on("connection", (socket) => {
 
 	socket.on("video_progress", (roomName, stateObject) => {
 		let room = rooms.find((room) => room.slug === roomName);
+		console.log(room.currentTime, stateObject.playedSeconds, "olee");
+		if (room.currentTime > 1 && stateObject.playedSeconds < 1) {
+			return;
+		}
+
 		if (Math.abs(room.currentTime - stateObject.playedSeconds) > 3) {
 			console.log(
 				"RUNNING SEEK TO SECOND",
