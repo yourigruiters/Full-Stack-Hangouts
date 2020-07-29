@@ -421,21 +421,34 @@ io.on("connection", (socket) => {
 		io.to(roomName).emit("playpause_changing", isPlayingState);
 	});
 
+	socket.on("add_video", (videoData) => {
+		const roomIndex = rooms.findIndex(
+			(room) => room.slug === videoData.roomName
+		);
+		const newVideo = videoData.link;
+
+		rooms[roomIndex].queue.push(newVideo);
+
+		io.to(videoData.roomName).emit("new_queue", rooms[roomIndex].queue);
+	});
+
 	socket.on("next_video", (roomName) => {
 		const roomIndex = rooms.findIndex((room) => room.slug === roomName);
 		let newVideo = "";
-		if (rooms[roomIndex].queue.length === 0) {
-			// rooms[roomIndex].queue.push(
-			// 	"https://www.youtube.com/watch?v=MtTiV0WAF4U"
-			// );
-		} else {
+		if (rooms[roomIndex].queue.length !== 0) {
 			newVideo = rooms[roomIndex].queue.shift();
 		}
+
 		io.to(roomName).emit("next_video", rooms[roomIndex].queue, newVideo);
 	});
 
 	socket.on("video_progress", (roomName, stateObject) => {
 		let room = rooms.find((room) => room.slug === roomName);
+		console.log(room.currentTime, stateObject.playedSeconds, "olee");
+		if (room.currentTime > 1 && stateObject.playedSeconds < 1) {
+			return;
+		}
+
 		if (Math.abs(room.currentTime - stateObject.playedSeconds) > 3) {
 			console.log(
 				"RUNNING SEEK TO SECOND",

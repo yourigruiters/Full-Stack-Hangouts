@@ -4,6 +4,23 @@
 	display: flex;
 	flex-direction: column;
 
+	&__missing {
+		position: absolute;
+		top: 0;
+		left: 0;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		width: 100%;
+		height: 100%;
+		background-color: #464646;
+
+		&__title {
+			padding: 0px 20px;
+			text-align: center;
+		}
+	}
+
 	&__header {
 		background-color: $background-dark;
 		color: $orange-dark;
@@ -14,6 +31,7 @@
 	&__video {
 		height: 50vh;
 		position: relative;
+		margin-bottom: 25px;
 
 		&__player {
 			// position: absolute;
@@ -49,11 +67,14 @@
 				}
 			}
 
-			&__videos {
+			&__table {
 				display: flex;
 				flex-wrap: wrap;
 				flex-direction: row;
 				justify-content: space-around;
+
+				table {
+				}
 			}
 		}
 	}

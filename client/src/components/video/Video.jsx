@@ -5,6 +5,8 @@ import Paragraph from "../paragraph/Paragraph";
 import Input from "../input/Input";
 import ReactPlayer from "react-player";
 import FormOverlay from "../form-overlay/Form-overlay";
+import getYoutubeID from "get-youtube-id";
+import axios from "axios";
 
 const Video = ({
 	queue,
@@ -14,34 +16,36 @@ const Video = ({
 	videoPlayerReference,
 	currentVideo,
 	isPlaying,
+	roomName,
+	socket,
 }) => {
 	const [createIsOpen, setCreateIsOpen] = React.useState(false);
 	const [formData, setFormData] = React.useState({
-		title: "",
-		private: false,
-		password: "",
-		category: "",
-		maxUsers: 20,
+		link: "",
 	});
 	const [formErrors, setFormErrors] = React.useState({});
 
 	const handleChange = (event) => {
 		setFormData({ ...formData, [event.target.name]: event.target.value });
 	};
+
+	const YouTubeGetID = (url) => {
+		const youtubeUrl = getYoutubeID(url);
+		return youtubeUrl !== null;
+	};
+
 	const handleSubmit = (event) => {
 		event.preventDefault();
 
-		const checkFields = ["title", "password", "category"];
+		const checkFields = ["link"];
 		const checkFieldErrors = {
-			title: "Please enter a valid title",
-			password: "Please enter a valid password",
-			category: "Please chose a category",
+			link: "Please enter a valid Youtube link",
 		};
 		const errors = {};
 		let errorCounter = 0;
 
 		checkFields.forEach((field) => {
-			if (formData[field] === "") {
+			if (formData[field] === "" || !YouTubeGetID(formData[field])) {
 				errors[field] = checkFieldErrors[field];
 				errorCounter++;
 			} else {
@@ -50,8 +54,13 @@ const Video = ({
 		});
 
 		if (errorCounter === 0) {
-			// ADD TO QUEUE
-			// socket.emit("create_room", SOMETHING);
+			const videoData = {
+				roomName,
+				link: formData.link,
+			};
+
+			socket.emit("add_video", videoData);
+			setCreateIsOpen(false);
 		}
 
 		setFormErrors(errors);
@@ -76,11 +85,19 @@ const Video = ({
 					onPause={() => sendVideoState(false)}
 					onEnded={() => playNextVideoInPlaylist()}
 				/>
+				{currentVideo === "" && (
+					<article className="video__missing">
+						<p className="video__missing__title">
+							The queue is empty, add a new video to the queue to start
+							watching!
+						</p>
+					</article>
+				)}
 			</section>
 			<section className="video__content">
 				<section className="video__content__queue">
 					<section className="video__content__queue__header">
-						<h2>Playlist</h2>
+						<h2>Queue</h2>
 						<article className="video__content__queue__header__buttons">
 							<Button
 								type="primary"
@@ -92,25 +109,16 @@ const Video = ({
 								<FormOverlay>
 									<form onSubmit={(e) => handleSubmit(e)}>
 										<article className="create-room__combo">
-											<Paragraph>Title:</Paragraph>
+											<Paragraph>Youtube link:</Paragraph>
 											<Input
 												type="text"
 												onChange={(e) => handleChange(e)}
-												name="title"
-												value={formData.title}
+												name="link"
+												value={formData.link}
 											/>
-											{formErrors.title && (
+											{formErrors.link && (
 												<p className="create-room__combo__error">
-													{formErrors.title}
-												</p>
-											)}
-										</article>
-
-										<article className="create-room__combo">
-											<Paragraph>Category:</Paragraph>
-											{formErrors.category && (
-												<p className="create-room__combo__error">
-													{formErrors.category}
+													{formErrors.link}
 												</p>
 											)}
 										</article>
@@ -129,10 +137,24 @@ const Video = ({
 							)}
 						</article>
 					</section>
-					<section className="video__content__queue__videos">
-						{queue.map((video, index) => (
-							<h1 key={index}>{video}</h1>
-						))}
+					<section className="video__content__queue__table">
+						<table>
+							<thead>
+								<tr>
+									<td>#</td>
+									<td>Title</td>
+									<td>URL</td>
+									<td>Thumbnail</td>
+								</tr>
+							</thead>
+							<tbody>
+								{queue.map((queueItem, index) => (
+									<tr key={index}>
+										<td colSpan="4">{queueItem}</td>
+									</tr>
+								))}
+							</tbody>
+						</table>
 					</section>
 				</section>
 			</section>
