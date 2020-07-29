@@ -102,7 +102,8 @@ const MainLayout = ({ title, type, paragraph, roomsData, socket, history }) => {
 	React.useEffect(() => {
 		socket.on("create_room", (slug) => {
 			history.push(`/dashboard/${type}/${slug}`);
-		});
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	React.useEffect(() => {
@@ -136,7 +137,8 @@ const MainLayout = ({ title, type, paragraph, roomsData, socket, history }) => {
 			}
 
 			setRooms(filteredRooms);
-		}
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [filterData]);
 
 	return (
