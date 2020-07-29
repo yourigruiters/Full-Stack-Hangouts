@@ -28,7 +28,7 @@
 
 		&__button {
 			position: relative;
-			align-self: flex-end;
+			align-self: flex-end; // Browser warning on this one
 			margin-top: 15px;
 		}
 	}

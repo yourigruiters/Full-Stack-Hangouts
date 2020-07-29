@@ -1,5 +1,4 @@
 import React from "react";
-import * as _ from "lodash";
 import MainLayout from "../../components/main-layout/Main-layout";
 import "./Videos.view.scss";
 
@@ -11,7 +10,8 @@ const Videos = ({ socket }) => {
 
 		socket.on("get_rooms", (roomsData) => {
 			setRoomsData(roomsData);
-		});
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	const mainLayoutData = {
