@@ -8,14 +8,16 @@
 	height: 165px;
 	width: 100%;
 	max-width: 300px;
-	margin-right: 50px;
 	margin-bottom: 50px;
+	margin-right: 0px;
 	padding: 20px;
-	// border: 1px solid #e67e22;
-	// background-image: url(https://images.unsplash.com/photo-1541781774459-bb2af2f05b55?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1942&q=80);
 	background-position: center;
 	background-size: cover;
 	text-align: end;
+
+	@media screen and (min-width: $breakpoint-lg) {
+		margin-right: 50px;
+	}
 
 	&__header {
 		display: flex;

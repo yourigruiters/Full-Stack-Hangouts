@@ -49,9 +49,7 @@ const Homepage = ({
 						Welcome, <span>{name}</span>.
 					</h1>
 					<Paragraph>
-						Lorem ipsum dolor sit amet consectetur adipisicing elit. Delectus
-						debitis ratione suscipit maiores necessitatibus sapiente labore fuga
-						perspiciatis, maxime officiis.
+						Welcome to Limbo Hangout -
 					</Paragraph>
 					<section className="homepage__spacer__content__form">
 						<form onSubmit={(e) => loginNewVisitor(e)}>
