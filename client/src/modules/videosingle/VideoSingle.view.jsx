@@ -10,7 +10,7 @@ const VideoSingle = ({ socket, match, history }) => {
 	const [isPlaying, setIsPlaying] = React.useState(true);
 	const [queue, setQueue] = React.useState([]);
 	const [currentVideo, setCurrentVideo] = React.useState(
-		"https://www.youtube.com/watch?v=aD_xkjDIAFM"
+		"https://www.youtube.com/watch?v=BAlx4kjI98g"
 	);
 
 	const roomName = match.params.roomName;
@@ -24,8 +24,10 @@ const VideoSingle = ({ socket, match, history }) => {
 		});
 
 		socket.on("room_data", (roomData) => {
-			// setIsTyping(roomData.isTyping);
-			// setUsers(roomData.users);
+      console.log('Checking current time', roomData.currentTime)
+      if(roomData.currentTime !== 0) { // NOT WORKING ?
+        videoPlayerReference.current.seekTo(roomData.currentTime, "seconds");
+      }
 			setQueue(roomData.queue);
 		});
 
@@ -53,8 +55,9 @@ const VideoSingle = ({ socket, match, history }) => {
 			setCurrentVideo(newVideo);
 		});
 
-		socket.on("video_progress", (currentTime) => {
-			videoPlayerReference.current.seekTo(currentTime, "seconds");
+		socket.on("video_progress", (roomData) => {
+      setIsPlaying(true);
+			videoPlayerReference.current.seekTo(roomData.currentTime, "seconds");
 		});
 	}, []);
 
@@ -67,7 +70,6 @@ const VideoSingle = ({ socket, match, history }) => {
 	};
 
 	const handleProgress = (state) => {
-		console.log("HNADLEPROGRESS", state);
 		socket.emit("video_progress", roomName, state);
 	};
 
