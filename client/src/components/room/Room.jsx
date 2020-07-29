@@ -34,7 +34,7 @@ const imageArr = {
 				</article>
 			</section>
 			<section className="room__footer">
-				{!room.private ? <input type="text" className="room__footer__input" placeholder="Enter password"/> : ''}
+				{room.private ? <input type="text" className="room__footer__input" placeholder="Enter password"/> : ''}
 				<Link to={`/dashboard/${type}/${room.slug}`}>
 					<Button type="primary">Enter</Button>
 				</Link>
