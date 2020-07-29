@@ -67,7 +67,6 @@ The application has been built with Youtube as the primary focus, but supports S
 
 ##### Landing page
 
-![HeartstoneTracker](github.JPG)
 ###### Menu Room (Pick a Chat)
 
 ###### Chat Room
