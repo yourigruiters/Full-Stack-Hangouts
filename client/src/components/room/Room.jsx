@@ -34,8 +34,6 @@ const Room = ({ room, type, history }) => {
 		}
 	};
 
-	console.log(room);
-
 	return (
 		<section
 			className="room"

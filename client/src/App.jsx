@@ -87,21 +87,19 @@ const App = ({ history }) => {
 					countryCode: geoplugin_countryCode,
 					country: geoplugin_countryName,
 				};
-        console.log('SETTING VISITOR', visitor);
 				setVisitorData(visitor);
 			})
 			.catch((err) => {
-        if(err.message) {
-          const visitor = {
-            name: uniqueNamesGenerator(generateNameConfig),
-            countryCode: "SE",
-            country: "Sweden",
-          };
-          console.log('SETTING VISITOR ERROR', visitor);
-          setVisitorData(visitor);
-        }
-        console.error('Error:', err.message)
-      });
+				if (err.message) {
+					const visitor = {
+						name: uniqueNamesGenerator(generateNameConfig),
+						countryCode: "SE",
+						country: "Sweden",
+					};
+					setVisitorData(visitor);
+				}
+				console.error("Error:", err.message);
+			});
 	};
 
 	return (
@@ -131,7 +129,7 @@ const App = ({ history }) => {
 							/>
 						) : (
 							<main>
-								<Sidebar />
+								<Sidebar socket={socket} />
 								<Layout>
 									<Route
 										path="/dashboard/videos/"
@@ -139,7 +137,7 @@ const App = ({ history }) => {
 										render={(props) => <Videos {...props} socket={socket} />}
 									/>
 									<Route
-										path="/dashboard/videos/:roomName/:password?"
+										path="/dashboard/videos/:roomName/"
 										render={(props) => (
 											<VideoSingle {...props} socket={socket} />
 										)}
@@ -150,7 +148,7 @@ const App = ({ history }) => {
 										render={(props) => <Chats {...props} socket={socket} />}
 									/>
 									<Route
-										path="/dashboard/chats/:roomName/:password?"
+										path="/dashboard/chats/:roomName/"
 										render={(props) => (
 											<ChatSingle {...props} socket={socket} />
 										)}
