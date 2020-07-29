@@ -10,7 +10,7 @@ const VideoSingle = ({ socket, match, history }) => {
 	const [isPlaying, setIsPlaying] = React.useState(true);
 	const [queue, setQueue] = React.useState([]);
 	const [currentVideo, setCurrentVideo] = React.useState(
-		"https://www.youtube.com/watch?v=aD_xkjDIAFM"
+		"https://www.youtube.com/watch?v=BAlx4kjI98g"
 	);
 
 	const roomName = match.params.roomName;
@@ -24,8 +24,10 @@ const VideoSingle = ({ socket, match, history }) => {
 		});
 
 		socket.on("room_data", (roomData) => {
-
-      videoPlayerReference.current.seekTo(roomData.currentTime, "seconds");
+      console.log('Checking current time', roomData.currentTime)
+      if(roomData.currentTime !== 0) { // NOT WORKING ?
+        videoPlayerReference.current.seekTo(roomData.currentTime, "seconds");
+      }
 			setQueue(roomData.queue);
 		});
 
