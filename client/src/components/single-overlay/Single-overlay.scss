@@ -98,6 +98,9 @@
 }
 
 .subsection {
+	position: fixed;
+	top: 20px;
+	right: 20px;
 	width: 100%;
 	max-width: 300px;
 
@@ -117,13 +120,23 @@
 	}
 
 	&__content {
-		height: calc(100vh - 211px);
+		height: 100vh;
 		padding: 10px;
-		background-color: $background-dark;
+		background-color: rgba(15, 15, 18, 0.8);
 		transition: transform 0.3s 0s;
+
+		@media screen and (min-width: $breakpoint-sm) {
+			height: calc(100vh - 211px);
+			background-color: $background-dark;
+		}
 	}
 
-	@media screen and (min-width: $breakpoint-lg) {
+	@media screen and (min-width: $breakpoint-sm) {
+		position: inherit;
+	}
+
+	@media screen and (min-width: $breakpoint-xl) {
 		width: 25%;
 	}
+
 }

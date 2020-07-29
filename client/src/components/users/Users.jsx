@@ -8,7 +8,8 @@ const Users = ({ users }) => {
 				<article key={index} className="users__peoplelist">
 					<img
 						src={`https://www.countryflags.io/${user.countryCode}/flat/64.png`}
-						className="users__peoplelist__flag"
+            className="users__peoplelist__flag"
+            alt="flag"
 					/>
 					<p className="users__peoplelist__text">{user.name}</p>
 				</article>

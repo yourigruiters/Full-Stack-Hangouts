@@ -11,7 +11,7 @@ import {
 
 const Room = ({ room, type }) => {
 console.log(room)
-const { category } = room
+ // const { category } = room // Not used?
 const imageArr = {
 	music: "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80",
 	various: "https://images.unsplash.com/photo-1567443024551-f3e3cc2be870?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80",
@@ -34,7 +34,7 @@ const imageArr = {
 				</article>
 			</section>
 			<section className="room__footer">
-				{!room.private ? <input type="text" className="room__footer__input" placeholder="Enter password"/> : ''}
+				{room.private ? <input type="text" className="room__footer__input" placeholder="Enter password"/> : ''}
 				<Link to={`/dashboard/${type}/${room.slug}`}>
 					<Button type="primary">Enter</Button>
 				</Link>

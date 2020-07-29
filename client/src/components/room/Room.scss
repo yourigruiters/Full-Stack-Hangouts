@@ -25,6 +25,7 @@
 		&__text {
 			position: absolute;
 			left: 0px;
+			top: 11px;
 			padding: 5px 10px 5px 15px;
 			background-color:rgba(0,0,0,0.7);
 			text-align: left;
@@ -46,17 +47,20 @@
 		&__people {
 			display: flex;
 			justify-content: flex-end;
+			align-items: center;
 	
 			svg {
 				width: 20px;
 				height: 20px;
-				margin: 0 5px;
-				fill: $orange-dark;
+				margin: 2px 5px;
+				fill: $white;
 			}
 		}
 
 		&__numbers {
-			color: $orange-dark;
+			font-weight: 400;
+   		font-size: 16px;
+			color: $white;
 		}
 	}
 

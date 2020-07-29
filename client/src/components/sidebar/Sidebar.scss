@@ -12,6 +12,7 @@
 	height: 60px;
 	padding: 10px;
 	background-color: $background-dark;
+	z-index: 50;
 
 	@media screen and (min-width: $breakpoint-xs) {
 		position: unset;

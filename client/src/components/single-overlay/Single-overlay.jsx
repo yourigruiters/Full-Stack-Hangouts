@@ -8,7 +8,6 @@ import {
 	ChatLocked,
 	ChatOpen,
 	UserList,
-	LeftArrow,
 	Exit,
 	BackArrow,
 } from "../../icons/icons";
@@ -270,8 +269,8 @@ const SingleOverlay = ({ history, type, socket, match }) => {
 			<section
 				className={
 					toggleList
-						? "subsection buttons__toggle--show"
-						: "subsection buttons__toggle--hide"
+						? "subsection buttons__toggle--hide"
+						: "subsection buttons__toggle--show"
 				}
 			>
 				<section className="subsection__header">
