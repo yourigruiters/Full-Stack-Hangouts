@@ -68,7 +68,6 @@ const VideoSingle = ({ socket, match, history }) => {
 	};
 
 	const handleProgress = (state) => {
-		console.log("HNADLEPROGRESS", state);
 		socket.emit("video_progress", roomName, state);
 	};
 

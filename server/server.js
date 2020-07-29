@@ -403,7 +403,7 @@ io.on("connection", (socket) => {
 	socket.on("video_progress", (roomName, stateObject) => {
 		let room = rooms.find((room) => room.slug === roomName);
     if(Math.abs((room.currentTime - stateObject.playedSeconds)) > 3 ) {
-      console.log('RUNNING EMIT')
+      console.log('RUNNING SEEK TO SECOND', stateObject.playedSeconds, 'IN ROOM', room.slug)
       room.currentTime = stateObject.playedSeconds;
       io.to(roomName).emit("video_progress", room);
     } else {
