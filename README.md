@@ -78,4 +78,7 @@ The application has been built with Youtube as the primary focus, but supports S
 
 ###### Chat Room
 
+![Chatroom](/readme_screenshots/chatroom.png)
+(Left and right side is 2 different browsers,  simulating 2 users)
+
 ###### Video Room
