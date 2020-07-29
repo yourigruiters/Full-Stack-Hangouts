@@ -10,6 +10,8 @@ import {
 	UserList,
 	Exit,
 	BackArrow,
+	NavbarChats,
+	NavbarVideos,
 } from "../../icons/icons";
 
 const SingleOverlay = ({ history, type, socket, match }) => {
@@ -49,7 +51,8 @@ const SingleOverlay = ({ history, type, socket, match }) => {
 			setCurrentVideo(roomData.isPlaying);
 			setQueue(roomData.queue);
 
-			setIsTyping(roomData.isTyping);
+      setIsTyping(roomData.isTyping);
+      console.log('SETTING ROOMDATA USERS', roomData.users)
 			setUsers(roomData.users);
 
 			const {
@@ -239,7 +242,7 @@ const SingleOverlay = ({ history, type, socket, match }) => {
 									{users.length}/{roomInfo.maxUsers}
 								</h4>
 								<article className="iconbutton iconbutton--people">
-									<UserList />
+									{type === "videos" ? <NavbarVideos/> : <UserList />}
 								</article>
 							</a>
 						</article>

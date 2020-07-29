@@ -125,18 +125,21 @@
 		background-color: rgba(15, 15, 18, 0.8);
 		transition: transform 0.3s 0s;
 
-		@media screen and (min-width: $breakpoint-sm) {
-			height: calc(100vh - 211px);
+		@media screen and (min-width: $breakpoint-xl) {
+			height: calc(100vh - 100px);
 			background-color: $background-dark;
 		}
 	}
 
 	@media screen and (min-width: $breakpoint-sm) {
+		top: 30px;
+	}
+	@media screen and (min-width: $breakpoint-md) {
 		position: inherit;
 	}
 
 	@media screen and (min-width: $breakpoint-xl) {
-		width: 25%;
+		width: 30%;
 	}
 
 }
