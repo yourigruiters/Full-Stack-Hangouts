@@ -397,8 +397,13 @@ io.on("connection", (socket) => {
 
 	socket.on("video_progress", (roomName, stateObject) => {
 		let room = rooms.find((room) => room.slug === roomName);
-		room.currentTime = stateObject.playedSeconds;
-		io.to(roomName).emit("video_progress", room.currentTime);
+    if(Math.abs((room.currentTime - stateObject.playedSeconds)) > 3 ) {
+      console.log('RUNNING EMIT')
+      room.currentTime = stateObject.playedSeconds;
+      io.to(roomName).emit("video_progress", room.currentTime);
+    } else {
+      room.currentTime = stateObject.playedSeconds;
+    }
 	});
 	socket.on("disconnect", () => {
 		rooms = rooms.map((room) => {
