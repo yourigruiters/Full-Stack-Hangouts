@@ -58,22 +58,60 @@
 
 			&__header {
 				display: flex;
-				flex-direction: row;
 				justify-content: space-between;
-				margin-bottom: 10px;
+				align-items: center;
+				margin-bottom: 20px;
 
 				&__buttons {
 					position: relative;
+					.button {
+						margin-right: 20px;
+					}
 				}
 			}
 
 			&__table {
 				display: flex;
-				flex-wrap: wrap;
-				flex-direction: row;
+				flex-direction: column;
 				justify-content: space-around;
+				align-items: center;
+
+				h2 {
+					margin-bottom: 15px;
+				}
 
 				table {
+					width: 80%;
+					background-color: #21252a;
+					padding: 15px;
+					min-width: 400px;
+					overflow-x: scroll;
+
+					thead {
+						border-bottom: 1px solid gray;
+					}
+					tr {
+						padding: 10px;
+						border-bottom: 1px solid gray;
+					}
+
+					th {
+						text-align: left;
+						padding: 5px;
+					}
+
+					td {
+						padding: 5px;
+					}
+
+					td:last-child,
+					th:last-child {
+						display: none;
+
+						@media screen and (min-width: $breakpoint-xl) {
+							display: block;
+						}
+					}
 				}
 			}
 		}

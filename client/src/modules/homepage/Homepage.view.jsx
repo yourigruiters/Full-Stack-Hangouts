@@ -46,10 +46,12 @@ const Homepage = ({
 			<section className="homepage__spacer">
 				<section className="homepage__spacer__content">
 					<h1>
-						Welcome, <span>{name}</span>.
+						Hey there, <span>{name}</span>.
 					</h1>
 					<Paragraph>
-						Welcome to Limbo Hangout -
+						Welcome to Limbo Hangouts! That one place to hangout with friends
+						and strangers and communicate over and on different kind of Media
+						environments.
 					</Paragraph>
 					<section className="homepage__spacer__content__form">
 						<form onSubmit={(e) => loginNewVisitor(e)}>

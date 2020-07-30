@@ -14,75 +14,114 @@
 	background-position: center;
 	background-size: cover;
 	text-align: end;
+	border: 3px solid #3a3a3d;
+
+	&__overlay {
+		position: absolute;
+		z-index: 3;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 165px;
+		background-color: rgba(0, 0, 0, 0.3);
+	}
+
+	&__content {
+		position: absolute;
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+		z-index: 5;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 165px;
+
+		&__header {
+			display: flex;
+			width: 100%;
+			justify-content: space-between;
+			align-items: center;
+			margin-top: 10px;
+
+			&__text {
+				padding: 5px 10px 5px 20px;
+				background-color: rgba(0, 0, 0, 0.7);
+				text-align: left;
+				border-radius: 0px 3px 3px 0;
+			}
+
+			&__title {
+				color: $white;
+				font-size: 16px;
+				font-weight: 400;
+			}
+
+			&__category {
+				color: $white;
+				font-style: italic;
+				font-size: 14px;
+			}
+
+			&__people {
+				display: flex;
+				justify-content: flex-end;
+				align-items: center;
+
+				svg {
+					width: 20px;
+					height: 20px;
+					margin: 2px 5px;
+					fill: $white;
+				}
+			}
+
+			&__numbers {
+				margin-right: 20px;
+				font-weight: 400;
+				font-size: 16px;
+				color: $white;
+			}
+		}
+
+		&__footer {
+			display: flex;
+			justify-content: space-between;
+			width: 100%;
+			margin-bottom: 20px;
+
+			&__input {
+				padding: 0 10px;
+				margin-right: 10px;
+				margin-left: 20px;
+				border: none;
+				border-radius: 6px;
+				background-color: $input-background;
+				color: $light-grey;
+				text-align: center;
+				height: 35px;
+
+				&:focus {
+					background-color: $background-dark;
+				}
+			}
+
+			&__error {
+				position: absolute;
+				bottom: 55px;
+				left: 25px;
+				color: #dcdad8;
+				font-size: 14px;
+				font-weight: bold;
+			}
+
+			.button {
+				margin-right: 20px;
+			}
+		}
+	}
 
 	@media screen and (min-width: $breakpoint-lg) {
 		margin-right: 50px;
-	}
-
-	&__header {
-		display: flex;
-    width: 100%;
-    justify-content: flex-end;
-
-		&__text {
-			position: absolute;
-			left: 0px;
-			top: 11px;
-			padding: 5px 10px 5px 15px;
-			background-color:rgba(0,0,0,0.7);
-			text-align: left;
-			border-radius: 0px 3px 3px 0;
-		}
-
-		&__title {
-			color: $white;
-			font-size: 16px;
-			font-weight: 400;
-		}
-	
-		&__category {
-			color: $white;
-			font-style: italic;
-			font-size: 14px;
-		}
-
-		&__people {
-			display: flex;
-			justify-content: flex-end;
-			align-items: center;
-	
-			svg {
-				width: 20px;
-				height: 20px;
-				margin: 2px 5px;
-				fill: $white;
-			}
-		}
-
-		&__numbers {
-			font-weight: 400;
-   		font-size: 16px;
-			color: $white;
-		}
-	}
-
-	&__footer {
-		display: flex;
-		justify-content: flex-end;
-		width: 100%;
-
-		&__input {
-			padding: 0 10px;
-			margin-right: 10px;
-			border: none;
-			border-radius: 6px;
-			background-color: $input-background;
-			color: $light-grey;
-			text-align: center;
-
-			&:focus {
-				background-color: $background-dark;
-			}
-		}
 	}
 }

@@ -31,6 +31,7 @@
 
 			&--middle {
 				display: flex;
+				align-items: center;
 				width: 100px;
 			}
 		}
@@ -43,7 +44,7 @@
 
 .buttons {
 	display: flex;
-	align-items: baseline;
+	align-items: center;
 
 	&__toggle {
 		display: flex;
@@ -79,21 +80,12 @@
 	}
 
 	&--people {
+		position: relative;
 		&--amount {
 			margin-right: 5px;
 			font-size: 16px;
 			font-weight: 300;
 		}
-	}
-}
-
-.password {
-	&__active {
-		display: block;
-	}
-
-	&__inactive {
-		display: none;
 	}
 }
 
@@ -141,5 +133,4 @@
 	@media screen and (min-width: $breakpoint-xl) {
 		width: 30%;
 	}
-
 }

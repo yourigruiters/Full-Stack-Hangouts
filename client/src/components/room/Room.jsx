@@ -39,35 +39,52 @@ const Room = ({ room, type, history }) => {
 			className="room"
 			style={{ backgroundImage: `url(${imageArr[room.category]})` }}
 		>
-			<article className="room__header__text">
-				<Paragraph className="room__header__title">{room.title}</Paragraph>
-				<Paragraph className="room__header__category">
-					Category: {room.category}
-				</Paragraph>
+			<article className="room__overlay"></article>
+			<article className="room__content">
+				<section className="room__content__header">
+					<section className="room__content__header__content">
+						<article className="room__content__header__text">
+							<Paragraph className="room__content__header__title">
+								{room.title}
+							</Paragraph>
+							<Paragraph className="room__content__header__category">
+								Category: {room.category}
+							</Paragraph>
+						</article>
+					</section>
+					<section className="room__content__header__content">
+						<article className="room__content__header__people">
+							<UserList />
+							<h3 className="room__content__header__numbers">
+								{room.users.length}/{room.maxUsers}
+							</h3>
+						</article>
+					</section>
+				</section>
+				<section className="room__content__footer">
+					<article className="room__content__footer__content">
+						{room.private && (
+							<input
+								type="text"
+								className="room__content__footer__input"
+								placeholder="Enter password"
+								value={passwordInput}
+								onChange={(e) => setPasswordInput(e.target.value)}
+							/>
+						)}
+						{error && (
+							<article className="room__content__footer__error">
+								Incorrect password
+							</article>
+						)}
+					</article>
+					<article className="room__content__footer__content">
+						<Button type="primary" onClick={goToRoom}>
+							Enter
+						</Button>
+					</article>
+				</section>
 			</article>
-			<section className="room__header">
-				<article className="room__header__people">
-					<UserList />
-					<h3 className="room__header__numbers">
-						{room.users.length}/{room.maxUsers}
-					</h3>
-				</article>
-			</section>
-			<section className="room__footer">
-				{room.private && (
-					<input
-						type="text"
-						className="room__footer__input"
-						placeholder="Enter password"
-						value={passwordInput}
-						onChange={(e) => setPasswordInput(e.target.value)}
-					/>
-				)}
-				{error && <div>ERROR</div>}
-				<Button type="primary" onClick={goToRoom}>
-					Enter
-				</Button>
-			</section>
 		</section>
 	);
 };
