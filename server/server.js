@@ -366,8 +366,6 @@ io.on("connection", (socket) => {
 			currentTime: rooms[roomIndex].currentTime,
 		};
 
-		console.log("JOINING ROOM, we're playying", roomData.isPlaying);
-
 		emitMessage(roomName, message);
 		io.to(roomName).emit("room_data", roomData);
 	});
@@ -481,8 +479,6 @@ io.on("connection", (socket) => {
 			title: videoData.title,
 			link: videoData.link,
 		};
-
-		console.log(newVideo, "newVideo");
 
 		rooms[roomIndex].queue.push(newVideo);
 

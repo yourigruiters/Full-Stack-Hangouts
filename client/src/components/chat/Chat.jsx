@@ -22,11 +22,7 @@ const Chat = ({
 		scrollToBottom();
 	}, [messages]);
 
-	const scrollToBottom = () => {
-		if (chatArea) {
-			console.log("test");
-		}
-	};
+	const scrollToBottom = () => {};
 
 	const shiftSubmit = (e) => {
 		if (e.keyCode === 13 && e.shiftKey) {
@@ -53,7 +49,7 @@ const Chat = ({
 										style={{ color: message.chatColor }}
 										className={`chat__user chat__user--${message.chatColor}`}
 									>
-										{message.name}:{" "}<br></br>
+										{message.name}: <br></br>
 									</b>
 								</span>
 								{message.message}
@@ -84,7 +80,7 @@ const Chat = ({
 					<p className="isTypingSpacer__text">
 						{error && <span>Can't send empty message!</span>}
 						{isTyping.length > 0 && isTyping.length > 2
-							? "Multiple peopleare typing..."
+							? "Multiple people are typing..."
 							: isTyping.map((user, index) => {
 									let string = "";
 									string += user.name;

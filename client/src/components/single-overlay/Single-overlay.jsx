@@ -37,7 +37,6 @@ const SingleOverlay = ({ history, type, socket, match }) => {
 	const roomName = match.params.roomName;
 
 	React.useEffect(() => {
-		console.log("joining on roomname", roomName);
 		socket.emit("joining_room", roomName);
 		socket.emit("get_visitor", roomName);
 
@@ -50,7 +49,6 @@ const SingleOverlay = ({ history, type, socket, match }) => {
 		});
 
 		socket.on("room_data", (roomData) => {
-			console.log("roomData", roomData);
 			setCurrentVideo(roomData.isPlaying);
 			setQueue(roomData.queue);
 
@@ -197,21 +195,16 @@ const SingleOverlay = ({ history, type, socket, match }) => {
 
 	const playNextVideoInPlaylist = () => {
 		if (host === user) {
-			console.log("FIRING NEXT VIDEO");
 			setCurrentVideo("");
 			socket.emit("next_video", roomName);
 		}
 	};
 
 	const handleProgress = (state) => {
-		console.log(host, user, "testing users");
 		if (host === user) {
 			socket.emit("video_progress", roomName, state);
 		}
 	};
-	// STOP FROM CHRIS
-
-	console.log(roomInfo.private, "password is", password);
 
 	return (
 		<section className="single-overlay">

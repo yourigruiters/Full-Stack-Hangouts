@@ -11,7 +11,6 @@ const Sidebar = ({ history, socket }) => {
 	};
 
 	const leavingThroughSidebar = () => {
-		console.log("test");
 		socket.emit("leaving_through_sidebar");
 	};
 
