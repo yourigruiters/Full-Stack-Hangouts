@@ -15,7 +15,7 @@
 	z-index: 50;
 
 	@media screen and (min-width: $breakpoint-xs) {
-		position: unset;
+		position: fixed;
 		flex-direction: column;
 		justify-content: space-between;
 		align-items: center;

@@ -134,12 +134,12 @@ const SingleOverlay = ({ history, type, socket, match }) => {
 			setIsPlaying(isPlayingState);
 		});
 
-		socket.on("next_video", (newPlaylist, newVideo) => {
+		socket.on("next_video", (queueDetails) => {
 			setQueue((prevState) => {
-				return newPlaylist;
+				return queueDetails.queue;
 			});
 			setCurrentVideo((prevState) => {
-				return newVideo;
+				return queueDetails.newVideo;
 			});
 		});
 

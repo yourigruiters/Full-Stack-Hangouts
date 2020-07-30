@@ -25,6 +25,7 @@ const Video = ({
 	const [createIsOpen, setCreateIsOpen] = React.useState(false);
 	const [formData, setFormData] = React.useState({
 		link: "",
+		title: "",
 	});
 	const [formErrors, setFormErrors] = React.useState({});
 
@@ -48,15 +49,19 @@ const Video = ({
 	const handleSubmit = (event) => {
 		event.preventDefault();
 
-		const checkFields = ["link"];
+		const checkFields = ["link", "title"];
 		const checkFieldErrors = {
 			link: "Please enter a valid Youtube link",
+			title: "Please enter a valid title",
 		};
 		const errors = {};
 		let errorCounter = 0;
 
 		checkFields.forEach((field) => {
-			if (formData[field] === "" || !YouTubeGetID(formData[field])) {
+			if (
+				formData[field] === "" ||
+				(field === "link" && !YouTubeGetID(formData[field]))
+			) {
 				errors[field] = checkFieldErrors[field];
 				errorCounter++;
 			} else {
@@ -68,6 +73,7 @@ const Video = ({
 			const videoData = {
 				roomName,
 				user,
+				title: formData.title,
 				link: formData.link,
 			};
 
@@ -115,24 +121,29 @@ const Video = ({
 				)}
 				<section className="video__content__queue">
 					<section className="video__content__queue__header">
-						<h2>Queue</h2>
-						<h3>{host}</h3>
-						{host === "" && (
+						{host === "" ? (
 							<Button type="primary" onClick={() => becomeHost()}>
 								Become Host
 							</Button>
-						)}
-						{host === user && (
-							<Button type="primary" onClick={() => playNextVideoInPlaylist()}>
-								Next Video
-							</Button>
-						)}
-						{host !== user && host !== "" && (
-							<Button type="primary" onClick={() => syncToHostProgress()}>
-								Sync to Host
-							</Button>
+						) : (
+							<p>
+								Current host: <b>{host}</b>
+							</p>
 						)}
 						<article className="video__content__queue__header__buttons">
+							{host === user && (
+								<Button
+									type="primary"
+									onClick={() => playNextVideoInPlaylist()}
+								>
+									Next Video
+								</Button>
+							)}
+							{host !== user && host !== "" && (
+								<Button type="primary" onClick={() => syncToHostProgress()}>
+									Sync to Host
+								</Button>
+							)}
 							<Button
 								type="primary"
 								onClick={() => setCreateIsOpen(!createIsOpen)}
@@ -142,6 +153,20 @@ const Video = ({
 							{createIsOpen && (
 								<FormOverlay>
 									<form onSubmit={(e) => handleSubmit(e)}>
+										<article className="create-room__combo">
+											<Paragraph>Title:</Paragraph>
+											<Input
+												type="text"
+												onChange={(e) => handleChange(e)}
+												name="title"
+												value={formData.title}
+											/>
+											{formErrors.title && (
+												<p className="create-room__combo__error">
+													{formErrors.title}
+												</p>
+											)}
+										</article>
 										<article className="create-room__combo">
 											<Paragraph>Youtube link:</Paragraph>
 											<Input
@@ -172,21 +197,33 @@ const Video = ({
 						</article>
 					</section>
 					<section className="video__content__queue__table">
+						<h2>Queue</h2>
 						<table>
 							<thead>
 								<tr>
-									<td>#</td>
-									<td>Title</td>
-									<td>URL</td>
-									<td>Thumbnail</td>
+									<th>#</th>
+									<th>User</th>
+									<th>Title</th>
+									<th>URL</th>
 								</tr>
 							</thead>
 							<tbody>
-								{queue.map((queueItem, index) => (
-									<tr key={index}>
-										<td colSpan="4">{queueItem}</td>
+								{queue.length > 0 ? (
+									queue.map((queueItem, index) => (
+										<tr key={index}>
+											<td>{index}</td>
+											<td>{queueItem.user}</td>
+											<td>{queueItem.title}</td>
+											<td>{queueItem.link}</td>
+										</tr>
+									))
+								) : (
+									<tr>
+										<td colSpan="4">
+											There are currently no videos in the queue.
+										</td>
 									</tr>
-								))}
+								)}
 							</tbody>
 						</table>
 					</section>

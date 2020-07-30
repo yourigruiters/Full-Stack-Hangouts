@@ -473,9 +473,13 @@ io.on("connection", (socket) => {
 		const roomIndex = rooms.findIndex(
 			(room) => room.slug === videoData.roomName
 		);
-		const newVideo = videoData.link;
+		const newVideo = {
+			user: videoData.user,
+			title: videoData.title,
+			link: videoData.link,
+		};
 
-		// Implement user
+		console.log(newVideo, "newVideo");
 
 		rooms[roomIndex].queue.push(newVideo);
 
@@ -486,13 +490,20 @@ io.on("connection", (socket) => {
 		const roomIndex = rooms.findIndex((room) => room.slug === roomName);
 		let newVideo = "";
 		if (rooms[roomIndex].queue.length !== 0) {
-			console.log(rooms[roomIndex].queue, "before");
 			newVideo = rooms[roomIndex].queue.shift();
-			rooms[roomIndex].isPlaying = newVideo;
-			console.log(rooms[roomIndex].queue, "after");
+			rooms[roomIndex].isPlaying = newVideo.link;
+			newVideo = newVideo.link;
+		} else {
+			rooms[roomIndex].queue = [];
+			newVideo = "";
 		}
 
-		io.to(roomName).emit("next_video", rooms[roomIndex].queue, newVideo);
+		const queueDetails = {
+			queue: rooms[roomIndex].queue,
+			newVideo: newVideo,
+		};
+
+		io.to(roomName).emit("next_video", queueDetails);
 	});
 
 	socket.on("sync_to_host", (roomName) => {
