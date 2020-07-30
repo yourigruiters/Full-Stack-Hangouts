@@ -6,6 +6,8 @@ import Input from "../input/Input";
 import ReactPlayer from "react-player";
 import FormOverlay from "../form-overlay/Form-overlay";
 import getYoutubeID from "get-youtube-id";
+import Warning from "../warning/Warning";
+import { Exit } from "../../icons/icons";
 
 const Video = ({
 	queue,
@@ -65,6 +67,7 @@ const Video = ({
 		if (errorCounter === 0) {
 			const videoData = {
 				roomName,
+				user,
 				link: formData.link,
 			};
 
@@ -103,7 +106,13 @@ const Video = ({
 				)}
 			</section>
 			<section className="video__content">
-				{host === "" && <div>HAAAAAAAAAAAEREARER MAKE A FUCKING HOST</div>}
+				{host === "" && (
+					<Warning type="video">
+						This room currently does not have an active host. Would you like to
+						be in control of this room? Click on the 'become host' button below
+						and be in control!
+					</Warning>
+				)}
 				<section className="video__content__queue">
 					<section className="video__content__queue__header">
 						<h2>Queue</h2>
@@ -149,13 +158,13 @@ const Video = ({
 										</article>
 
 										<article className="create-room__buttons">
-											<Button type="create">Create</Button>
-											<Button
-												type="cancel"
+											<Button type="create">Add</Button>
+											<a
 												onClick={() => setCreateIsOpen(false)}
+												className="create-room__buttons__exit"
 											>
-												Cancel
-											</Button>
+												<Exit />
+											</a>
 										</article>
 									</form>
 								</FormOverlay>

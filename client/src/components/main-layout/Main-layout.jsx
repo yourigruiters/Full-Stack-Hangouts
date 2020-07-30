@@ -16,6 +16,7 @@ import {
 	Exit,
 	BackArrow,
 } from "../../icons/icons";
+import Warning from "../warning/Warning";
 
 const categories = ["animals", "chill", "sports", "series", "music", "various"];
 const maxUsers = [
@@ -197,7 +198,7 @@ const MainLayout = ({ title, type, paragraph, roomsData, socket, history }) => {
 								</article>
 
 								<article className="create-room__combo">
-									<Paragraph>maxUsers:</Paragraph>
+									<Paragraph>User limit:</Paragraph>
 									<Select onChange={(e) => handleChange(e)} name="maxUsers">
 										{maxUsers.map((userAmount, index) => {
 											return (
@@ -224,11 +225,12 @@ const MainLayout = ({ title, type, paragraph, roomsData, socket, history }) => {
 									)}
 								</article>
 
+								<Warning>
+									Leaving the password empty will result in a public room.
+								</Warning>
+
 								<article className="create-room__buttons">
 									<Button type="create">Create</Button>
-									{/* <Button type="cancel" onClick={() => setCreateIsOpen(false)}>
-										Cancel
-									</Button> */}
 									<a
 										onClick={() => setCreateIsOpen(false)}
 										className="create-room__buttons__exit"

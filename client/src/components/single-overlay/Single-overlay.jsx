@@ -13,6 +13,7 @@ import {
 	NavbarChats,
 	NavbarVideos,
 } from "../../icons/icons";
+import FormOverlay from "../form-overlay/Form-overlay";
 
 const SingleOverlay = ({ history, type, socket, match }) => {
 	const [messages, setMessages] = React.useState([]);
@@ -23,6 +24,7 @@ const SingleOverlay = ({ history, type, socket, match }) => {
 	const [toggleList, setToggleList] = React.useState(false);
 	const [error, setError] = React.useState(false);
 	const [password, setPassword] = React.useState(false);
+	const [showPeople, setShowPeople] = React.useState(false);
 	const [roomInfo, setRoomInfo] = React.useState([]);
 
 	const [isPlaying, setIsPlaying] = React.useState(true);
@@ -63,6 +65,7 @@ const SingleOverlay = ({ history, type, socket, match }) => {
 				maxUsers,
 				passwordToRoom,
 			} = roomData;
+
 			setRoomInfo({
 				title: title,
 				private: privateroom,
@@ -208,6 +211,8 @@ const SingleOverlay = ({ history, type, socket, match }) => {
 	};
 	// STOP FROM CHRIS
 
+	console.log(roomInfo.private, "password is", password);
+
 	return (
 		<section className="single-overlay">
 			<section className="single-overlay__mainsection">
@@ -227,25 +232,29 @@ const SingleOverlay = ({ history, type, socket, match }) => {
 					<article className="single-overlay__mainsection__header--middle">
 						<article
 							className="iconbutton iconbutton--lock"
-							onClick={() => {
-								!password ? setPassword(true) : setPassword(false);
-							}}
+							onClick={() => setPassword(!password)}
 						>
-							{roomInfo.privateroom ? <ChatLocked /> : <ChatOpen />}
+							{roomInfo.private && <ChatLocked />}
 						</article>
-						<h4
-							className={
-								password && roomInfo.privateroom
-									? "password password__active"
-									: "password password__inactive"
-							}
-						>
-							password
-						</h4>
+						{password && roomInfo.private && <h4>{roomInfo.password}</h4>}
 					</article>
 
 					<section className="single-overlay__mainsection__header--end">
 						<article className="buttons">
+							{type === "videos" && (
+								<article
+									className="iconbutton iconbutton--people"
+									onMouseEnter={() => setShowPeople(true)}
+									onMouseLeave={() => setShowPeople(false)}
+								>
+									<UserList />
+									{showPeople && (
+										<FormOverlay>
+											<Users users={users} />
+										</FormOverlay>
+									)}
+								</article>
+							)}
 							<a
 								className="buttons__toggle"
 								onClick={() => {

@@ -79,21 +79,12 @@
 	}
 
 	&--people {
+		position: relative;
 		&--amount {
 			margin-right: 5px;
 			font-size: 16px;
 			font-weight: 300;
 		}
-	}
-}
-
-.password {
-	&__active {
-		display: block;
-	}
-
-	&__inactive {
-		display: none;
 	}
 }
 
@@ -141,5 +132,4 @@
 	@media screen and (min-width: $breakpoint-xl) {
 		width: 30%;
 	}
-
 }

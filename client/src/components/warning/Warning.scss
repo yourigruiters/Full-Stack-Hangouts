@@ -1,0 +1,22 @@
+@import "../../styles/variables.scss";
+
+.warning {
+	width: 100%;
+	height: auto;
+	padding: 20px;
+	border-radius: 6px;
+	color: #721c24;
+	background-color: #f8d7da;
+	border: 1px solid #721c24;
+	text-align: center;
+
+	&--video {
+		width: 80%;
+		margin: auto;
+		margin-bottom: 20px;
+	}
+
+	p {
+		font-size: 14px;
+	}
+}

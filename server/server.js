@@ -475,6 +475,8 @@ io.on("connection", (socket) => {
 		);
 		const newVideo = videoData.link;
 
+		// Implement user
+
 		rooms[roomIndex].queue.push(newVideo);
 
 		io.to(videoData.roomName).emit("new_queue", rooms[roomIndex].queue);
