@@ -232,7 +232,8 @@ const SingleOverlay = ({ history, type, socket, match }) => {
 					<article className="single-overlay__mainsection__header--middle">
 						<article
 							className="iconbutton iconbutton--lock"
-							onClick={() => setPassword(!password)}
+							onMouseEnter={() => setPassword(true)}
+							onMouseLeave={() => setPassword(false)}
 						>
 							{roomInfo.private && <ChatLocked />}
 						</article>

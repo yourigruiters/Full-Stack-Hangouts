@@ -109,8 +109,8 @@ const Video = ({
 				{host === "" && (
 					<Warning type="video">
 						This room currently does not have an active host. Would you like to
-						be in control of this room? Click on the 'become host' button below
-						and be in control!
+						be in control of this room? Click on the <b>Become Host</b> button
+						below and be in control!
 					</Warning>
 				)}
 				<section className="video__content__queue">
@@ -119,17 +119,17 @@ const Video = ({
 						<h3>{host}</h3>
 						{host === "" && (
 							<Button type="primary" onClick={() => becomeHost()}>
-								Become host
+								Become Host
 							</Button>
 						)}
 						{host === user && (
 							<Button type="primary" onClick={() => playNextVideoInPlaylist()}>
-								Next video
+								Next Video
 							</Button>
 						)}
 						{host !== user && host !== "" && (
 							<Button type="primary" onClick={() => syncToHostProgress()}>
-								Sync to host
+								Sync to Host
 							</Button>
 						)}
 						<article className="video__content__queue__header__buttons">
