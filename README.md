@@ -86,7 +86,11 @@ With the current version of the application, new users who join the room have to
 
 #### Words on the final project / thoughts
 
-With the given 2 week time limit, we're very happy with where we managed to get to, as using websockets for chat fundamentally is quite easy, but expanding on the functionality to implement feedback on typing, handling disconnection/joining of users, displaying active users quickly makes the application more advanced (for us beginners at least!). Also, having implemented live video sync that smartly uses the chat component from the other "room type" enabled us to re-use a lot of our code instead of having to write separate code for the video rooms and the chat rooms. Going forward, we'll be able to expand on the functionality of the application quite easily to become a convenient place for people to hang out and chat in rooms relating to specific topics (Sports, Mental Health, Stock Trading, etc) and watch videos together. With some minor tweaks (and perhaps a more attractive styling/branding) we think the application is fully usable in real life scenarios allowing for people to chat and watch videos with each other about topics people are interested in.
+With the given 2 week time limit, we're very happy with where we managed to get to, as using websockets for chat fundamentally is quite easy, but expanding on the functionality to implement feedback on typing, handling disconnection/joining of users, displaying active users quickly makes the application more advanced (for us beginners at least!). 
+
+Also, having implemented live video sync that smartly uses the chat component from the other "room type" enabled us to re-use a lot of our code instead of having to write separate code for the video rooms and the chat rooms. Going forward, we'll be able to expand on the functionality of the application quite easily to become a convenient place for people to hang out and chat in rooms relating to specific topics (Sports, Mental Health, Stock Trading, etc) and watch videos together. 
+
+With some minor tweaks (and perhaps a more attractive styling/branding) we think the application is fully usable in real life scenarios allowing for people to chat and watch videos with each other about topics people are interested in.
 
 ##### Landing page
 
