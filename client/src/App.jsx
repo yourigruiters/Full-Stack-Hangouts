@@ -26,7 +26,7 @@ const generateNameConfig = {
 	length: 2,
 };
 
-const socket = openSocket("localhost:5000");
+const socket = openSocket("https://hangouts-server.herokuapp.com/");
 
 const App = ({ history }) => {
 	const [isLoading, setIsLoading] = React.useState(true);
