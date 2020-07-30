@@ -4,6 +4,7 @@ const io = require("socket.io")(http, {
 	pingInterval: 30000,
 	pingTimeout: 15000,
 });
+const cors = require("cors");
 
 const port = 5000;
 
@@ -240,6 +241,8 @@ let rooms = [
 		currentTime: 0,
 	},
 ];
+
+app.use(cors());
 
 app.get("/", (req, res) => {
 	res.sendFile(__dirname + "/public/index.html");
