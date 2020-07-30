@@ -6,7 +6,7 @@ const io = require("socket.io")(http, {
 });
 const cors = require("cors");
 
-const port = 5000;
+const port = process.env.PORT || 5000;
 
 const chatColors = [
 	"#1abc9c",
