@@ -1,7 +1,7 @@
 import React from "react";
-import "./Sidebar.scss";
 import { NavLink, withRouter } from "react-router-dom";
 import { NavbarVideos, NavbarChats, NavbavLogout } from "../../icons/icons";
+import "./Sidebar.scss";
 
 const Sidebar = ({ history, socket }) => {
 	const logout = () => {

@@ -1,9 +1,9 @@
 import React from "react";
-import { Link, withRouter } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import Button from "../button/Button";
 import Paragraph from "../paragraph/Paragraph";
+import { UserList } from "../../icons/icons";
 import "./Room.scss";
-import { ChatLocked, ChatOpen, UserList } from "../../icons/icons";
 
 const Room = ({ room, type, history }) => {
 	const [passwordInput, setPasswordInput] = React.useState("");

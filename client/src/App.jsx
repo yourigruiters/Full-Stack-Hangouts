@@ -17,8 +17,6 @@ import ChatSingle from "./modules/chatsingle/ChatSingle.view";
 import Layout from "./components/layout/Layout";
 import Sidebar from "./components/sidebar/Sidebar";
 
-import "./App.scss";
-
 const generateNameConfig = {
 	dictionaries: [adjectives, animals],
 	style: "capital",
@@ -26,7 +24,7 @@ const generateNameConfig = {
 	length: 2,
 };
 
-const socket = openSocket("https://hangouts-server.herokuapp.com/");
+const socket = openSocket("localhost:5000");
 
 const App = ({ history }) => {
 	const [isLoading, setIsLoading] = React.useState(true);
@@ -98,7 +96,6 @@ const App = ({ history }) => {
 					};
 					setVisitorData(visitor);
 				}
-				console.error("Error:", err.message);
 			});
 	};
 
@@ -107,7 +104,8 @@ const App = ({ history }) => {
 			<Switch>
 				{isLoading ? (
 					<>
-						<h1>Loading...</h1>
+						<h1>The application is firing up!</h1>
+						<p>This shouldn't take more than 5 seconds.</p>
 					</>
 				) : (
 					<>

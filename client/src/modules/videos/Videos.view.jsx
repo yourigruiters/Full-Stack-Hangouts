@@ -1,6 +1,5 @@
 import React from "react";
 import MainLayout from "../../components/main-layout/Main-layout";
-import "./Videos.view.scss";
 
 const Videos = ({ socket }) => {
 	const [roomsData, setRoomsData] = React.useState([]);
@@ -10,14 +9,15 @@ const Videos = ({ socket }) => {
 
 		socket.on("get_rooms", (roomsData) => {
 			setRoomsData(roomsData);
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+		});
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	const mainLayoutData = {
 		title: "Videos",
 		type: "videos",
-		paragraph: "Here in the video section you can filter through rooms and find a topic you are interested in - Create your own room to watch videos together with your friends or join a public room and make new ones."
+		paragraph:
+			"Here in the video section you can filter through rooms and find a topic you are interested in - Create your own room to watch videos together with your friends or join a public room and make new ones.",
 	};
 
 	return (

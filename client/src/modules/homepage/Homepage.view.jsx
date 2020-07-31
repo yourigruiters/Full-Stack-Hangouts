@@ -1,8 +1,8 @@
 import React from "react";
 import * as _ from "lodash";
-import "./Homepage.view.scss";
 import Button from "../../components/button/Button";
 import Paragraph from "../../components/paragraph/Paragraph";
+import "./Homepage.view.scss";
 
 const Homepage = ({
 	socket,
