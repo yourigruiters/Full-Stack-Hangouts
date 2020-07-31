@@ -28,7 +28,7 @@
 
 		&__button {
 			position: relative;
-			align-self: flex-end; // Browser warning on this one
+			align-self: flex-end;
 			margin-top: 15px;
 		}
 	}
@@ -102,7 +102,7 @@
 	&__exit {
 		position: absolute;
 		right: -11px;
-    bottom: -9px;
+		bottom: -9px;
 	}
 	svg {
 		width: 30px;

@@ -1,6 +1,6 @@
 import React from "react";
-import "./Chat.scss";
 import Button from "../button/Button";
+import "./Chat.scss";
 
 const Chat = ({
 	messages,
@@ -10,32 +10,17 @@ const Chat = ({
 	isTyping,
 	error,
 }) => {
-	// scrollChat breaks scroll but 'works'
-	const scrollChat = () => {
-		const div = document.querySelector(".chatsection__body");
-		div.scrollTop = div.scrollHeight - div.clientHeight;
-	};
-
-	const chatArea = React.useRef(document.createElement("article"));
-
-	React.useEffect(() => {
-		scrollToBottom();
-	}, [messages]);
-
-	const scrollToBottom = () => {};
-
 	const shiftSubmit = (e) => {
 		if (e.keyCode === 13 && e.shiftKey) {
 		} else if (e.keyCode === 13) {
 			sendChatMessage(e);
 		}
-		scrollChat();
 	};
 
 	return (
 		<section className="chat">
 			<section className="chatsection__body">
-				<article className="chat__area" ref={chatArea}>
+				<article className="chat__area">
 					{messages.map((message, index) => (
 						<article key={index} className="chat__message">
 							<article className="chat__message--time">

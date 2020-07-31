@@ -1,19 +1,17 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
-import "./Single-overlay.scss";
 import Users from "../users/Users";
 import Chat from "../chat/Chat";
 import Video from "../video/Video";
 import {
 	ChatLocked,
-	ChatOpen,
 	UserList,
 	Exit,
 	BackArrow,
-	NavbarChats,
 	NavbarVideos,
 } from "../../icons/icons";
 import FormOverlay from "../form-overlay/Form-overlay";
+import "./Single-overlay.scss";
 
 const SingleOverlay = ({ history, type, socket, match }) => {
 	const [messages, setMessages] = React.useState([]);
@@ -186,7 +184,6 @@ const SingleOverlay = ({ history, type, socket, match }) => {
 		socket.emit("leaving_room", roomName);
 	};
 
-	// FROM CHRIS
 	const sendVideoState = (videoState) => {
 		if (host === user) {
 			socket.emit("playpause_changing", roomName, videoState);

@@ -1,5 +1,4 @@
 import React from "react";
-import "./Video.scss";
 import Button from "../button/Button";
 import Paragraph from "../paragraph/Paragraph";
 import Input from "../input/Input";
@@ -8,6 +7,7 @@ import FormOverlay from "../form-overlay/Form-overlay";
 import getYoutubeID from "get-youtube-id";
 import Warning from "../warning/Warning";
 import { Exit } from "../../icons/icons";
+import "./Video.scss";
 
 const Video = ({
 	queue,

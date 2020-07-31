@@ -5,18 +5,11 @@ import Title from "../title/Title";
 import Paragraph from "../paragraph/Paragraph";
 import Input from "../input/Input";
 import Select from "../select/Select";
-import "./Main-layout.scss";
 import Room from "../room/Room";
 import FormOverlay from "../form-overlay/Form-overlay";
-import {
-	ChatLocked,
-	ChatOpen,
-	UserList,
-	LeftArrow,
-	Exit,
-	BackArrow,
-} from "../../icons/icons";
+import { Exit } from "../../icons/icons";
 import Warning from "../warning/Warning";
+import "./Main-layout.scss";
 
 const categories = ["animals", "chill", "sports", "series", "music", "various"];
 const maxUsers = [
