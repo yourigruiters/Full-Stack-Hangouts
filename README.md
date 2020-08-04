@@ -1,5 +1,6 @@
 # Limbo Hangouts - Final Project @ &lt;/salt&gt;
 2-week Full-stack application using Websockets built as our final project for &lt;/salt&gt;.
+Heroku: https://hangouts-client.herokuapp.com/
 
 ## Description
 
