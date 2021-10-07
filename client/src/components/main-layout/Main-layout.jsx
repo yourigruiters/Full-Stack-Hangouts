@@ -13,31 +13,13 @@ import "./Main-layout.scss";
 
 const categories = ["animals", "chill", "sports", "series", "music", "various"];
 const maxUsers = [
-  2,
-  3,
-  4,
-  5,
-  6,
-  7,
-  8,
-  9,
-  10,
-  11,
-  12,
-  13,
-  14,
-  15,
-  16,
-  17,
-  18,
-  19,
-  20
+  2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
 ];
 
 const MainLayout = ({ title, type, paragraph, roomsData, socket, history }) => {
   const [filterData, setFilterData] = React.useState({
     category: "",
-    search: ""
+    search: "",
   });
   const [rooms, setRooms] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(true);
@@ -47,7 +29,7 @@ const MainLayout = ({ title, type, paragraph, roomsData, socket, history }) => {
     private: false,
     password: "",
     category: "",
-    maxUsers: 20
+    maxUsers: 20,
   });
   const [formErrors, setFormErrors] = React.useState({});
 
@@ -61,7 +43,7 @@ const MainLayout = ({ title, type, paragraph, roomsData, socket, history }) => {
     const checkFields = ["title", "category"];
     const checkFieldErrors = {
       title: "Please enter a valid title",
-      category: "Please chose a category"
+      category: "Please chose a category",
     };
     const errors = {};
     let errorCounter = 0;
@@ -91,7 +73,7 @@ const MainLayout = ({ title, type, paragraph, roomsData, socket, history }) => {
         queue: [],
         isTyping: [],
         playing: true,
-        currentTime: 0
+        currentTime: 0,
       };
 
       console.log("roomdata joinen room", roomData);
@@ -130,10 +112,11 @@ const MainLayout = ({ title, type, paragraph, roomsData, socket, history }) => {
       if (filterData.search !== "") {
         filteredRooms = filteredRooms.filter((room) => {
           return Object.keys(room).some((keys) => {
-            if (typeof room[keys] === "string")
+            if (typeof room[keys] === "string") {
               return room[keys]
                 .toLowerCase()
                 .includes(filterData.search.toLowerCase());
+            }
           });
         });
       }

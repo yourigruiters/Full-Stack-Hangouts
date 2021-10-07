@@ -3,10 +3,10 @@ const cors = require("cors");
 const http = require("http").createServer(app);
 const io = require("socket.io")(http, {
   pingInterval: 30000,
-  pingTimeout: 15000
+  pingTimeout: 15000,
 });
 
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 5005;
 
 const chatColors = [
   "#1abc9c",
@@ -22,7 +22,7 @@ const chatColors = [
   "#e67e22",
   "#d35400",
   "#e74c3c",
-  "#c0392b"
+  "#c0392b",
 ];
 
 let rooms = [
@@ -41,25 +41,25 @@ let rooms = [
         id: "ZAcruUixXkxDgUPHAAAB",
         name: "Systematic Flamingo",
         country: "United States",
-        countryCode: "US"
+        countryCode: "US",
       },
       {
         id: "ZAcruUixXkxDgUPHAA123",
         name: "Thick Skink",
         country: "Mexico",
-        countryCode: "MX"
+        countryCode: "MX",
       },
       {
         id: "ZAcruUixXkxDgUPHA345B",
         name: "Constitutional Cicada",
         country: "Japan",
-        countryCode: "JP"
-      }
+        countryCode: "JP",
+      },
     ],
     queue: [],
     isTyping: [],
     playing: true,
-    currentTime: 0
+    currentTime: 0,
   },
   {
     title: "Public Cinema",
@@ -76,26 +76,26 @@ let rooms = [
         id: "ZAcruUixXkxDgUPHAAAB",
         name: "Systematic Flamingo",
         country: "Mexico",
-        countryCode: "MX"
+        countryCode: "MX",
       },
       {
         id: "ZAcruUixXkxDgUPHAA123",
         name: "Thick Skink",
         country: "United States",
-        countryCode: "US"
+        countryCode: "US",
       },
       {
         id: "ZAcruUixXkxDgUPHA345B",
         name: "Constitutional Cicada",
         country: "United States",
-        countryCode: "US"
-      }
+        countryCode: "US",
+      },
     ],
     queue: [],
     isPlaying: "https://www.youtube.com/watch?v=BAlx4kjI98g",
     isTyping: [],
     playing: true,
-    currentTime: 0
+    currentTime: 0,
   },
   {
     title: "Animals playlist",
@@ -112,26 +112,26 @@ let rooms = [
         id: "ZAcruUixXkxDgUPHAAAB",
         name: "Systematic Flamingo",
         country: "Mexico",
-        countryCode: "MX"
+        countryCode: "MX",
       },
       {
         id: "ZAcruUixXkxDgUPHAA123",
         name: "Thick Skink",
         country: "United States",
-        countryCode: "US"
+        countryCode: "US",
       },
       {
         id: "ZAcruUixXkxDgUPHA345B",
         name: "Constitutional Cicada",
         country: "Sweden",
-        countryCode: "SE"
-      }
+        countryCode: "SE",
+      },
     ],
     queue: [],
     isPlaying: "https://www.youtube.com/watch?v=BAlx4kjI98g",
     isTyping: [],
     playing: true,
-    currentTime: 0
+    currentTime: 0,
   },
   {
     title: "Live soccer",
@@ -148,25 +148,25 @@ let rooms = [
         id: "ZAcruUixXkxDgUPHAAAB",
         name: "Systematic Flamingo",
         country: "Mexico",
-        countryCode: "MX"
+        countryCode: "MX",
       },
       {
         id: "ZAcruUixXkxDgUPHAA123",
         name: "Thick Skink",
         country: "Sweden",
-        countryCode: "SE"
+        countryCode: "SE",
       },
       {
         id: "ZAcruUixXkxDgUPHA345B",
         name: "Constitutional Cicada",
         country: "United States",
-        countryCode: "US"
-      }
+        countryCode: "US",
+      },
     ],
     queue: [],
     isTyping: [],
     playing: true,
-    currentTime: 0
+    currentTime: 0,
   },
   {
     title: "Netflix",
@@ -183,26 +183,26 @@ let rooms = [
         id: "ZAcruUixXkxDgUPHAAAB",
         name: "Systematic Flamingo",
         country: "Mexico",
-        countryCode: "MX"
+        countryCode: "MX",
       },
       {
         id: "ZAcruUixXkxDgUPHAA123",
         name: "Thick Skink",
         country: "United States",
-        countryCode: "US"
+        countryCode: "US",
       },
       {
         id: "ZAcruUixXkxDgUPHA345B",
         name: "Constitutional Cicada",
         country: "United States",
-        countryCode: "US"
-      }
+        countryCode: "US",
+      },
     ],
     queue: [],
     isPlaying: "https://www.youtube.com/watch?v=BAlx4kjI98g",
     isTyping: [],
     playing: true,
-    currentTime: 0
+    currentTime: 0,
   },
   {
     title: "Music playlist",
@@ -219,32 +219,32 @@ let rooms = [
         id: "ZAcruUixXkxDgUPHAAAB",
         name: "Systematic Flamingo",
         country: "United States",
-        countryCode: "US"
+        countryCode: "US",
       },
       {
         id: "ZAcruUixXkxDgUPHAA123",
         name: "Thick Skink",
         country: "Sweden",
-        countryCode: "SE"
+        countryCode: "SE",
       },
       {
         id: "ZAcruUixXkxDgUPHA345B",
         name: "Constitutional Cicada",
         country: "Mexico",
-        countryCode: "MX"
-      }
+        countryCode: "MX",
+      },
     ],
     queue: [],
     isPlaying: "https://www.youtube.com/watch?v=BAlx4kjI98g",
     isTyping: [],
     playing: true,
-    currentTime: 0
-  }
+    currentTime: 0,
+  },
 ];
 
 app.use(cors());
 
-app.get("/", (req, res) => {
+app.get("/", (_req, res) => {
   res.sendFile(__dirname + "/public/index.html");
 });
 
@@ -266,7 +266,7 @@ const emitTypingChange = (roomName, type, socket) => {
     id: socket.id,
     name: socket.user.name,
     country: socket.user.country,
-    countryCode: socket.user.countryCode
+    countryCode: socket.user.countryCode,
   };
 
   if (type === "started_typing") {
@@ -293,6 +293,7 @@ const emitTypingChange = (roomName, type, socket) => {
 };
 
 io.on("connection", (socket) => {
+  console.log("Connection");
   socket.on("connect_visitor", (visitorData) => {
     const randomNumber = Math.floor(Math.random() * chatColors.length);
     const randomChatcolor = chatColors[randomNumber];
@@ -344,7 +345,7 @@ io.on("connection", (socket) => {
       id: socket.id,
       name: socket.user.name,
       country: socket.user.country || "Sweden",
-      countryCode: socket.user.countryCode || "SE"
+      countryCode: socket.user.countryCode || "SE",
     };
 
     rooms[roomIndex].users.push(user);
@@ -352,7 +353,7 @@ io.on("connection", (socket) => {
     const message = {
       user: socket.user.name,
       type: "joined",
-      chatColor: socket.user.chatColor
+      chatColor: socket.user.chatColor,
     };
 
     const roomData = {
@@ -367,7 +368,7 @@ io.on("connection", (socket) => {
       host: rooms[roomIndex].host,
       isTyping: rooms[roomIndex].isTyping,
       playing: rooms[roomIndex].playing,
-      currentTime: rooms[roomIndex].currentTime
+      currentTime: rooms[roomIndex].currentTime,
     };
 
     emitMessage(roomName, message);
@@ -400,7 +401,7 @@ io.on("connection", (socket) => {
       const message = {
         user: socket.user.name,
         type: "left",
-        chatColor: socket.user.chatColor
+        chatColor: socket.user.chatColor,
       };
 
       socket.leave(rooms[roomIndex].slug);
@@ -437,7 +438,7 @@ io.on("connection", (socket) => {
           const message = {
             user: socket.user.name,
             type: "left",
-            chatColor: socket.user.chatColor
+            chatColor: socket.user.chatColor,
           };
 
           socket.leave(room.slug);
@@ -493,7 +494,7 @@ io.on("connection", (socket) => {
     const newVideo = {
       user: videoData.user,
       title: videoData.title,
-      link: videoData.link
+      link: videoData.link,
     };
 
     rooms[roomIndex].queue.push(newVideo);
@@ -515,7 +516,7 @@ io.on("connection", (socket) => {
 
     const queueDetails = {
       queue: rooms[roomIndex].queue,
-      newVideo: newVideo
+      newVideo: newVideo,
     };
 
     io.to(roomName).emit("next_video", queueDetails);
@@ -554,7 +555,7 @@ io.on("connection", (socket) => {
           const message = {
             user: socket.user.name,
             type: "left",
-            chatColor: socket.user.chatColor
+            chatColor: socket.user.chatColor,
           };
 
           socket.leave(room.slug);
